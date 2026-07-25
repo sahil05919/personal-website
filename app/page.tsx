@@ -351,8 +351,8 @@ function Footer() {
         <motion.div initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp} className="w-full mt-24 md:mt-32 pt-8 border-t border-zinc-800/60 flex flex-col md:flex-row items-center justify-between gap-6 text-xs font-semibold text-zinc-500 uppercase tracking-widest">
           <div>© {new Date().getFullYear()} Sahil Kumar</div>
           <div className="flex gap-6">
-            <a href="https://github.com/sahil" className="hover:text-white transition-colors">GitHub</a>
-            <a href="https://linkedin.com/in/sahil" className="hover:text-white transition-colors">LinkedIn</a>
+            <a href="https://github.com/sahil05919" className="hover:text-white transition-colors">GitHub</a>
+            <a href="https://www.linkedin.com/in/sahil-business-analyst/" className="hover:text-white transition-colors">LinkedIn</a>
           </div>
           <div className="flex items-center gap-2">
             <span className="relative flex h-1.5 w-1.5">
