@@ -1,11 +1,11 @@
 export const contactInfo = {
   email: "sahil05919@gmail.com",
 
-  phone: "+44 7562267371",
+  phone: "+447562267371",
 
   whatsapp: "https://wa.me/447562267371",
 
-  location: "Leyton, London",
+  location: "London",
 
   linkedin:
     "https://www.linkedin.com/in/sahil-business-analyst/",

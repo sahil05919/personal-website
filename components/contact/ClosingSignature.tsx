@@ -28,9 +28,15 @@ export default function ClosingSignature() {
   const contractDuration = prefersReducedMotion ? 0 : 0.6;
 
   return (
+    /*
+      Top padding is deliberately light. The seam above is already held
+      by the wrapper in app/contact/page.tsx; carrying a second full
+      interval here made the mark read as stranded between two blocks
+      rather than as the opening of this one.
+    */
     <section
       aria-label="Closing thought"
-      className="px-6 md:px-8 pt-20 pb-32 md:pt-28 md:pb-40"
+      className="px-6 md:px-8 pt-10 pb-20 md:pt-14 md:pb-24"
     >
       <motion.div
         initial={prefersReducedMotion ? false : 'hidden'}
