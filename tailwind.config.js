@@ -34,11 +34,20 @@ module.exports = {
       },
 
       fontFamily: {
+        /* KNOWN ISSUE: next/font registers a generated family name exposed as
+           --font-geist-sans, so the literal "Geist Sans" below never matches
+           and Inter is not loaded. font-sans currently falls back to the system
+           sans everywhere. Fix alongside the /writing build. */
         sans: ["Geist Sans", "Inter", "sans-serif"],
         display: ["Cal Sans", "Playfair Display", "serif"],
-        /* Through-Line editorial serif, used for headings/chapter titles */
+        /* Through-Line editorial serif — headings, chapter titles, and the
+           short Fraunces statements that carry Sahil's voice. Loaded at 400
+           and 500 only; never use a heavier weight. */
         "serif-display": ["Fraunces", "serif"],
-        /* Long-form reading serif — used only on the /questions essay body */
+        /* Long-form reading serif — prose read at length: the /questions essay
+           body and the /media captions. Loaded upright 400, italic 400 and
+           italic 500. There is no upright 500, so never apply font-medium to
+           non-italic text set in this face; the browser will synthesise it. */
         reading: ["Newsreader", "Georgia", "serif"],
         mono: ["JetBrains Mono", "ui-monospace", "monospace"],
       },
@@ -51,3 +60,8 @@ module.exports = {
   },
   plugins: [],
 };
+
+/* NOTE: no `serif` key is defined, deliberately — the two serif roles are
+   `serif-display` and `reading`. `font-serif` therefore resolves to Tailwind's
+   default ui-serif/Georgia stack and renders in a system face with no error.
+   If you see `font-serif` in a component, it is a bug. */
