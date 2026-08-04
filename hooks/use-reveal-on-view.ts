@@ -8,6 +8,16 @@ import { useEffect, useRef, useState } from "react";
  * place, not as an animated effect competing with the writing.
  * No-ops entirely (returns visible=true immediately) if the user has
  * requested reduced motion.
+ *
+ * MOVED from components/media/use-reveal-on-view.ts, unchanged. It is now
+ * used by two chapters, so it no longer belongs to one of them.
+ *
+ * ACTION REQUIRED: update the import in components/media/MediaMoment.tsx
+ *
+ *   - import { useRevealOnView } from "./use-reveal-on-view";
+ *   + import { useRevealOnView } from "@/hooks/use-reveal-on-view";
+ *
+ * then delete the old file. One line, but /media fails to build if missed.
  */
 export function useRevealOnView<T extends HTMLElement>() {
   const ref = useRef<T | null>(null);

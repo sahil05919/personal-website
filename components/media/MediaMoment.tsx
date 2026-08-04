@@ -6,7 +6,7 @@ import type {
   MediaImage,
   MediaMoment as MediaMomentType,
 } from "@/data/mediaData";
-import { useRevealOnView } from "./use-reveal-on-view";
+import { useRevealOnView } from "@/hooks/use-reveal-on-view";
 
 /** Matches max-w-[560px] on the section in MediaChapter. Change one, change both. */
 const COLUMN_WIDTH = 560;
