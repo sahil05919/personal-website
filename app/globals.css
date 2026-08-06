@@ -62,6 +62,12 @@
     scroll-behavior: smooth;
   }
 
+  /* Anchored navigation must not scroll content under the fixed 72px navbar.
+     Journey's chapters also set scroll-mt-[88px] for a little breathing room. */
+  :target {
+    scroll-margin-top: 88px;
+  }
+
   body {
     @apply bg-background text-foreground font-sans;
     -webkit-font-smoothing: antialiased;
@@ -70,6 +76,24 @@
 
   * {
     @apply border-border;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Print — the fixed navbar otherwise overlaps the first line of every page
+   after the first, and the layout's top padding leaves a dead band. */
+@media print {
+  header {
+    position: static;
+  }
+
+  main {
+    padding-top: 0;
   }
 }
 

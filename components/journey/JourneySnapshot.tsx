@@ -12,7 +12,10 @@ export default function JourneySnapshot() {
   const { points, summary } = journeySnapshot;
 
   return (
-    <section aria-labelledby="snapshot-heading" className="bg-paper text-ink px-6 md:px-8 pb-16 md:pb-20">
+    <section
+      aria-labelledby="snapshot-heading"
+      className="bg-paper text-ink px-6 md:px-8 pb-16 md:pb-20"
+    >
       <motion.div
         initial="hidden"
         whileInView="show"
@@ -20,11 +23,22 @@ export default function JourneySnapshot() {
         variants={fadeUp}
         className="mx-auto max-w-2xl"
       >
-        <h2 id="snapshot-heading" className="font-mono text-[11px] tracking-[0.06em] uppercase text-graphite mb-8">
+        <h2
+          id="snapshot-heading"
+          className="font-mono text-[11px] tracking-[0.06em] uppercase text-graphite mb-8"
+        >
           My journey at a glance
         </h2>
 
-        <div className="overflow-x-auto">
+        {/* A scrollable region with no focusable child is unreachable by
+            keyboard (WCAG 2.1.1). tabIndex + role + label make it a proper
+            landmark that can be focused and scrolled with arrow keys. */}
+        <div
+          className="overflow-x-auto rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-through-line focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
+          tabIndex={0}
+          role="region"
+          aria-label="Timeline of key years, scrollable horizontally"
+        >
           <div className="relative min-w-[420px]">
             <div
               className="absolute left-0 right-0 top-[5px] h-[1.5px] bg-through-line/40"

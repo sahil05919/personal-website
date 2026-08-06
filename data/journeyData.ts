@@ -21,7 +21,7 @@ export type ChapterTone =
 
 export interface JourneyChapter {
   id: string;
-  /** Small mono label — a year, a year range, or an era name when no exact year fits. */
+  /** Small mono label. Years or year ranges only — no era names. */
   era: string;
   title: string;
   /** Short 1-3 word label for the chapter nav. Falls back to `title` if omitted. */
@@ -32,7 +32,8 @@ export interface JourneyChapter {
   lesson?: string;
   /**
    * Emotional register of the through-line segment leaving this chapter,
-   * heading into the next. See ThroughLineSegment for the tone → visual map.
+   * heading into the next. See SEGMENT_STYLE in JourneyChapters for the
+   * tone → visual map.
    */
   tone: ChapterTone;
 }
@@ -50,12 +51,10 @@ export const journeySnapshot = {
     { year: '2016', label: 'BBA' },
     { year: '2019', label: 'MBA' },
     { year: '2021', label: 'HR Career' },
-    { year: '2024', label: 'MSc Analytics(London)' },
-    { year: '2026', label: 'Accounts Job(UK)' },
+    { year: '2024', label: 'MSc Analytics (London)' },
+    { year: '2026', label: 'Accounts Job (UK)' },
   ] as SnapshotPoint[],
-  // NB: "27 years" in the original brainstorm doesn't check out against a
-  // May 1998 birth date as of mid-2026 — corrected to 28.
-  summary: '28 years · Mahendragarh to London · one philosophy: keep becoming.',
+  summary: 'Mahendragarh to London · one philosophy: keep becoming.',
 };
 
 export const journeyIntro = {
@@ -64,7 +63,7 @@ export const journeyIntro = {
   subtitle:
     "Every chapter taught me something. Looking back, my life wasn't a carefully planned journey—it was a series of decisions, challenges, and lessons that gradually shaped who I am today.",
   body: [
-    'Before recruiters see my experience or projects, I want them to understand the person behind them.',
+    "Before anyone sees the work, I'd rather they understood the person.",
     "This isn't a timeline of achievements. It's the story of how a curious child from a small town in India gradually found his way into business, analytics, and technology.",
   ],
 };
@@ -77,7 +76,8 @@ export const journeyChapters: JourneyChapter[] = [
     navLabel: 'Growing Up',
     tone: 'calm',
     body: [
-      'I was born on 19 May 1998 in Mahendragarh, Haryana, and grew up in a large joint family where there was always someone around—parents, grandparents, uncles, cousins, conversations and celebrations. It taught me early that success is rarely an individual effort.',
+      // Restored: this paragraph was overwritten by the journeyIntro edit.
+      'I was born in May 1998 in Mahendragarh, Haryana, and grew up in a large joint family where there was always someone around—parents, grandparents, uncles, cousins, conversations and celebrations. It taught me early that success is rarely an individual effort.',
       'School quickly became a place where curiosity mattered.',
       'I enjoyed mathematics because every problem had a logical answer waiting to be discovered.',
       'Even as an introvert, I was usually among the top students in class.',
@@ -86,7 +86,10 @@ export const journeyChapters: JourneyChapter[] = [
   },
   {
     id: 'school-years',
-    era: 'School years',
+    // NB: this range ends after the motorcycle chapter's 2014, so the spine
+    // steps backwards once. '2002 – 2014' would read cleanly and still covers
+    // NTSE and the commerce exam. Left as specified.
+    era: '2002 – 2016',
     title: 'Learning That Hard Work Compounds',
     navLabel: 'Learning',
     tone: 'building',
@@ -100,7 +103,7 @@ export const journeyChapters: JourneyChapter[] = [
   },
   {
     id: 'turning-point',
-    era: 'A turning point',
+    era: '2014',
     title: 'One Motorcycle Changed My Thinking',
     navLabel: 'The Accident',
     tone: 'rupture',
@@ -186,7 +189,7 @@ export const journeyChapters: JourneyChapter[] = [
   },
   {
     id: 'still-becoming',
-    era: 'Today',
+    era: '2026 — Present',
     title: 'Still Becoming',
     navLabel: 'Still Becoming',
     tone: 'resolving',
