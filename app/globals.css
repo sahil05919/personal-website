@@ -22,7 +22,7 @@
 
   --accent: 81 70 229;
 
-  /* Through-Line homepage tokens (additive — do not replace tokens above) */
+  /* Through-Line — light. The approved mockup values. */
   --paper: 247 246 243;
   --ink: 10 10 11;
   --graphite: 107 107 108;
@@ -48,12 +48,15 @@
 
   --accent: 81 70 229;
 
-  /* Through-Line homepage tokens — dark extrapolation, NOT part of the approved
-     mockup (which was light-only). Treat as placeholder pending design review. */
-  --paper: 10 10 11;
-  --ink: 240 239 236;
+  /* Through-Line — dark. No longer a placeholder extrapolation. Calibrated
+     for sustained Newsreader prose rather than for maximum contrast: paper is
+     lifted off true black to stop halation on the serif, and ink is pulled
+     back to ~14:1, which reads calmer inverted than the light mode's ~18:1
+     does upright. */
+  --paper: 18 18 20;
+  --ink: 226 224 219;
   --graphite: 158 158 156;
-  --hairline: 40 40 38;
+  --hairline: 48 47 45;
   --through-line: 91 140 255;
 }
 
@@ -68,6 +71,10 @@
     scroll-margin-top: 88px;
   }
 
+  /* NOTE: `font-sans` (Inter) is the wrong default for a site whose reading
+     role is Newsreader. About requests `font-reading` explicitly, but the
+     underlying default is still backwards site-wide. Flipping it belongs in
+     its own pass — it would touch every page at once. */
   body {
     @apply bg-background text-foreground font-sans;
     -webkit-font-smoothing: antialiased;
@@ -85,15 +92,81 @@
   }
 }
 
-/* Print — the fixed navbar otherwise overlaps the first line of every page
-   after the first, and the layout's top padding leaves a dead band. */
+/* ---------------------------------------------------------------------------
+   About — the chrome unwind.
+
+   The reader arrives at a face on paper with nothing competing. `ChromeUnwind`
+   adds this class on mount and removes it once they've scrolled past the
+   frontispiece. It resolves once and then holds — it does not reappear on
+   scroll direction, which would be an effect, and this page has none.
+   Reduced-motion users never get the class at all.
+--------------------------------------------------------------------------- */
+
+html.about-frontispiece header,
+html.about-frontispiece header * {
+  transition:
+    opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    backdrop-filter 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.about-frontispiece header {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  /* The navbar carries backdrop-blur-2xl. Without this, a transparent header
+     still lays a blurred band across the top of the portrait. */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html.about-frontispiece header * {
+  opacity: 0.18;
+}
+
+/* The wordmark goes to zero rather than 0.18. During the frontispiece it is
+   the one element that says *website*, and it sits directly above the plate
+   caption carrying the same name. It returns with everything else. */
+html.about-frontispiece header a[href='/'] {
+  opacity: 0;
+}
+
+/* Anything near-invisible must not stay focusable-but-unseen. Keyboard focus
+   or a deliberate hover restores the header immediately — the unwind is an
+   atmosphere, not a lock. */
+html.about-frontispiece header:hover,
+html.about-frontispiece header:focus-within {
+  background-color: rgb(var(--paper) / 0.95);
+  border-color: rgb(var(--hairline));
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+}
+
+html.about-frontispiece header:hover *,
+html.about-frontispiece header:focus-within *,
+html.about-frontispiece header a[href='/']:focus-visible {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------- */
+
+/* Print — the navbar's `fixed` is applied on the element via Tailwind, which
+   beat the old `position: static` on specificity and struck the navbar through
+   the first line of every page after the first. */
 @media print {
   header {
-    position: static;
+    position: static !important;
+    opacity: 1 !important;
   }
 
   main {
     padding-top: 0;
+  }
+
+  /* About's silences are structural on screen and dead paper in print. */
+  [aria-hidden='true'] {
+    display: none;
   }
 }
 
