@@ -2,11 +2,20 @@
 
 import { useMemo } from 'react';
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { homeContent } from '@/data/homeContent';
 
 /**
- * Deterministic scattered-dot field that resolves into the through-line.
- * Coordinates are fixed (not randomized at runtime) so server and client
- * markup match exactly — avoids React hydration mismatches.
+ * Frontispiece — the title page.
+ *
+ * Formerly components/home/Hero.tsx. The settle choreography is unchanged:
+ * deterministic coordinates so server and client markup match, one resolve on
+ * load, no loop, reduced-motion users get the end state immediately.
+ *
+ * Removed from the old Hero: the sub-headline and the "See the work" button.
+ * Home no longer routes to a #work anchor — the work is a row in Contents.
+ *
+ * NOTE: `figureCaption` states the counts below. If NOISE_DOTS or
+ * RESOLVED_DOTS_X change length, the caption in homeContent.ts becomes a lie.
  */
 const NOISE_DOTS: { cx: number; cy: number; r: number; opacity: number }[] = [
   { cx: 30, cy: 30, r: 2.5, opacity: 0.35 },
@@ -41,21 +50,19 @@ const eyebrowVariant: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
 };
 
-const headlineGroup: Variants = {
+const titleGroup: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12, delayChildren: 1.05 } },
 };
 
-const headlineItem: Variants = {
+const titleItem: Variants = {
   hidden: { opacity: 0, y: 14 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
 };
 
-export default function Hero() {
+export default function Frontispiece() {
   const prefersReducedMotion = useReducedMotion();
 
-  // With reduced motion, skip the settle choreography entirely and render
-  // the resolved end-state immediately.
   const dotDelayStart = 0;
   const dotStagger = prefersReducedMotion ? 0 : 0.015;
   const lineDelay = prefersReducedMotion ? 0 : 0.78;
@@ -68,8 +75,8 @@ export default function Hero() {
 
   return (
     <section
-      aria-label="Introduction"
-      className="bg-paper text-ink px-6 md:px-8 pt-[128px] pb-16 md:pt-[136px] md:pb-20"
+      aria-label="Title"
+      className="bg-paper text-ink px-6 md:px-8 pt-[96px] pb-16 md:pt-[112px] md:pb-24"
     >
       <div className="mx-auto max-w-2xl">
         <motion.p
@@ -78,10 +85,11 @@ export default function Hero() {
           variants={eyebrowVariant}
           className="font-mono text-[11px] tracking-[0.06em] text-graphite mb-6"
         >
-          Business and data analyst
+          {homeContent.eyebrow}
         </motion.p>
 
-        {/* Hero visual — deliberately the dominant element of the first screen */}
+        {/* Fig. 01 — noise resolving into the through-line. The site's founding
+            image, and the horizontal form of the spine that runs down Contents. */}
         <div className="w-full mb-2" aria-hidden="true">
           <svg
             viewBox="0 0 640 280"
@@ -121,45 +129,34 @@ export default function Hero() {
               y2={240}
               strokeWidth={2}
               className="stroke-through-line"
-              initial={prefersReducedMotion ? false : { pathLength: 0, opacity: 0 }}
+              initial={
+                prefersReducedMotion ? false : { pathLength: 0, opacity: 0 }
+              }
               animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: lineDuration, delay: lineDelay, ease: 'easeOut' }}
+              transition={{
+                duration: lineDuration,
+                delay: lineDelay,
+                ease: 'easeOut',
+              }}
             />
           </svg>
         </div>
 
-        <p className="font-mono text-[11px] text-graphite/70 mb-9">
-          On load — noise settles once, no loop
+        <p className="font-mono text-[11px] text-graphite/70 mb-12 md:mb-16">
+          {homeContent.figureCaption}
         </p>
 
         <motion.div
           initial={prefersReducedMotion ? false : 'hidden'}
           animate="show"
-          variants={headlineGroup}
+          variants={titleGroup}
         >
           <motion.h1
-            variants={headlineItem}
-            className="font-serif-display font-medium text-[2.5rem] md:text-[2.875rem] leading-[1.15] tracking-tight max-w-lg mb-5"
+            variants={titleItem}
+            className="font-serif-display font-normal text-[3.25rem] md:text-[4.5rem] leading-[0.98] tracking-[-0.02em] text-balance"
           >
-            I make confusing things simple.
+            {homeContent.title}
           </motion.h1>
-
-          <motion.p
-            variants={headlineItem}
-            className="text-graphite text-base leading-relaxed max-w-md mb-8"
-          >
-            I build systems that turn messy processes into something you can
-            actually read.
-          </motion.p>
-
-          <motion.div variants={headlineItem}>
-            <a
-              href="#work"
-              className="inline-flex items-center justify-center rounded-md bg-ink text-paper text-sm px-[22px] py-3 transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-through-line"
-            >
-              See the work
-            </a>
-          </motion.div>
         </motion.div>
       </div>
     </section>
