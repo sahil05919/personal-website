@@ -1,7 +1,4 @@
-export { Frontispiece } from './Frontispiece';
-export { Prose } from './Prose';
-export { Facts } from './Facts';
-export { Exit } from './Exit';
+// Shared component exports only.
 
 /**
  * Delete these files:
