@@ -1,38 +1,33 @@
-// app/questions/page.tsx
+// app/question/page.tsx
 //
-// This route is intentionally left unlabeled in Navbar for now, per our
-// discussion — add it to `links` in components/global/Navbar.tsx whenever
-// you decide whether it should carry a nav label at all.
+// Only answered questions render. Unwritten ones stay in
+// data/questions-content.ts with `paragraphs: null` and are filtered out here,
+// so the page shows finished work and never announces its own gaps. To publish
+// an essay, fill in its paragraphs — nothing in this file changes.
 //
-// `force-dynamic` is required here: the question order is shuffled per
-// request on the server (see shuffle() below), so this page can't be
-// statically generated at build time without freezing one fixed order.
+// No `force-dynamic` and no shuffle. Shuffling a single entry does nothing,
+// and opting out of static generation for it was a real cost for no effect.
+// When there are three or four essays and the order starts to matter,
+// reintroduce the shuffle client-side after hydration.
 
 import type { Metadata } from "next";
 import { questions, intro, closing } from "@/data/questions-content";
 import QuestionsExperience from "@/components/questions/QuestionsExperience";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
-  title: "Questions — Sahil Kumar",
+  // Bare title: the root layout applies the "%s | Sahil Kumar" template, so
+  // anything more here double-suffixes the tab.
+  title: "Questions",
   description:
     "A small set of questions worth sitting with, answered honestly, and left to change over time.",
 };
 
-function shuffle<T>(input: T[]): T[] {
-  const arr = [...input];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
 export default function QuestionsPage() {
-  const ordered = shuffle(questions);
+  const answered = questions.filter(
+    (q) => q.paragraphs !== null && q.paragraphs.length > 0
+  );
 
   return (
-    <QuestionsExperience questions={ordered} intro={intro} closing={closing} />
+    <QuestionsExperience questions={answered} intro={intro} closing={closing} />
   );
 }

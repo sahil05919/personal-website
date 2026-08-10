@@ -1,163 +1,120 @@
 'use client';
 
-import { useMemo } from 'react';
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
+
 import { homeContent } from '@/data/homeContent';
+import ResolveFigure, { FIGURE_TALL, FIGURE_WIDE } from './ResolveFigure';
+import { full, gutter, shell } from './rhythm';
 
 /**
  * Frontispiece — the title page.
  *
- * Formerly components/home/Hero.tsx. The settle choreography is unchanged:
- * deterministic coordinates so server and client markup match, one resolve on
- * load, no loop, reduced-motion users get the end state immediately.
+ * The composition, and why it is built the way it is:
  *
- * Removed from the old Hero: the sub-headline and the "See the work" button.
- * Home no longer routes to a #work anchor — the work is a row in Contents.
+ *   eyebrow          in the measure column, indented past the gutter
+ *   Fig. 01          spans the full content box, LEFT EDGE FLUSH WITH x = 0
+ *   caption + title  back in the measure column, spine running beside them
  *
- * NOTE: `figureCaption` states the counts below. If NOISE_DOTS or
- * RESOLVED_DOTS_X change length, the caption in homeContent.ts becomes a lie.
+ * The figure's left edge sitting at x = 0 is the entire point. That is exactly
+ * where the spine runs. When the fragments resolve, the resulting horizontal
+ * line terminates at the same x the vertical line begins at, one element
+ * below — so the through-line reads as one stroke that turns a corner and runs
+ * down the page, rather than as a picture of a line followed, coincidentally,
+ * by a rule.
+ *
+ * Two figure instances, one visible at a time. Not the same composition
+ * scaled: the portrait version has its own view box and its own scatter, so
+ * the phone gets a figure composed for a phone. Both are `aria-hidden`; the
+ * caption is the accessible description and it is real text.
+ *
+ * Reduced motion: the title arrives without stagger, and ResolveFigure renders
+ * itself already resolved.
  */
-const NOISE_DOTS: { cx: number; cy: number; r: number; opacity: number }[] = [
-  { cx: 30, cy: 30, r: 2.5, opacity: 0.35 },
-  { cx: 80, cy: 18, r: 2, opacity: 0.35 },
-  { cx: 140, cy: 44, r: 3, opacity: 0.35 },
-  { cx: 20, cy: 80, r: 2, opacity: 0.35 },
-  { cx: 200, cy: 20, r: 2.5, opacity: 0.35 },
-  { cx: 260, cy: 60, r: 2, opacity: 0.35 },
-  { cx: 320, cy: 24, r: 3, opacity: 0.35 },
-  { cx: 380, cy: 70, r: 2, opacity: 0.35 },
-  { cx: 440, cy: 30, r: 2.5, opacity: 0.35 },
-  { cx: 500, cy: 55, r: 2, opacity: 0.35 },
-  { cx: 560, cy: 20, r: 3, opacity: 0.35 },
-  { cx: 610, cy: 65, r: 2, opacity: 0.35 },
-  { cx: 60, cy: 120, r: 2, opacity: 0.3 },
-  { cx: 160, cy: 140, r: 2.5, opacity: 0.3 },
-  { cx: 240, cy: 110, r: 2, opacity: 0.3 },
-  { cx: 340, cy: 150, r: 3, opacity: 0.3 },
-  { cx: 420, cy: 115, r: 2, opacity: 0.3 },
-  { cx: 520, cy: 145, r: 2.5, opacity: 0.3 },
-  { cx: 580, cy: 105, r: 2, opacity: 0.3 },
-  { cx: 100, cy: 185, r: 2, opacity: 0.25 },
-  { cx: 220, cy: 195, r: 2.5, opacity: 0.25 },
-  { cx: 360, cy: 180, r: 2, opacity: 0.25 },
-  { cx: 480, cy: 200, r: 2, opacity: 0.25 },
-];
 
-const RESOLVED_DOTS_X = [40, 140, 240, 340, 440, 540, 600];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
-const eyebrowVariant: Variants = {
-  hidden: { opacity: 0, y: 8 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
-};
-
-const titleGroup: Variants = {
+const arrival: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 1.05 } },
+  show: { transition: { staggerChildren: 0.14, delayChildren: 1.2 } },
 };
 
-const titleItem: Variants = {
-  hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+const arrivalItem: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
 };
 
 export default function Frontispiece() {
   const prefersReducedMotion = useReducedMotion();
 
-  const dotDelayStart = 0;
-  const dotStagger = prefersReducedMotion ? 0 : 0.015;
-  const lineDelay = prefersReducedMotion ? 0 : 0.78;
-  const lineDuration = prefersReducedMotion ? 0 : 0.5;
-
-  const staggerDelays = useMemo(
-    () => NOISE_DOTS.map((_, i) => dotDelayStart + i * dotStagger),
-    [dotStagger]
-  );
-
   return (
     <section
       aria-label="Title"
-      className="bg-paper text-ink px-6 md:px-8 pt-[96px] pb-16 md:pt-[112px] md:pb-24"
+      className="bg-paper text-ink pt-[clamp(1.25rem,3vh,2.25rem)]"
     >
-      <div className="mx-auto max-w-2xl">
-        <motion.p
-          initial={prefersReducedMotion ? false : 'hidden'}
-          animate="show"
-          variants={eyebrowVariant}
-          className="font-mono text-[11px] tracking-[0.06em] text-graphite mb-6"
-        >
-          {homeContent.eyebrow}
-        </motion.p>
-
-        {/* Fig. 01 — noise resolving into the through-line. The site's founding
-            image, and the horizontal form of the spine that runs down Contents. */}
-        <div className="w-full mb-2" aria-hidden="true">
-          <svg
-            viewBox="0 0 640 280"
-            className="w-full h-auto"
-            preserveAspectRatio="xMidYMid meet"
+      <div className={shell}>
+        {/* Above the figure the line does not exist yet, so this block carries
+            no spine — only the indent that keeps every text element on the
+            same left edge. */}
+        <div className="relative pl-6 md:pl-10">
+          <motion.p
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: EASE }}
+            className="font-mono text-apparatus text-graphite"
           >
-            {NOISE_DOTS.map((dot, i) => (
-              <motion.circle
-                key={`noise-${i}`}
-                cx={dot.cx}
-                cy={dot.cy}
-                r={dot.r}
-                className="fill-graphite"
-                initial={prefersReducedMotion ? false : { opacity: 0 }}
-                animate={{ opacity: dot.opacity }}
-                transition={{ duration: 0.4, delay: staggerDelays[i] }}
-              />
-            ))}
-
-            {RESOLVED_DOTS_X.map((x, i) => (
-              <motion.circle
-                key={`resolved-${i}`}
-                cx={x}
-                cy={240}
-                r={3}
-                className="fill-through-line"
-                initial={prefersReducedMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: lineDelay }}
-              />
-            ))}
-
-            <motion.line
-              x1={35}
-              y1={240}
-              x2={605}
-              y2={240}
-              strokeWidth={2}
-              className="stroke-through-line"
-              initial={
-                prefersReducedMotion ? false : { pathLength: 0, opacity: 0 }
-              }
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{
-                duration: lineDuration,
-                delay: lineDelay,
-                ease: 'easeOut',
-              }}
-            />
-          </svg>
+            {homeContent.eyebrow}
+          </motion.p>
         </div>
 
-        <p className="font-mono text-[11px] text-graphite/70 mb-12 md:mb-16">
-          {homeContent.figureCaption}
-        </p>
+        {/* Full content box, flush left. `aspect-` reserves the height before
+            the SVG paints, so the title below never jumps. */}
+        <div className="mt-[clamp(1rem,2.5vh,1.75rem)]">
+          <div className="hidden aspect-[1080/240] w-full sm:block">
+            <ResolveFigure
+              layout={FIGURE_WIDE}
+              seed={20260810}
+              interactive
+              className="h-full w-full"
+            />
+          </div>
+          <div className="aspect-[380/250] w-full sm:hidden">
+            <ResolveFigure
+              layout={FIGURE_TALL}
+              seed={71104}
+              interactive={false}
+              className="h-full w-full"
+            />
+          </div>
+        </div>
+      </div>
 
-        <motion.div
-          initial={prefersReducedMotion ? false : 'hidden'}
-          animate="show"
-          variants={titleGroup}
-        >
-          <motion.h1
-            variants={titleItem}
-            className="font-serif-display font-normal text-[3.25rem] md:text-[4.5rem] leading-[0.98] tracking-[-0.02em] text-balance"
+      {/* From here down, the spine. `origin` inherits the figure's cobalt at
+          the top and falls to hairline within an inch. */}
+      <div className={shell}>
+        <div className={`${gutter} pb-[clamp(2.25rem,5vh,4rem)]`}>
+          <span aria-hidden="true" className="pointer-events-none">
+            <span className="absolute left-0 top-0 bottom-0 w-px bg-hairline" />
+            <span className="absolute left-0 top-0 h-24 w-px bg-gradient-to-b from-through-line to-transparent" />
+          </span>
+
+          <p className="pt-3 font-mono text-apparatus text-graphite">
+            {homeContent.figureCaption}
+          </p>
+
+          <motion.div
+            initial={prefersReducedMotion ? false : 'hidden'}
+            animate="show"
+            variants={arrival}
+            className="mt-[clamp(1.5rem,3.5vh,2.75rem)]"
           >
-            {homeContent.title}
-          </motion.h1>
-        </motion.div>
+            <motion.h1
+              variants={arrivalItem}
+              className={`${full} text-balance font-serif-display text-fluid-display font-normal`}
+            >
+              {homeContent.title}
+            </motion.h1>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

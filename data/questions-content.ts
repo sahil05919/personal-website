@@ -3,9 +3,10 @@
 // Content lives here, layout lives in the page/component. To add or edit an
 // answer, just edit this file — no component changes needed.
 //
-// `paragraphs: null` (or an empty array) renders the shared placeholder line
-// in the exact typographic rhythm of a finished essay, so half-written pages
-// never look visually "unfinished" — only textually so.
+// `paragraphs: null` (or an empty array) means the essay isn't written yet.
+// app/question/page.tsx filters those out, so an unwritten question does not
+// render at all — the page shows only finished work and never announces its
+// own gaps. Keep unwritten questions here: this file is the queue.
 //
 // `revisitNote` is optional and rare by design — use it on at most one or two
 // questions, only where it's actually true. It is NOT meant to appear on

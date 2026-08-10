@@ -10,16 +10,20 @@
  *   `statement.claim`  -> Fraunces, display scale. The page's assertion.
  *   `statement.coda`   -> one quiet line under the claim.
  *
- * Ordering contract for `contents`:
- *   EDITORIAL, not navbar order. The material that could not be reconstructed
- *   comes first; the professional record follows. If this ever disagrees with
- *   the navbar, the navbar is the thing that is wrong.
+ * Ordering contract:
+ *   THIS FILE NO LONGER HOLDS THE ORDER. Route order and labels live in
+ *   data/navigation.ts, which the navbar, Home's Contents and the Wayfinder
+ *   all read. Two copies of the order is how the site ended up with the navbar
+ *   running About → Journey → Experience while Home ran Journey → Media →
+ *   Questions, and with the same page labelled "Question" in one place and
+ *   "Questions" in the other.
  *
  * Invitation contract:
- *   A row's `invitation` is that page's OWN opening line, copied across. It is
- *   never new copy written for Home. If a page has no settled standfirst yet,
- *   leave the string empty — the row renders without it — and fill it in when
- *   the page itself settles. Do not invent a line to fill the gap.
+ *   An `invitations` entry is that page's OWN opening line, copied across
+ *   verbatim. It is never new copy written for Home. If a page has no settled
+ *   standfirst yet, leave the string empty — the row renders without it — and
+ *   fill it in when the page itself settles. Do not invent a line to fill the
+ *   gap. Every line below is quoted, and its source is named.
  */
 
 export const homeContent = {
@@ -34,10 +38,16 @@ export const homeContent = {
 
   /**
    * LOCKED. Apparatus register: states what the figure shows, nothing more.
-   * 23 scattered points in NOISE_DOTS resolve to 7 in RESOLVED_DOTS_X. If
-   * either array changes, this caption becomes false.
+   *
+   * The previous caption ("twenty-three points, resolved to seven") described
+   * something the old figure did not do — it faded in twenty-three dots and
+   * then faded in seven separate ones beneath them, ending on thirty. The
+   * figure now moves eighteen fragments from scatter into a single line and
+   * ends on eighteen, so the count is real.
+   *
+   * If COUNT in components/home/ResolveFigure.tsx changes, this becomes false.
    */
-  figureCaption: 'Fig. 01 — twenty-three points, resolved to seven.',
+  figureCaption: 'Fig. 01 — eighteen fragments, resolved into one line.',
 
   /**
    * DRAFT. Structure is locked to the approved four-beat spine:
@@ -58,67 +68,45 @@ export const homeContent = {
     coda: "I'm still learning to do it to my own work.",
   },
 
-  /** Editorial order. See ordering contract above. */
-  contents: [
-    {
-      href: '/journey',
-      title: 'Journey',
-      // TODO(standfirst): use /journey's own opening line.
-      invitation: '',
-    },
-    {
-      href: '/media',
-      title: 'Media',
-      invitation: 'Proof of presence, not a portfolio.',
-    },
-    {
-      href: '/question',
-      title: 'Questions',
-      invitation: 'If we had another hour together.',
-    },
-    {
-      href: '/about',
-      title: 'About',
-      invitation: 'The patterns, not the events.',
-    },
-    {
-      href: '/experience',
-      title: 'Experience',
-      // TODO(standfirst): use /experience's own opening line.
-      invitation: '',
-    },
-    {
-      href: '/projects',
-      title: 'Projects',
-      // TODO(standfirst): use /projects' own opening line.
-      invitation: '',
-    },
-    {
-      href: '/now',
-      title: 'Now',
-      // TODO(standfirst): use /now's own opening line.
-      invitation: '',
-    },
-    {
-      href: '/contact',
-      title: 'Contact',
-      // TODO(standfirst): use /contact's own opening line.
-      invitation: '',
-    },
-  ],
+  /**
+   * Invitations, keyed by route. Order comes from data/navigation.ts.
+   * Each line is quoted from the page it points at — source named beside it.
+   */
+  invitations: {
+    // journeyData.ts → journeyIntro.body[0]
+    '/journey':
+      "Before anyone sees the work, I'd rather they understood the person.",
+
+    // components/projects/ProjectsChapter.tsx → the chapter standfirst
+    '/projects': 'Some refused to leave me alone until I built something.',
+
+    // app/experience/experience-content.ts → `standfirst`
+    '/experience': "Most of it I didn't choose.",
+
+    // components/media/MediaChapter.tsx → the chapter standfirst
+    '/media': 'Proof of presence, not a portfolio.',
+
+    // data/profileContent.ts → the About standfirst
+    '/about': 'The patterns, not the events.',
+
+    // app/question/page.tsx → the chapter standfirst
+    '/question': 'If we had another hour together.',
+
+    // Deliberately empty. Now's opening line IS the season line, and the
+    // Currently strip four rows below already carries it verbatim. Printing it
+    // twice on one page would be the duplication this file exists to prevent.
+    '/now': '',
+
+    // components/contact/ContactHero.tsx → the hero's opening sentence
+    '/contact':
+      "Everything before this page has been about how I think and what I've built.",
+  } as Record<string, string>,
 
   /**
-   * TEMPORARY BRIDGE — see the TODO at the top of app/page.tsx.
-   *
-   * This duplicates text that /now already owns, which is exactly what we
-   * agreed not to do. It exists only so the page compiles before the real
-   * import is wired. Delete this whole key once `Currently` is fed from the
-   * Now data source.
+   * No `currently` key by design. The Currently strip is fed from
+   * app/now/now-content.ts in app/page.tsx, so the season line lives in
+   * exactly one file. Do not reintroduce a copy here.
    */
-  currently: {
-    line: 'Placeholder — wire to the Now data source.',
-    updated: 'August 2026',
-  },
 
   colophon: {
     close: 'Written in London. Revised when it stops being true.',

@@ -1,55 +1,49 @@
+// app/page.tsx
+//
+// Home is the title page of the record: frontispiece, statement, contents,
+// one line of proof it's still alive, colophon. No project cards, no timeline,
+// no CTA — those belong to /projects, /journey and /contact.
+//
+// The Currently strip is fed from app/now/now-content.ts, NOT from
+// homeContent.ts. There is exactly one place the season line is written, and
+// it is the page that owns the season. When the season changes, /now changes
+// and Home follows automatically.
+//
+// SPACING CONTRACT — the sections below must stay contiguous.
+// Each one draws its own segment of the through-line, top edge to bottom edge,
+// in the reserved left gutter. They read as one continuous stroke only because
+// they touch. Any vertical margin between two sections puts a visible gap in
+// the line; all vertical space is padding, inside the sections, via
+// components/home/rhythm.ts.
+
 import type { Metadata } from 'next';
 
+import { homeContent } from '@/data/homeContent';
+import { lastUpdated, seasonLine } from './now/now-content';
+
+import Wayfinder from '@/components/home/Wayfinder';
 import Frontispiece from '@/components/home/Frontispiece';
 import Statement from '@/components/home/Statement';
 import Contents from '@/components/home/Contents';
 import Currently from '@/components/home/Currently';
 import Colophon from '@/components/home/Colophon';
 
-/* ---------------------------------------------------------------------------
-   TODO(now-source) — ONE EDIT, then delete this block.
-
-   `Currently` must be fed from the page that already owns the text. I did not
-   have the Now data file to hand, so it is currently reading a placeholder out
-   of homeContent. To wire it properly:
-
-     1. import { nowData } from '@/data/nowData';          // real path/export
-     2. pass the season line and the last-updated stamp:
-          <Currently line={nowData.<line>} updated={nowData.lastUpdated} />
-     3. delete the `currently` key from content/homeContent.ts
-     4. delete this comment
-
-   Until step 3 is done there are two copies of this text in the codebase,
-   which is the exact duplication we agreed to avoid.
---------------------------------------------------------------------------- */
-import { homeContent } from '@/data/homeContent';
-
-/**
- * Home — the title page of the record.
- *
- * Server component. This is what allows Home its own metadata; the previous
- * page was `'use client'` at the top level, which made per-page metadata
- * impossible and left Home sharing the layout's default CV-line description
- * with four other pages.
- *
- * Returns a fragment. `app/layout.tsx` already renders <main>, and the old
- * page nested a second one inside it.
- */
 export const metadata: Metadata = {
+  // `absolute` because meta.title already contains the name. Left to the
+  // layout's "%s | Sahil Kumar" template it renders as
+  // "Sahil Kumar — Things I don't want to forget. | Sahil Kumar".
   title: { absolute: homeContent.meta.title },
   description: homeContent.meta.description,
 };
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
+      <Wayfinder />
       <Frontispiece />
       <Statement />
       <Contents />
-      <Currently
-        line={homeContent.currently.line}
-        updated={homeContent.currently.updated}
-      />
+      <Currently line={seasonLine} updated={lastUpdated} />
       <Colophon />
     </>
   );

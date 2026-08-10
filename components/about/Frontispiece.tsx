@@ -34,8 +34,10 @@ export function Frontispiece() {
     <header className="relative overflow-hidden border-b border-hairline">
       <div className="mx-auto w-full max-w-[1400px] px-6 pb-20 pt-20 md:px-10 md:pb-28 md:pt-28">
         <div className="grid grid-cols-1 items-end gap-12 lg:grid-cols-12 lg:gap-10">
-          {/* LEFT — the name at full display scale */}
-          <div className="lg:col-span-7">
+          {/* LEFT — the name at full display scale. Without a portrait it
+              takes the full grid; an empty frame beside it would read as a
+              missing image rather than as restraint. */}
+          <div className={hasPortrait ? 'lg:col-span-7' : 'lg:col-span-12'}>
             <motion.div
               custom={0}
               variants={rise}
@@ -78,16 +80,21 @@ export function Frontispiece() {
             </motion.div>
           </div>
 
-          {/* RIGHT — the portrait */}
-          <motion.div
-            custom={3}
-            variants={rise}
-            initial="hidden"
-            animate="show"
-            className="lg:col-span-5"
-          >
-            <div className="group relative aspect-[4/5] w-full overflow-hidden border border-hairline">
-              {hasPortrait ? (
+          {/* RIGHT — the portrait, or nothing at all.
+              There is no placeholder state. Until a real photograph exists,
+              this column does not render: an absent portrait reads as
+              restraint, an empty frame reads as an unfinished page. Set
+              `portrait.src` in data/profileContent.ts and the column returns
+              with no other change. */}
+          {hasPortrait ? (
+            <motion.div
+              custom={3}
+              variants={rise}
+              initial="hidden"
+              animate="show"
+              className="lg:col-span-5"
+            >
+              <div className="group relative aspect-[4/5] w-full overflow-hidden border border-hairline">
                 <Image
                   src={portrait.src}
                   alt={portrait.alt}
@@ -96,17 +103,9 @@ export function Frontispiece() {
                   sizes="(min-width: 1024px) 40vw, 100vw"
                   className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
                 />
-              ) : (
-                /**
-                 * LOCALHOST ONLY — replace before deploying.
-                 * A toned field with a hairline and no label text. A grey box
-                 * captioned "Portrait Placeholder" is the exact defect this
-                 * rewrite removed from the old Hero.
-                 */
-                <div aria-hidden="true" className="absolute inset-0 bg-graphite/[0.06]" />
-              )}
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          ) : null}
         </div>
       </div>
     </header>

@@ -7,20 +7,26 @@ import { heroRhythm } from '@/lib/heroRhythm';
 /**
  * Horizon
  *
- * Where the Home hero resolves a field of dots into a line, this page
- * has an open field with nothing in it, and then the line — already
- * resolved, flat, at rest.
+ * Where the Home frontispiece resolves a field of dots into a line, this page
+ * has an open field with nothing in it, and then the line — already resolved,
+ * flat, at rest.
  *
- * The imprint is set in the book's own face rather than in mono. Mono is
- * the data-label typeface across this site, and setting an imprint in it
- * makes the block read as metadata. Fraunces italic reads as printed
- * matter. The one exception is the telephone number, which stays mono
- * because it genuinely is a figure — a machine-set numeral inside
- * printed prose, which is how books have always handled it.
+ * The imprint is set in the book's own face rather than in mono. Mono is the
+ * data-label typeface across this site, and setting an imprint in it makes the
+ * block read as metadata. Fraunces italic reads as printed matter. The one
+ * exception is the telephone number, which stays mono because it genuinely is
+ * a figure — a machine-set numeral inside printed prose, which is how books
+ * have always handled it.
  *
- * Two lines, deliberately unequal. A short line in ink over a long line
- * in graphite. That asymmetry is the composition; nothing decorative is
- * added to produce it.
+ * NOTE: font-serif-display, not font-display. The `display` family points at
+ * Cal Sans and Playfair Display, neither of which is loaded anywhere in the
+ * app; these two lines rendered in the browser's default serif for the whole
+ * life of the page. Delete the `display` key from tailwind.config.js so it
+ * cannot be reached for again.
+ *
+ * Two lines, deliberately unequal. A short line in ink over a long line in
+ * graphite. That asymmetry is the composition; nothing decorative is added to
+ * produce it.
  */
 
 const SETTLE_EASE = [0.22, 1, 0.36, 1] as const;
@@ -33,15 +39,15 @@ function formatPhone(raw: string): string {
 }
 
 /**
- * Ink with a hairline rule beneath. The half-pixel decoration and tight
- * offset keep these reading as typeset rather than as web links, while
- * staying a non-colour affordance for anyone who can't rely on contrast.
+ * Ink with a hairline rule beneath. The half-pixel decoration and tight offset
+ * keep these reading as typeset rather than as web links, while staying a
+ * non-colour affordance for anyone who can't rely on contrast.
  */
 const linkClass =
-  'text-foreground underline decoration-foreground/25 decoration-[0.5px] ' +
+  'text-ink underline decoration-ink/25 decoration-[0.5px] ' +
   'underline-offset-[3px] transition-colors duration-500 ' +
-  'hover:decoration-foreground/70 ' +
-  'focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-foreground';
+  'hover:decoration-ink/70 ' +
+  'focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-ink';
 
 export default function Horizon() {
   const reduceMotion = useReducedMotion();
@@ -51,8 +57,8 @@ export default function Horizon() {
   return (
     <div className={heroRhythm.actionsToField}>
       {/*
-        The open field. On Home, the Through-Line lives here. Its absence
-        is only readable because the space it occupied is preserved.
+        The open field. On Home, Fig. 01 lives here. Its absence is only
+        readable because the space it occupied is preserved.
       */}
       <div aria-hidden="true" className={heroRhythm.field} />
 
@@ -68,12 +74,12 @@ export default function Horizon() {
         className="max-w-2xl"
       >
         {/* The destination, stated once. */}
-        <p className="font-display italic text-lg md:text-xl leading-snug text-foreground">
+        <p className="font-serif-display italic text-lg md:text-xl leading-snug text-ink">
           Written in {contactInfo.location}.
         </p>
 
         {/* The practical sentence, quieter and longer. */}
-        <p className="mt-3 font-display italic text-[15px] md:text-base leading-relaxed text-muted-foreground">
+        <p className="mt-3 font-serif-display italic text-[15px] md:text-base leading-relaxed text-graphite">
           By telephone on{' '}
           <a
             href={telHref}
@@ -121,10 +127,10 @@ export default function Horizon() {
         </p>
 
         {/*
-          The line, at rest. The same line the Home page spends its
-          opening seconds arriving at — here it is simply already there.
+          The line, at rest. The same line the Home page spends its opening
+          seconds arriving at — here it is simply already there.
         */}
-        <div aria-hidden="true" className="mt-8 h-px w-full bg-border" />
+        <div aria-hidden="true" className="mt-8 h-px w-full bg-hairline" />
       </motion.div>
     </div>
   );

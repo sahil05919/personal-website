@@ -6,18 +6,12 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { isActiveRoute, navigation } from "@/data/navigation";
 
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/journey", label: "Journey" },
-  { href: "/experience", label: "Experience" },
-  { href: "/projects", label: "Projects" },
-  { href: "/question", label: "Question" },
-  { href: "/media", label: "Media" },
-  { href: "/now", label: "Now" },
-  { href: "/contact", label: "Contact" },
-];
+/* Order and labels come from data/navigation.ts. They used to be declared
+   here as well as in homeContent, and the two disagreed on both the order and
+   on whether the sixth page is called "Question" or "Questions". */
+const links = navigation;
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -49,8 +43,7 @@ export default function Navbar() {
 
   const closeMenu = () => setIsOpen(false);
 
-  const isActive = (href: string) =>
-    pathname === href || (href !== "/" && pathname.startsWith(href));
+  const isActive = (href: string) => isActiveRoute(pathname, href);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-hairline bg-paper/95 backdrop-blur-2xl">

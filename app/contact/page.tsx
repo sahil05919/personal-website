@@ -8,15 +8,17 @@ import { heroRhythm } from '@/lib/heroRhythm';
 /**
  * Contact — the last page of the book.
  *
- * Deliberately thin. The page's job is sequencing: the Home hero's shape,
- * the space where its opening gesture was, the horizon, then the ending.
- * All measurement lives in lib/heroRhythm.ts so the echo cannot drift.
+ * Deliberately thin. The page's job is sequencing: the Home hero's shape, the
+ * space where its opening figure was, the horizon, then the ending. All
+ * measurement lives in lib/heroRhythm.ts so the echo cannot drift.
+ *
+ * Paper and ink, not background and foreground. The shadcn tokens this page
+ * used are a different grey from the rest of the site — near enough to look
+ * accidental rather than systematic.
  */
 export default function ContactPage() {
   return (
-    <section
-      className={`min-h-screen bg-background text-foreground ${heroRhythm.page}`}
-    >
+    <section className={`min-h-screen bg-paper text-ink ${heroRhythm.page}`}>
       <div className={heroRhythm.container}>
         <ContactHero />
         <Horizon />

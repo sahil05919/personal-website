@@ -2,92 +2,98 @@
 
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
+
 import { homeContent } from '@/data/homeContent';
+import { destinations } from '@/data/navigation';
+import Column from './Column';
+import { full, measure, sectionY } from './rhythm';
 
 /**
- * Contents — the through-line, turned vertical.
+ * Contents — the through-line, stationed.
  *
- * The Fig. 01 line resolves horizontally in the Frontispiece; here the same
- * stroke runs down the left of the rows with one station per page. The line
- * deliberately overhangs the first and last stations, exactly as Fig. 01's
- * line extends past its terminal dots — a through-line continues past what
- * is currently visible.
+ * The rows are no longer listed here. Order and labels come from
+ * data/navigation.ts, which the navbar and the Wayfinder also read, so the
+ * three can no longer disagree — they used to: the navbar ran About → Journey
+ * → Experience, this list ran Journey → Media → Questions, and one said
+ * "Question" while the other said "Questions".
  *
- * No row numbers. Numbering in editorial order would disagree with the navbar
- * and would reintroduce a labelling system the site is trying to shed. The
- * stations index the rows visually; nothing counts them.
+ * homeContent now supplies only the invitations, keyed by route. Each is that
+ * page's own opening line, copied across verbatim. A row without one renders
+ * without one; nothing is invented to fill the gap.
  *
- * Stations are hollow by default and fill on hover. That is a colour change
- * only — nothing on this page moves on hover.
+ * The stations sit ON the spine, out in the gutter, not inside the measure.
+ * This section draws no line of its own — the line is already there, running
+ * down from the figure, and the stations are simply the points on it where
+ * something is written.
+ *
+ * Nothing on this page moves on hover. The station fills and the title takes
+ * the through-line colour; that is a colour change and nothing else.
  */
 
-const ROW_HEIGHT_CLASS = 'h-[1.95rem] md:h-[2.275rem]';
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function Contents() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section
-      aria-label="Contents"
-      className="bg-paper text-ink px-6 md:px-8 pb-20 md:pb-28"
-    >
-      <div className="mx-auto max-w-2xl">
-        <div className="relative">
-          {/* The spine. Full height by design — see the overhang note above. */}
-          <div
-            aria-hidden="true"
-            className="absolute top-0 bottom-0 left-[3.5px] w-[2px] bg-through-line"
-          />
+    <section aria-labelledby="contents-heading" className="bg-paper text-ink">
+      <Column className={sectionY}>
+        <h2
+          id="contents-heading"
+          className="font-mono text-apparatus uppercase text-graphite"
+        >
+          Contents
+        </h2>
 
-          <ul className="relative">
-            {homeContent.contents.map((row, i) => (
+        <ul className={`${full} mt-7`}>
+          {destinations.map((destination, i) => {
+            const invitation = homeContent.invitations[destination.href];
+
+            return (
               <motion.li
-                key={row.href}
+                key={destination.href}
                 initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-8%' }}
                 transition={{
                   duration: prefersReducedMotion ? 0 : 0.5,
                   delay: prefersReducedMotion ? 0 : i * 0.04,
-                  ease: [0.16, 1, 0.3, 1],
+                  ease: EASE,
                 }}
-                className="border-b border-hairline last:border-b-0"
+                className="relative border-b border-hairline last:border-b-0"
               >
                 <Link
-                  href={row.href}
-                  className="group grid grid-cols-[9px_1fr] gap-x-6 py-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
+                  href={destination.href}
+                  className="group block py-5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
                 >
-                  {/* Station. Sits on the spine, vertically centred against the
-                      first line of the row title. */}
+                  {/* Out in the gutter, centred on the spine. The negative
+                      inset matches the gutter width exactly; the em-based
+                      height keeps it on the title's first line at every
+                      viewport, because the title size is fluid. */}
                   <span
                     aria-hidden="true"
-                    className={`flex items-center ${ROW_HEIGHT_CLASS}`}
+                    className="absolute -left-6 top-5 flex h-[1.25em] -translate-x-1/2 items-center text-fluid-row md:-left-10"
                   >
-                    <span className="h-[9px] w-[9px] rounded-full border-2 border-through-line bg-paper transition-colors duration-200 group-hover:bg-through-line" />
+                    <span className="h-[7px] w-[7px] rounded-full border border-hairline bg-paper transition-colors duration-200 group-hover:border-through-line group-hover:bg-through-line" />
                   </span>
 
-                  <div>
-                    <h2
-                      className={`font-serif-display font-medium text-[1.5rem] md:text-[1.75rem] leading-[1.3] tracking-[-0.01em] transition-colors duration-200 group-hover:text-through-line ${ROW_HEIGHT_CLASS} flex items-center`}
-                    >
-                      {row.title}
-                    </h2>
+                  <h3 className="font-serif-display text-fluid-row font-medium transition-colors duration-200 group-hover:text-through-line">
+                    {destination.label}
+                  </h3>
 
-                    {/* Empty until the page itself settles on an opening line.
-                        The row is complete without it — an invented line here
-                        would be new copy, which this section does not carry. */}
-                    {row.invitation ? (
-                      <p className="font-reading text-[0.9375rem] leading-[1.6] text-graphite mt-1">
-                        {row.invitation}
-                      </p>
-                    ) : null}
-                  </div>
+                  {invitation ? (
+                    <p
+                      className={`${measure} mt-1.5 font-reading text-fluid-aside text-balance text-graphite`}
+                    >
+                      {invitation}
+                    </p>
+                  ) : null}
                 </Link>
               </motion.li>
-            ))}
-          </ul>
-        </div>
-      </div>
+            );
+          })}
+        </ul>
+      </Column>
     </section>
   );
 }

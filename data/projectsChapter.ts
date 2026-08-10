@@ -113,7 +113,7 @@ export const projectEntries: ProjectEntry[] = [
     // TODO(sahil): confirm the years. `projectsData.ts` carries year: "2026",
     // status: "Ongoing" — that reads as "last touched", not "started". The
     // open end matters: the final paragraph depends on it still running.
-    attribution: "Built for myself, 20XX–present.",
+    attribution: "Built for myself, 2026–present.",
     // Duration shape: no event, no arc. Nothing isolated — the essay is about
     // something that thickened slowly and is still going, and the setting
     // should not manufacture a turn the prose declines to have.

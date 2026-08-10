@@ -8,11 +8,11 @@ import { heroRhythm } from '@/lib/heroRhythm';
 /**
  * ContactHero
  *
- * The Home hero's skeleton with its content replaced and its opening
+ * The Home frontispiece's skeleton with its content replaced and its opening
  * gesture withheld. Everything here is positioned to land where the
  * corresponding element lands on Home.
  *
- * Motion is inverted deliberately. The Home hero resolves upward into
+ * Motion is inverted deliberately. The frontispiece resolves upward into
  * place — arrival. This settles downward into place — completion. Same
  * grammar, opposite direction.
  */
@@ -44,9 +44,9 @@ export default function ContactHero() {
   return (
     <motion.div variants={group} initial="hidden" animate="show">
       {/*
-        The eyebrow slot, reserved and empty. On Home a small mono label
-        sits here. Leaving the space without filling it is the page's
-        first echo, and the only one that happens before reading begins.
+        The eyebrow slot, reserved and empty. On Home a small mono label sits
+        here. Leaving the space without filling it is the page's first echo,
+        and the only one that happens before reading begins.
       */}
       <div aria-hidden="true" className={heroRhythm.eyebrowSlot} />
 
@@ -71,9 +71,9 @@ export default function ContactHero() {
         className={`${heroRhythm.bodyToActions} flex flex-col sm:flex-row gap-4`}
       >
         {/*
-          Ink and paper rather than bg-primary / text-primary-foreground,
-          which are stale tokens predating the Through-Line system and do
-          not render with reliable contrast.
+          Ink, paper and hairline throughout. bg-primary, text-primary-foreground,
+          border-border and bg-card are stale tokens predating the Through-Line
+          system and do not render with reliable contrast beside it.
         */}
         <a
           href={`mailto:${contactInfo.email}?subject=Connecting%20from%20your%20website`}
@@ -86,7 +86,7 @@ export default function ContactHero() {
         <a
           href={`/documents/${contactInfo.resume.fileName}`}
           download
-          className="inline-flex items-center justify-center gap-2 rounded-sm border border-border bg-card px-6 py-3 text-sm font-medium transition-colors duration-300 hover:border-foreground hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+          className="inline-flex items-center justify-center gap-2 rounded-sm border border-hairline bg-paper px-6 py-3 text-sm font-medium text-ink transition-colors duration-300 hover:border-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
         >
           <Download className="h-4 w-4" aria-hidden="true" />
           Download My CV
