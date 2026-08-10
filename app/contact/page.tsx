@@ -1,41 +1,58 @@
-'use client';
+import type { Metadata } from 'next';
 
 import ContactHero from '@/components/contact/ContactHero';
-import Horizon from '@/components/contact/Horizon';
+import Imprint from '@/components/contact/Imprint';
+import BeforeYouGo from '@/components/contact/BeforeYouGo';
 import ClosingSignature from '@/components/contact/ClosingSignature';
-import { heroRhythm } from '@/lib/heroRhythm';
+import { contactContent } from '@/data/contactData';
 
 /**
- * Contact — the last page of the book.
+ * Contact — the last room of the record.
  *
- * Deliberately thin. The page's job is sequencing: the Home hero's shape, the
- * space where its opening figure was, the horizon, then the ending. All
- * measurement lives in lib/heroRhythm.ts so the echo cannot drift.
+ * The reader has already met the person across eight chapters, so this page
+ * does not explain him again. It says where he is, and then hands over one
+ * last thing.
  *
- * Paper and ink, not background and foreground. The shadcn tokens this page
- * used are a different grey from the rest of the site — near enough to look
- * accidental rather than systematic.
+ * THE SCROLL. Opening, doors, invitation, breath, note, mark, way back. The
+ * single largest interval on the site sits between the invitation and
+ * "Before you go" — one breath, not three, so it reads as held rather than as
+ * a page that has not been set.
+ *
+ * Server component. The version this replaces was 'use client' at the top
+ * level, which made per-page metadata impossible and left this page sharing
+ * the layout's default CV-line description with three others. All four
+ * children carry their own 'use client'.
+ *
+ * <article>, not <main> — app/layout.tsx already renders <main>.
+ *
+ * lib/heroRhythm.ts is deleted and stays deleted. It held this page's
+ * measurements in order to echo a Home hero that no longer exists, it had one
+ * consumer, and every class it exported was being purged because ./lib was
+ * never in the Tailwind content array — so the headline was rendering at
+ * browser-default size in the default font.
+ *
+ * min-h-screen is no longer needed for length, but stays: body still carries
+ * bg-background (#FAFAFA) while the book is set on paper (#F7F6F3), and
+ * without it an over-scroll shows the seam.
  */
+export const metadata: Metadata = {
+  title: contactContent.meta.title,
+  description: contactContent.meta.description,
+};
+
 export default function ContactPage() {
   return (
-    <section className={`min-h-screen bg-paper text-ink ${heroRhythm.page}`}>
-      <div className={heroRhythm.container}>
-        <ContactHero />
-        <Horizon />
+    <article className="min-h-screen bg-paper text-ink">
+      <ContactHero />
+      <Imprint />
 
-        {/*
-          The only element permitted to break the echo. Everything above
-          belongs to Home; this belongs only to the ending.
+      {/* The breath. Nothing goes in it — the emptiness is the device, and it
+          only reads as deliberate because every other gap on the page is
+          ordinary chapter spacing. */}
+      <div aria-hidden="true" className="h-40 md:h-[17rem]" />
 
-          Deliberately shorter than heroRhythm.actionsToField. The intervals
-          above are structural — they hold the echo. This one is a seam
-          between the horizon and the ending, and the ending should follow
-          closely rather than be announced.
-        */}
-        <div className="mt-12 md:mt-16">
-          <ClosingSignature />
-        </div>
-      </div>
-    </section>
+      <BeforeYouGo />
+      <ClosingSignature />
+    </article>
   );
 }

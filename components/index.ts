@@ -1,4 +1,4 @@
-// Shared component exports only.
+// Shared component exports only.npm run build
 
 /**
  * Delete these files:

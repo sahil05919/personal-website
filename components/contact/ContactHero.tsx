@@ -1,97 +1,128 @@
 'use client';
 
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
-import { Download, Send } from 'lucide-react';
-import { contactInfo } from '@/data/contactData';
-import { heroRhythm } from '@/lib/heroRhythm';
+import { contactContent } from '@/data/contactData';
 
 /**
- * ContactHero
+ * ContactHero — the endpaper's opening.
  *
- * The Home frontispiece's skeleton with its content replaced and its opening
- * gesture withheld. Everything here is positioned to land where the
- * corresponding element lands on Home.
+ * TYPOGRAPHY. Same column and left edge as every other page: px-6 md:px-8,
+ * mx-auto max-w-2xl. The headline sits one full step below Home's title
+ * (2.75/3.5rem against 3.25/4.5rem) on purpose — Home earns display scale
+ * because that string is the title of the record. A two-word heading at the
+ * same size reads as a second title page, and as shouting.
  *
- * Motion is inverted deliberately. The frontispiece resolves upward into
- * place — arrival. This settles downward into place — completion. Same
- * grammar, opposite direction.
+ * MOTION. Three registers, deliberately unequal, because uniform fades on
+ * everything are what make a page feel templated:
+ *
+ *   1. The eyebrow simply arrives. It is apparatus; it should not perform.
+ *   2. The headline is revealed rather than faded — each word rises out of an
+ *      overflow-hidden mask, as though the line were being set. Slowest thing
+ *      on the page (0.95s) and the only masked reveal on the site.
+ *   3. The prose follows well after the headline has landed, in two beats.
+ *
+ * The eases are the site's settle curve, not Framer defaults. REVEAL_EASE has
+ * a long tail, so the word decelerates into place instead of stopping.
+ *
+ * Reduced motion returns the finished page immediately — no mask, no stagger,
+ * plain text nodes rather than animated spans.
  */
 
+const REVEAL_EASE = [0.16, 1, 0.3, 1] as const;
 const SETTLE_EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function ContactHero() {
-  const reduceMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  const { eyebrow, headline, body } = contactContent.hero;
 
-  const group: Variants = {
+  const words = headline.split(' ');
+
+  const proseGroup: Variants = {
     hidden: {},
     show: {
-      transition: {
-        staggerChildren: reduceMotion ? 0 : 0.16,
-        delayChildren: reduceMotion ? 0 : 0.1,
-      },
+      transition: { delayChildren: 0.72, staggerChildren: 0.14 },
     },
   };
 
-  const item: Variants = {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : -8 },
+  const proseItem: Variants = {
+    hidden: { opacity: 0, y: 10 },
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: reduceMotion ? 0 : 1.1, ease: SETTLE_EASE },
+      transition: { duration: 0.8, ease: SETTLE_EASE },
     },
   };
 
   return (
-    <motion.div variants={group} initial="hidden" animate="show">
-      {/*
-        The eyebrow slot, reserved and empty. On Home a small mono label sits
-        here. Leaving the space without filling it is the page's first echo,
-        and the only one that happens before reading begins.
-      */}
-      <div aria-hidden="true" className={heroRhythm.eyebrowSlot} />
+    <section
+      aria-label="Contact"
+      className="px-6 md:px-8 pt-[88px] md:pt-[112px] pb-16 md:pb-20"
+    >
+      <div className="mx-auto max-w-2xl">
+        <motion.p
+          initial={prefersReducedMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.05, ease: 'easeOut' }}
+          className="font-mono text-[11px] tracking-[0.06em] text-graphite"
+        >
+          {eyebrow}
+        </motion.p>
 
-      <motion.h1
-        variants={item}
-        className={`${heroRhythm.eyebrowToHeadline} ${heroRhythm.headline}`}
-      >
-        Let&apos;s talk.
-      </motion.h1>
-
-      <motion.p
-        variants={item}
-        className={`${heroRhythm.headlineToBody} ${heroRhythm.body}`}
-      >
-        Everything before this page has been about how I think and what
-        I&apos;ve built. If you&apos;d like to talk about opportunities, ideas,
-        or simply say hello, I&apos;d be glad to hear from you.
-      </motion.p>
-
-      <motion.div
-        variants={item}
-        className={`${heroRhythm.bodyToActions} flex flex-col sm:flex-row gap-4`}
-      >
         {/*
-          Ink, paper and hairline throughout. bg-primary, text-primary-foreground,
-          border-border and bg-card are stale tokens predating the Through-Line
-          system and do not render with reliable contrast beside it.
+          The masked reveal. Each word gets a clipping span; the inner span
+          starts fully below its own baseline and rises into the frame. The
+          negative margin cancels the padding that keeps Fraunces' descenders
+          and the full stop from being clipped by overflow-hidden.
         */}
-        <a
-          href={`mailto:${contactInfo.email}?subject=Connecting%20from%20your%20website`}
-          className="inline-flex items-center justify-center gap-2 rounded-sm bg-ink px-6 py-3 text-sm font-medium text-paper transition-opacity duration-300 hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
-        >
-          <Send className="h-4 w-4" aria-hidden="true" />
-          Send Email
-        </a>
+        <h1 className="mt-7 md:mt-9 font-serif-display font-normal text-[2.75rem] md:text-[3.5rem] leading-[1.02] tracking-[-0.02em] text-balance">
+          {/*
+            The split words are separate inline-blocks with no whitespace text
+            node between them — the gap is a margin — so assistive technology
+            would announce "Writeback." The visual words are hidden from the
+            accessibility tree and the heading's real text is supplied once.
+          */}
+          {!prefersReducedMotion && <span className="sr-only">{headline}</span>}
 
-        <a
-          href={`/documents/${contactInfo.resume.fileName}`}
-          download
-          className="inline-flex items-center justify-center gap-2 rounded-sm border border-hairline bg-paper px-6 py-3 text-sm font-medium text-ink transition-colors duration-300 hover:border-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+          {prefersReducedMotion
+            ? headline
+            : words.map((word, i) => (
+                <span
+                  key={`${word}-${i}`}
+                  aria-hidden="true"
+                  className="inline-block overflow-hidden align-bottom pb-[0.12em] -mb-[0.12em]"
+                  style={{
+                    marginRight: i < words.length - 1 ? '0.24em' : undefined,
+                  }}
+                >
+                  <motion.span
+                    className="inline-block"
+                    initial={{ y: '115%' }}
+                    animate={{ y: '0%' }}
+                    transition={{
+                      duration: 0.95,
+                      delay: 0.24 + i * 0.09,
+                      ease: REVEAL_EASE,
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                </span>
+              ))}
+        </h1>
+
+        <motion.div
+          initial={prefersReducedMotion ? false : 'hidden'}
+          animate="show"
+          variants={proseGroup}
+          className="mt-9 md:mt-11 font-reading text-[1.0625rem] md:text-[1.1875rem] leading-[1.7] space-y-6"
         >
-          <Download className="h-4 w-4" aria-hidden="true" />
-          Download My CV
-        </a>
-      </motion.div>
-    </motion.div>
+          {body.map((paragraph) => (
+            <motion.p key={paragraph.slice(0, 32)} variants={proseItem}>
+              {paragraph}
+            </motion.p>
+          ))}
+        </motion.div>
+      </div>
+    </section>
   );
 }
