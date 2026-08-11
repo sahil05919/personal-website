@@ -1,191 +1,471 @@
 // app/now/now-content.ts
 //
-// Edit this file whenever your season changes. Nothing here touches layout —
-// update text, add or remove places or links, or add a new entry to a movement
-// and the page re-renders correctly.
+// THE SEASON ENTRY.
 //
-// ALWAYS update `lastUpdated` in the same commit. It is hand-set on purpose:
+// Now is a leaf tipped into the book: dated, written in the present tense, and
+// kept afterwards with its crossings-out showing. Every other page says what is
+// true. This one says what is true *today* — and what stopped being true, and
+// when.
+//
+// Edit this file when the season shifts. Nothing here touches layout. Adding a
+// paragraph, a revision, a fragment or a place re-renders correctly.
+//
+// ALWAYS update `season.stamp` in the same commit. It is hand-set on purpose:
 // a build-derived date would silently refresh every time an unrelated page
 // changed, which is the one lie this page cannot afford to tell.
+//
+// ---------------------------------------------------------------------------
+// REPLACE BEFORE DEPLOY — structurally real, editorially provisional.
+//
+//   1. `answering.questions`   — must be actual messages people have sent.
+//                                Invented questions presented as real messages
+//                                are the one thing this page cannot ship with.
+//   2. `answering.pile`        — must be real unfinished writing. Each fragment
+//                                should end where it actually stopped.
+//   3. `becoming` photographs  — `src: null` renders an honest empty plate that
+//                                says a photograph is missing. Do not fill it
+//                                with a generated image; photograph the actual
+//                                dish. Alt text in the Media register.
+//   4. `work.making[].state`   — check each is still accurate.
+//
+// Everything marked REAL below is drawn from verified project context and can
+// stay as-is.
+// ---------------------------------------------------------------------------
 
-export type Movement = "doing" | "becoming" | "living";
-
-export interface LinkGroup {
-  label: string;
-  links: { text: string; href: string }[];
-}
-
-/** A row of place chips. "visited" renders filled, "planned" renders outlined. */
-export interface PlaceGroup {
-  label: string;
-  variant: "visited" | "planned";
-  items: string[];
-}
+/* -------------------------------------------------------------------------- */
+/* Prose with revisions                                                        */
+/* -------------------------------------------------------------------------- */
 
 /**
- * A stated position, not a musing.
+ * A crossing-out kept in public.
  *
- * `essayHref` stays undefined until the matching piece exists on /writing.
- * Once it does, Now names the belief and Writing argues it — that link is the
- * connective tissue between the two pages, so leave the field in place even
- * while it's empty.
+ * `struck` is what used to be true. `now` is what replaced it. `until` is the
+ * date the old wording stopped being true — apparatus, so it must be a real
+ * date, not a mood. Cobalt is reserved site-wide on this page for exactly this:
+ * change. If something is blue here, it changed.
  */
-export interface Claim {
-  text: string;
-  essayHref?: string;
+export interface Revision {
+  struck: string;
+  now: string;
+  until: string;
 }
 
-export interface Entry {
-  label: string;
-  /** Rendered before placeGroups, so prose frames the chips rather than trailing them. */
-  paragraphs?: string[];
-  claims?: Claim[];
-  placeGroups?: PlaceGroup[];
-  linkGroups?: LinkGroup[];
+/** A run of prose is either plain text or a revision. */
+export type Run = string | Revision;
+
+/** A paragraph is a sequence of runs. Strings carry their own spacing. */
+export type Paragraph = Run[];
+
+export function isRevision(run: Run): run is Revision {
+  return typeof run !== 'string';
 }
 
-export interface MovementBlock {
-  key: Movement;
-  title: string;
-  entries: Entry[];
+/** Counts every revision in the entry. Used for the apparatus note in the
+ *  margin, which states a true fact about the page it sits on. */
+export function countRevisions(paragraphs: Paragraph[][]): number {
+  return paragraphs.flat(2).filter(isRevision).length;
 }
+
+/* -------------------------------------------------------------------------- */
+/* The stamp                                                                   */
+/* -------------------------------------------------------------------------- */
+
+export const season = {
+  /** The <h1>. The season is the identity of the entry — "Now" is navigation. */
+  name: 'Summer 2026',
+  /** Present tense on purpose. Not "updated" — "true on". */
+  stamp: 'True on 29 July 2026',
+  /** Increments with each new entry. Entry 01 is the first kept season. */
+  entryNo: 'Entry 01',
+} as const;
+
+/* -------------------------------------------------------------------------- */
+/* 1 — The season                                                              */
+/* -------------------------------------------------------------------------- */
 
 /**
- * Displayed twice: in the eyebrow beside the page title, and again above the
- * closing line. Format: "D Month YYYY" — a precise date is a commitment,
- * a bare month is a hedge.
+ * The opening. Present tense, and it must contain the hinge — the thing that
+ * changed to start this season. April 2026 is the real hinge: Unitemps
+ * note-taking at City St George's ended, Accounts Payable at Middlesex began.
+ *
+ * The perishability test governs every sentence here: if it would still be
+ * true in 2030, it belongs on About, on Journey, or nowhere.
  */
-export const lastUpdated = "29 July 2026";
+export const opening: Paragraph[] = [
+  // REAL — the employment hinge is verified.
+  [
+    'This is my second summer of living in London without it feeling like an arrival. In April I stopped ',
+    {
+      struck: 'taking notes for students at City St George’s',
+      now: 'processing invoices at Middlesex',
+      until: 'until 14 April 2026',
+    },
+    ', which is a smaller change than it sounds and a larger one than it looks.',
+  ],
+  [
+    'Most of what follows will be wrong by the spring. That is the point of the page. ',
+    {
+      struck: 'Learning what London might be like',
+      now: 'Working out what living here actually costs and returns',
+      until: 'until 2025',
+    },
+    '.',
+  ],
+];
+
+/* -------------------------------------------------------------------------- */
+/* 2 — Work + Making                                                           */
+/* -------------------------------------------------------------------------- */
+
+/** A thing currently being made, and the state it is genuinely in. */
+export interface MakingItem {
+  name: string;
+  /** Margin apparatus. Lowercase, mono, no full stop. Keep it honest. */
+  state: string;
+}
+
+export const work = {
+  heading: 'Work & making',
+  paragraphs: [
+    // REAL — role and employer verified. Register: Media, not Experience.
+    [
+      'Accounts Payable is a queue. Invoices arrive, they are wrong in a small number of repeating ways, and somebody has to notice which way before the money leaves. Four months in, I have stopped ',
+      {
+        struck: 'checking every field against the guidance',
+        now: 'reading the shape of an invoice and knowing where it will fail',
+        until: 'until June 2026',
+      },
+      '. Nobody announced that. It just started happening.',
+    ],
+    [
+      'The rest of the season goes into things that are not finished, including the page you are reading. It is being rebuilt underneath you while it is live.',
+    ],
+  ] as Paragraph[],
+
+  /** Named inside the prose, weighted by their state — not by a card. */
+  making: [
+    { name: 'This website', state: 'rebuilt this season · unfinished' },
+    { name: 'IPL, 2008–2024', state: 'in Power BI · loading, not modelling' },   // REAL
+    { name: 'Personal finance dashboard', state: 'running · rewritten twice' },  // REAL
+    { name: 'AI workflows', state: 'experiments · nothing shipped' },
+  ] satisfies MakingItem[],
+
+  /**
+   * The colophon-in-progress. A true, dated list of what is unfinished on this
+   * site right now. It is the Equinor residual applied to the website itself —
+   * publish the thing you would normally quietly delete.
+   */
+  unfinished: {
+    note: 'Unfinished on this site, 10 August 2026',
+    items: [
+      'the CV does not match the Experience page',
+      'Home and Contact are serving an older build',
+      '/writing does not exist yet',
+      'six questions on /question are unwritten',
+    ],
+  },
+} as const;
+
+/* -------------------------------------------------------------------------- */
+/* 3 — Becoming (the workbench)                                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The workbench. One rule governs this section and it is not decorative:
+ *
+ *   NO TWO ADJACENT ITEMS MAY SHARE A SIZE OR A MEDIUM.
+ *
+ * The moment they do, it is a card grid again regardless of how it is styled.
+ * The renderer enforces the alternation from the item's `kind`, so adding two
+ * photographs in a row will look wrong on purpose.
+ */
+export type BecomingItem =
+  | {
+      kind: 'photo';
+      /** null = photograph not taken yet. Renders an honest empty plate. */
+      src: string | null;
+      alt: string;
+      /** What the placeholder says it is waiting for. */
+      awaiting?: string;
+      annotation: string;
+      /** Photographs are unequal. 'wide' breaks the measure; 'small' hangs. */
+      size: 'wide' | 'small';
+    }
+  | { kind: 'couplet'; lines: string[]; translation?: string; annotation: string }
+  | { kind: 'note'; text: string; annotation?: string }
+  | { kind: 'struck'; struck: string; annotation: string };
+
+export const becoming = {
+  heading: 'Becoming',
+  standfirst: 'Things I am learning before I learn them well.',
+  items: [
+    // PLACEHOLDER PHOTOGRAPH — replace src with a real photo of a real dish.
+    {
+      kind: 'photo',
+      src: null,
+      alt: '',
+      awaiting: 'Dal, kitchen counter, a Sunday',
+      annotation: 'Third attempt. Better.',
+      size: 'wide',
+    },
+    // PLACEHOLDER COUPLET — replace with a couplet actually being read.
+    {
+      kind: 'couplet',
+      lines: ['दिल ना-उमीद तो नहीं,', 'नाकाम ही तो है।'],
+      translation: 'The heart is not without hope — only without success.',
+      annotation: 'Reading Hindi Shayari slowly. I understand about half.',
+    },
+    { kind: 'note', text: 'Storytelling', annotation: 'Two chapters in.' },
+    // PLACEHOLDER PHOTOGRAPH.
+    {
+      kind: 'photo',
+      src: null,
+      alt: '',
+      awaiting: 'Something vegetarian that worked',
+      annotation: 'Still figuring this out.',
+      size: 'small',
+    },
+    {
+      kind: 'struck',
+      struck: 'Learning to cook properly',
+      annotation: 'Gave up in April. Might come back.',
+    },
+  ] satisfies BecomingItem[],
+} as const;
+
+/* -------------------------------------------------------------------------- */
+/* 4 — The quiet centre                                                        */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The caesura. No interaction, no rule, no apparatus, no progress indicator —
+ * a progress bar under "one chapter at a time" would be the funniest possible
+ * mistake. The spine deliberately breaks here.
+ *
+ * Placed at the middle, not the end: before it the page is about things made,
+ * after it the page is about people and places. This line is the turn.
+ */
+export const quiet = {
+  line: 'One chapter at a time.',              // REAL
+  under: 'More time reflecting than finishing.', // REAL
+  attribution: 'Bhagavad Gita',                  // REAL
+} as const;
+
+/* -------------------------------------------------------------------------- */
+/* 5 — Answering (Community + Writing)                                         */
+/* -------------------------------------------------------------------------- */
+
+export interface AskedQuestion {
+  text: string;
+  /** Mono attribution. Keep it thin — "a message, 3 July". No names. */
+  attribution: string;
+}
+
+/** One leaf in the pile. `body` is real unfinished writing, not a teaser. */
+export interface Fragment {
+  id: string;
+  /** Shown on the closed leaf. The first line, exactly as written. */
+  opening: string;
+  dated: string;
+  body: string[];
+  /** Set only when the fragment actually became something published. */
+  became?: { label: string; href: string };
+}
+
+export const answering = {
+  heading: 'Answering',
+  standfirst: 'Questions I have been sent this season.',
+
+  // PLACEHOLDER — replace all four with real messages before deploy.
+  questions: [
+    { text: 'Is it worth moving to London if I don’t have a job lined up?', attribution: 'a message, 3 July' },
+    { text: 'How did you know when to stop applying and start learning?', attribution: 'a message, 11 July' },
+    { text: 'Was the Master’s worth it, honestly?', attribution: 'a message, 26 July' },
+  ] satisfies AskedQuestion[],
+
+  /** The continuity, as a margin note rather than a heading or a diagram. */
+  context:
+    'It started at St Luke’s Community Centre, sitting next to people while they worked out what a form was asking them for. The room became an inbox. The work did not change.', // REAL (St Luke's)
+
+  pileHeading: 'writing back',   // margin note — keep to two words or it wraps
+  pileNote:
+    'Unfinished. Each of these stops where I stopped. Two of them will not become anything.',
+
+  // PLACEHOLDER — replace with genuinely unfinished writing.
+  pile: [
+    {
+      id: 'first-winter',
+      opening: 'Nobody warns you that the first winter is not about the cold.',
+      dated: '19 Jul',
+      body: [
+        'Nobody warns you that the first winter is not about the cold. It is about four o’clock. The light goes while you are still at your desk and the evening arrives before you have earned it, and for a few weeks you keep checking the time expecting it to be later than it is.',
+        'What I have not worked out is whether I adjusted or simply stopped noticing. Those are different things and I think the difference matters, because one of them is',
+      ],
+    },
+    {
+      id: 'advice',
+      opening: 'The honest answer to “was it worth it” is that I cannot run the other version.',
+      dated: '26 Jul',
+      body: [
+        'The honest answer to “was it worth it” is that I cannot run the other version. There is no control group for a life. So when someone asks whether the Master’s was worth it, what they are really asking is whether I would do it again knowing what I know, which is a different and much easier question.',
+        'I would. But not for the reasons I gave anyone at the time.',
+      ],
+    },
+    {
+      id: 'clearer',
+      opening: 'A question people ask me a lot, phrased six different ways.',
+      dated: '2 Aug',
+      body: [
+        'A question people ask me a lot, phrased six different ways: how do you make a decision when you do not have enough information? You do not. You work out which piece of missing information would actually change your answer, and you go and get that one.',
+        'Most of the time it turns out nothing would have changed the answer, and the delay was about something else.',
+      ],
+    },
+  ] satisfies Fragment[],
+
+  /** Published pieces are exits, not the experience. REAL. */
+  publishedNote: 'finished, eventually',
+  published: [
+    {
+      text: 'What Happens to Our Childhood Dreams?',
+      href: 'https://www.linkedin.com/pulse/what-happens-our-childhood-dreams-sahil-kumar-w0fze/',
+      source: 'LinkedIn',
+    },
+    {
+      text: 'The Year AI Became Adult',
+      href: 'https://www.linkedin.com/pulse/year-ai-became-adult-sahil-kumar-m0ume/',
+      source: 'LinkedIn',
+    },
+    {
+      text: 'When Was the Last Time You Did Something Without Knowing It Would Work?',
+      href: 'https://www.linkedin.com/pulse/when-last-time-you-did-something-without-knowing-would-sahil-kumar-u4gve/',
+      source: 'LinkedIn',
+    },
+    {
+      text: 'From Haryana to London: My Journey at Bayes Business School',
+      href: 'https://www.bayes.citystgeorges.ac.uk/study/masters/blogs/2024/december/from-haryana-to-london-my-journey-at-bayes-business-school',
+      source: 'Bayes',
+    },
+    {
+      text: 'Student to Student: How to Make the Most of Your Master’s at Bayes',
+      href: 'https://www.bayes.citystgeorges.ac.uk/study/masters/blogs/2025/september/student-to-student-how-to-make-the-most-of-your-masters-at-bayes',
+      source: 'Bayes',
+    },
+  ],
+} as const;
+
+/* -------------------------------------------------------------------------- */
+/* 6 — Exploring                                                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Appetite first, record second. Media owns the past — what stayed. Now owns
+ * what has not happened yet. No map, no pins, no trail: a map is a dashboard
+ * object and it duplicates Media.
+ *
+ * One place gets a paragraph and a photograph. The other eleven get a line in
+ * an index. That asymmetry is the design.
+ */
+export interface ExploredPlace {
+  name: string;
+  /** Only where the link genuinely helps. Most places do not need one. */
+  href?: string;
+}
+
+export const exploring = {
+  heading: 'Exploring',
+  nextUp: ['Bath', 'Windsor'],                                    // REAL
+  /** A running index, not a list. Links only where the link genuinely helps. */
+  index: [
+    { name: 'British Library', href: 'https://www.bl.uk/' },
+    { name: 'British Museum', href: 'https://www.britishmuseum.org/' },
+    { name: 'Cambridge' },
+    { name: 'Oxford' },
+    { name: 'Brighton' },
+    { name: 'Canterbury' },
+    { name: 'Seven Sisters' },
+  ] as ExploredPlace[],
+  /** The only number on the page. It is true, and it grows across seasons. */
+  counter: { label: 'London walking tours', value: 'more than ten' }, // REAL
+  /**
+   * REAL PHOTOGRAPH — /images/media/brighton.jpg already exists in the repo and
+   * is also used on /media.
+   *
+   * The alt text here is deliberately NOT the one in data/mediaData.ts. That
+   * one reads "Brighton Pier with the sea behind", which describes a different
+   * photograph from the one in the file: the actual image is a figure standing
+   * on a breakwater with the pier small in the distance. Worth fixing on
+   * /media too, in its own pass.
+   *
+   * The paragraph is PROVISIONAL: replace it with what actually stayed with
+   * you. Feature whichever place produced the better sentence, not the most
+   * impressive destination — and if you swap the place, swap the photograph
+   * for a real one of that place rather than reusing this file.
+   */
+  featured: {
+    name: 'Brighton',
+    src: '/images/media/brighton.jpg',
+    alt: 'Standing on a breakwater at Brighton, arms out, the pier small in the distance.',
+    paragraph:
+      'I went for the day and stayed until the last sensible train. The pier is loud and the sea is not, and the walk between the two is the part I keep thinking about.',
+  },
+} as const;
+
+/* -------------------------------------------------------------------------- */
+/* 7 — The close and the archive                                               */
+/* -------------------------------------------------------------------------- */
+
+export const close = {
+  line: 'This season will pass.',
+  date: '29 July 2026',
+  /** Kept word for word. The best sentence the old page had. */
+  cadence:
+    'This page changes as life does — no fixed schedule, just whenever the season shifts.',
+} as const;
+
+/**
+ * The date-stamp card. One stamp today. Do not pre-create empty future seasons —
+ * an archive with placeholders reads as abandoned, which is the mistake the
+ * Questions page already made. Add a stamp when a season is actually retired,
+ * give it an `href`, and the card grows on its own.
+ */
+export interface SeasonStamp {
+  name: string;
+  stamped: string;
+  href?: string;
+  current?: boolean;
+}
+
+export const archive = {
+  note: 'Previous seasons',
+  promise:
+    'When this is rewritten, this entry stays. The stamps below are how you get back to it.',
+  stamps: [
+    { name: 'Summer 2026', stamped: '29 Jul 2026', current: true },
+  ] as SeasonStamp[],
+} as const;
+
+/** True apparatus for the margin: a fact about the page it sits on. */
+export const revisionCount = countRevisions([
+  opening,
+  work.paragraphs as Paragraph[],
+]);
+
+/* -------------------------------------------------------------------------- */
+/* Home's Currently strip                                                      */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * app/page.tsx renders <Currently line={seasonLine} updated={lastUpdated} />.
+ *
+ * The season is written in exactly one place — the page that owns it — and
+ * Home follows automatically. Do not duplicate either value into
+ * data/homeContent.ts; that was the original placeholder bug.
+ *
+ * `seasonLine` is Home's one line of proof the record is still alive, so it
+ * must survive being read entirely on its own, out of context, above a
+ * colophon. Keep it to one sentence and keep it perishable.
+ */
+export const lastUpdated = close.date;
 
 export const seasonLine =
-  "Learning my craft at work, building projects after hours, and saying yes to more of what London has to offer.";
-
-export const movements: MovementBlock[] = [
-  {
-    key: "doing",
-    title: "Doing",
-    entries: [
-      {
-        label: "Working",
-        paragraphs: [
-          "Finance Assistant on the Accounts Payable team at Middlesex University — learning the rhythms of finance from the inside while keeping an eye on where I want to take it next.",
-        ],
-      },
-      {
-        label: "Building",
-        paragraphs: [
-          "This website, a Power BI project exploring the complete IPL dataset (2008–2024), a personal finance dashboard, and experiments with AI workflows.",
-        ],
-      },
-      {
-        label: "Thinking",
-        claims: [
-          { text: "Good systems outperform motivation." },
-          {
-            text: "Storytelling is one of the most undervalued skills in business.",
-          },
-          {
-            text: "AI creates the most value when it solves ordinary business problems, not just impressive ones.",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: "becoming",
-    title: "Becoming",
-    entries: [
-      {
-        label: "Reading",
-        paragraphs: [
-          "Reading the Bhagavad Gita slowly, one chapter at a time. I'm spending more time reflecting on each chapter than trying to finish the book.",
-        ],
-      },
-      {
-        label: "Learning",
-        paragraphs: [
-          "Trying to become a better storyteller and communicator, exploring Hindi Shayari, and learning new vegetarian recipes.",
-        ],
-      },
-    ],
-  },
-  {
-    key: "living",
-    title: "Living",
-    entries: [
-      {
-        label: "Exploring",
-        paragraphs: [
-          "I've now done more than ten walking tours across London. They've become one of my favourite ways to understand the city's history, neighbourhoods, and character.",
-        ],
-        placeGroups: [
-          {
-            label: "Recently",
-            variant: "visited",
-            items: [
-              "British Museum",
-              "Cambridge",
-              "Oxford",
-              "Brighton",
-              "Canterbury",
-              "Seven Sisters",
-            ],
-          },
-          {
-            label: "Next up",
-            variant: "planned",
-            items: ["Bath", "Windsor"],
-          },
-        ],
-      },
-      {
-        // When you have the specifics, this entry grows with detail — what you
-        // actually do at St Luke's, and why you keep going. It does not grow
-        // with a summarising clause.
-        label: "Community",
-        paragraphs: [
-          "I volunteer at St Luke's Community Centre and regularly attend AI and tech meetups around London.",
-        ],
-      },
-      {
-        // TEMPORARY. This entry moves to /writing once that page exists, at which
-        // point the pieces get republished here with canonical links back to the
-        // originals. Delete this entry — do not leave a link to /writing behind
-        // until the route actually resolves.
-        label: "Writing",
-        linkGroups: [
-          {
-            label: "LinkedIn",
-            links: [
-              {
-                text: "What Happens to Our Childhood Dreams?",
-                href: "https://www.linkedin.com/pulse/what-happens-our-childhood-dreams-sahil-kumar-w0fze/",
-              },
-              {
-                text: "The Year AI Became Adult",
-                href: "https://www.linkedin.com/pulse/year-ai-became-adult-sahil-kumar-m0ume/",
-              },
-              {
-                text: "When Was the Last Time You Did Something Without Knowing It Would Work?",
-                href: "https://www.linkedin.com/pulse/when-last-time-you-did-something-without-knowing-would-sahil-kumar-u4gve/",
-              },
-            ],
-          },
-          {
-            label: "Bayes Business School",
-            links: [
-              {
-                text: "From Haryana to London: My Journey at Bayes Business School",
-                href: "https://www.bayes.citystgeorges.ac.uk/study/masters/blogs/2024/december/from-haryana-to-london-my-journey-at-bayes-business-school",
-              },
-              {
-                text: "Student to Student: How to Make the Most of Your Master's at Bayes",
-                href: "https://www.bayes.citystgeorges.ac.uk/study/masters/blogs/2025/september/student-to-student-how-to-make-the-most-of-your-masters-at-bayes",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
+  'A second London summer: learning the rhythms of Accounts Payable at Middlesex, and rebuilding this site underneath itself.';
