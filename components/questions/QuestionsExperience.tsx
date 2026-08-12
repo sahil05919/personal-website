@@ -55,7 +55,7 @@ export default function QuestionsExperience({ questions, intro, closing }: Props
                     ))
                   ) : (
                     <p className="italic text-graphite">
-                      This answer is still being written.
+                      Answer coming soon — updating this page as I go.
                     </p>
                   )}
                 </div>

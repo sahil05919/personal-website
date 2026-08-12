@@ -4,9 +4,12 @@
 // answer, just edit this file — no component changes needed.
 //
 // `paragraphs: null` (or an empty array) means the essay isn't written yet.
-// app/question/page.tsx filters those out, so an unwritten question does not
-// render at all — the page shows only finished work and never announces its
-// own gaps. Keep unwritten questions here: this file is the queue.
+// Every question renders regardless — an unwritten one shows a short "coming
+// soon" note instead of full paragraphs (see
+// components/questions/QuestionsExperience.tsx). This is a deliberate choice
+// to be upfront about what's still in progress rather than hide it. Keep
+// unwritten questions here: this file is the queue, and this is also the
+// live copy — fill in `paragraphs` whenever an answer is ready.
 //
 // `revisitNote` is optional and rare by design — use it on at most one or two
 // questions, only where it's actually true. It is NOT meant to appear on

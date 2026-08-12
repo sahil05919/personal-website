@@ -23,13 +23,13 @@ export interface Destination {
 /** Canonical order, Home first. */
 export const navigation: Destination[] = [
   { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
   { href: '/journey', label: 'Journey' },
+  { href: '/now', label: 'Now' },
   { href: '/projects', label: 'Projects' },
   { href: '/experience', label: 'Experience' },
   { href: '/media', label: 'Media' },
-  { href: '/about', label: 'About' },
   { href: '/question', label: 'Questions' },
-  { href: '/now', label: 'Now' },
   { href: '/contact', label: 'Contact' },
 ];
 
