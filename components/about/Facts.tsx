@@ -3,85 +3,71 @@
 import { motion } from 'framer-motion';
 
 import { aboutContent } from '@/data/profileContent';
+import { GRID, MARGIN_NOTE, SHELL } from './layout';
 
 /**
- * THE FACTS — as cards.
+ * FRONT MATTER.
  *
- * This is where the old page's card treatment genuinely belongs. Cards are for
- * discrete, comparable, scannable items. The old site put PROSE in cards, which
- * fragmented reading; this puts DATA in them, which is what they're for.
+ * This was six 13rem cards with a label pinned to the top, a value floating in
+ * the middle, an index at the bottom and an arrow in the corner that rotated on
+ * hover. It had every affordance of a button and no destination, and the arrow
+ * was the worst of it — a directional signifier pointing nowhere.
  *
- * The interaction is lifted directly from the old Interests section — the one
- * that "pops": mono index top-left, arrow top-right rotating on hover, full
- * colour inversion to ink/paper over 500ms. It worked. It's back.
+ * A ledger instead: hairline rows, mono label in the margin column, value in
+ * Fraunces at the reading measure. Nothing here looks clickable because nothing
+ * here is clickable, and the vertical space is set by the type rather than by a
+ * min-height, so there is no dead air inside a row.
+ *
+ * It opens the page because this is front matter — the surface facts a reader
+ * needs before the essay can mean anything.
  */
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
+const row = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
-const card = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } },
+const list = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.05 } },
 };
 
 export function Facts() {
-  const { facts, revision } = aboutContent;
+  const { facts } = aboutContent;
 
   return (
-    <section className="border-t border-hairline px-6 py-24 md:px-10 md:py-32">
-      <div className="mx-auto w-full max-w-[1400px]">
+    <section className="border-b border-hairline py-20 md:py-24">
+      <div className={SHELL}>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end"
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className={`${GRID} mb-12 md:mb-14`}
         >
-          <h2 className="font-serif-display text-3xl font-normal tracking-[-0.02em] text-ink md:text-5xl">
+          <p className={`${MARGIN_NOTE} mb-3 lg:mb-0 lg:pt-3 lg:text-right`}>Front matter</p>
+          <h2 className="font-serif-display text-[1.75rem] font-normal tracking-[-0.02em] text-ink md:text-[2.25rem]">
             The plain facts.
           </h2>
-          <p className="max-w-xs font-mono text-[10px] uppercase leading-[2] tracking-[0.25em] text-graphite">
-            {revision.promise}
-          </p>
         </motion.div>
 
         <motion.dl
-          variants={container}
+          variants={list}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: '-60px' }}
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          className="border-t border-hairline"
         >
-          {facts.map((fact, index) => (
+          {facts.map((fact) => (
             <motion.div
               key={fact.label}
-              variants={card}
-              className="group flex min-h-[13rem] flex-col justify-between border border-hairline p-7 transition-colors duration-500 hover:bg-ink md:p-8"
+              variants={row}
+              className={`${GRID} border-b border-hairline py-5 md:py-6`}
             >
-              <div className="flex items-start justify-between">
-                <dt className="font-mono text-[10px] uppercase tracking-[0.25em] text-graphite transition-colors duration-500 group-hover:text-paper/60">
-                  {fact.label}
-                </dt>
-                <span
-                  aria-hidden="true"
-                  className="text-graphite/40 transition-all duration-500 group-hover:-rotate-45 group-hover:text-paper/60"
-                >
-                  &rarr;
-                </span>
-              </div>
-
-              <dd className="mt-10 font-serif-display text-2xl font-normal leading-[1.15] tracking-[-0.01em] text-ink transition-colors duration-500 group-hover:text-paper md:text-[1.75rem]">
+              <dt className={`${MARGIN_NOTE} lg:pt-[0.45rem] lg:text-right`}>{fact.label}</dt>
+              <dd className="mt-1 font-serif-display text-[1.375rem] font-normal leading-[1.25] tracking-[-0.01em] text-ink md:text-[1.625rem] lg:mt-0">
                 {fact.value}
               </dd>
-
-              <span
-                aria-hidden="true"
-                className="mt-6 font-mono text-[10px] tracking-[0.25em] text-graphite/50 transition-colors duration-500 group-hover:text-paper/40"
-              >
-                {(index + 1).toString().padStart(2, '0')}
-              </span>
             </motion.div>
           ))}
         </motion.dl>

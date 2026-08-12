@@ -13,15 +13,17 @@ export default function JourneyHero() {
     <section
       aria-labelledby="journey-title"
       /* Navbar clearance now lives in the layout's <main> (pt-[72px]); this
-         padding is editorial rhythm only. */
-      className="bg-paper text-ink px-6 md:px-8 pt-14 pb-20 md:pt-16 md:pb-24"
+         padding is editorial rhythm only. Horizontal padding and the
+         page's max-width now live in app/journey/page.tsx, which also
+         places this section next to the desktop rail — this component no
+         longer centres itself, it just sits hard-left in its grid column. */
+      className="pt-14 pb-20 md:pt-16 md:pb-24"
     >
       <motion.div
         initial="hidden"
         /* Above the fold — animate on mount, not on scroll into view. */
         animate="show"
         variants={fadeUp}
-        className="mx-auto max-w-2xl"
       >
         <p className="font-mono text-[11px] tracking-[0.06em] text-graphite mb-6">
           {journeyIntro.eyebrow}

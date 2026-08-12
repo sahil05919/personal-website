@@ -1,17 +1,23 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { journeyClose } from '@/data/journeyData';
+import { journeyClose, journeyExit } from '@/data/journeyData';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' as const } },
 };
 
+const fadeIn = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.6, ease: 'easeOut' as const } },
+};
+
 export default function JourneyClose() {
   return (
-    <section aria-label="Closing" className="bg-paper text-ink px-6 md:px-8 pb-24 md:pb-32">
-      <div className="mx-auto max-w-2xl">
+    <section aria-label="Closing" className="pb-24 md:pb-32">
+      <div>
         {/* Constrained to the same measure as the chapters so the resolving
             mark sits on the through-line's axis rather than 5rem to its right. */}
         <div className="max-w-lg">
@@ -56,6 +62,28 @@ export default function JourneyClose() {
                 </p>
               ))}
             </div>
+          </motion.div>
+
+          {/* The quiet hand-off to /now. Not a CTA — no arrow-button
+              language, no "view my now page." Reads as a page turning:
+              the story continuing somewhere else, not ending here. */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            variants={fadeIn}
+            transition={{ delay: 0.15 }}
+            className="mt-16 pt-10 border-t border-hairline text-center"
+          >
+            <p className="font-mono text-[11px] tracking-[0.06em] uppercase text-graphite mb-3">
+              {journeyExit.eyebrow}
+            </p>
+            <Link
+              href={journeyExit.href}
+              className="font-reading italic text-[15px] md:text-base text-ink underline decoration-hairline underline-offset-4 hover:decoration-through-line transition-colors"
+            >
+              {journeyExit.line}
+            </Link>
           </motion.div>
         </div>
       </div>

@@ -3,64 +3,46 @@
 import { motion } from 'framer-motion';
 import { journeySnapshot } from '@/data/journeyData';
 
+/**
+ * The mobile/tablet counterpart to JourneyRail. Below `lg` there's no room
+ * for a sidebar, and a sticky element competing with a narrow viewport for
+ * scroll attention is exactly the "forcing a desktop layout onto mobile"
+ * the visual refinement brief warned against — so this is deliberately
+ * static: no scroll-tracking, no sticky positioning, just a calm block
+ * read once after the hero. `<dl>` because year → label is genuinely
+ * label/value data, the same reasoning Experience's ledger uses elsewhere
+ * on the site.
+ */
 const fadeUp = {
   hidden: { opacity: 0, y: 14 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
 };
 
 export default function JourneySnapshot() {
-  const { points, summary } = journeySnapshot;
-
   return (
-    <section
-      aria-labelledby="snapshot-heading"
-      className="bg-paper text-ink px-6 md:px-8 pb-16 md:pb-20"
-    >
+    <section aria-label={journeySnapshot.heading} className="lg:hidden pb-14 md:pb-16">
       <motion.div
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
         variants={fadeUp}
-        className="mx-auto max-w-2xl"
+        className="max-w-lg"
       >
-        <h2
-          id="snapshot-heading"
-          className="font-mono text-[11px] tracking-[0.06em] uppercase text-graphite mb-8"
-        >
-          My journey at a glance
-        </h2>
+        <p className="font-mono text-[11px] tracking-[0.06em] uppercase text-graphite mb-5">
+          {journeySnapshot.heading}
+        </p>
 
-        {/* A scrollable region with no focusable child is unreachable by
-            keyboard (WCAG 2.1.1). tabIndex + role + label make it a proper
-            landmark that can be focused and scrolled with arrow keys. */}
-        <div
-          className="overflow-x-auto rounded-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-through-line focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
-          tabIndex={0}
-          role="region"
-          aria-label="Timeline of key years, scrollable horizontally"
-        >
-          <div className="relative min-w-[420px]">
-            <div
-              className="absolute left-0 right-0 top-[5px] h-[1.5px] bg-through-line/40"
-              aria-hidden="true"
-            />
-            <div className="relative flex justify-between">
-              {points.map((point) => (
-                <div key={point.year} className="flex flex-col items-center text-center px-1">
-                  <span
-                    className="w-2.5 h-2.5 rounded-full bg-through-line mb-3 ring-4 ring-paper"
-                    aria-hidden="true"
-                  />
-                  <span className="font-mono text-[11px] text-graphite mb-1">{point.year}</span>
-                  <span className="text-[13px] text-ink whitespace-nowrap">{point.label}</span>
-                </div>
-              ))}
+        <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4">
+          {journeySnapshot.points.map((point) => (
+            <div key={point.year}>
+              <dt className="font-mono text-[11px] text-graphite mb-0.5">{point.year}</dt>
+              <dd className="text-[13px] text-ink leading-snug">{point.label}</dd>
             </div>
-          </div>
-        </div>
+          ))}
+        </dl>
 
-        <p className="font-mono text-[12px] text-graphite text-center mt-8 tracking-wide">
-          {summary}
+        <p className="font-reading italic text-[13px] leading-relaxed text-graphite mt-6">
+          {journeySnapshot.summary}
         </p>
       </motion.div>
     </section>

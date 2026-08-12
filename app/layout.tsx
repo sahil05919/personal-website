@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import "./globals.css";
 import Navbar from "@/components/global/Navbar";
 import ThemeProvider from "@/components/providers/ThemeProvider";
@@ -23,12 +24,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`}>
-        <ThemeProvider>
-          <Navbar />
-          <main className="pt-[72px]">
-            {children}
-          </main>
-        </ThemeProvider>
+        {/* reducedMotion="user": respects the OS prefers-reduced-motion
+            setting sitewide. Verified against the installed framer-motion
+            source (motion-dom's positionalKeys check) rather than assumed:
+            under reduced motion, any animated x/y/scale/rotate/width/height
+            value jumps instantly to its target instead of animating, while
+            opacity animations are left to run — a plain crossfade isn't
+            what prefers-reduced-motion targets, sudden movement is. This is
+            what makes Journey's connector "draw-in" and the settle-in
+            moments (AIR 35, the motorcycle mark, the Bayes milestone)
+            resolve instantly under reduced motion instead of animating. */}
+        <MotionConfig reducedMotion="user">
+          <ThemeProvider>
+            <Navbar />
+            <main className="pt-[72px]">
+              {children}
+            </main>
+          </ThemeProvider>
+        </MotionConfig>
       </body>
     </html>
   );
