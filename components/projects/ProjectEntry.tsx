@@ -8,6 +8,36 @@ import type {
 } from "@/data/projectsChapter";
 import { useRevealOnView } from "@/hooks/use-reveal-on-view";
 
+/**
+ * Evidence mark.
+ *
+ * Journey's cobalt marks an emotional turn; this marks a moment of
+ * analytical reasoning — a reframed question, a stated reason — already
+ * sitting in the essay's own prose. Never new copy: see `EvidenceMark` in
+ * `data/projectsChapter.ts` for exactly which sentence moved and why.
+ *
+ * Kept deliberately unlike a pull-quote: left-aligned inside the reading
+ * column rather than centred and widened, so it reads as something the
+ * reader is walking past on the way through the essay, not a formal break
+ * in it. The left rule is the one piece of "furniture" on the page that
+ * isn't a hairline — cobalt here, doing real signalling work, not
+ * decoration for its own sake.
+ */
+function EvidenceMarkBlock({ lines }: { lines: string[] }) {
+  return (
+    <div className="my-10 border-l-2 border-through-line py-0.5 pl-5 sm:my-12 sm:pl-6">
+      {lines.map((line, i) => (
+        <p
+          key={i}
+          className="font-serif-display text-[clamp(1.125rem,2.4vw,1.375rem)] font-normal leading-[1.35] tracking-[-0.01em] text-through-line"
+        >
+          {line}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 /* ─────────────────────────────────────────────────────────────────────────
  * Column
  *
@@ -176,13 +206,22 @@ function ReconciliationTable({ table }: { table: ProjectTable }) {
 
 export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
   const { ref, isVisible } = useRevealOnView<HTMLElement>();
-  const { title, body, attribution, rhythm, image, table, mediaAfterParagraph } =
-    entry;
+  const {
+    title,
+    body,
+    attribution,
+    rhythm,
+    image,
+    table,
+    mediaAfterParagraph,
+    evidenceMark,
+  } = entry;
 
   const measure = MEASURE[rhythm.measure];
   const isolate = new Set(rhythm.isolate ?? []);
   const mediaIndex =
     mediaAfterParagraph !== undefined ? mediaAfterParagraph : body.length - 1;
+  const evidenceMarkIndex = evidenceMark?.insertAfter;
 
   const figure = image ? (
     image.treatment === "plate" ? (
@@ -249,6 +288,11 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
                   {paragraph}
                 </p>
                 {i === mediaIndex && figure}
+                {i === evidenceMarkIndex && evidenceMark && (
+                  <Column>
+                    <EvidenceMarkBlock lines={evidenceMark.lines} />
+                  </Column>
+                )}
               </div>
             );
           }
@@ -271,6 +315,11 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
                 </p>
               </Column>
               {i === mediaIndex && figure}
+              {i === evidenceMarkIndex && evidenceMark && (
+                <Column>
+                  <EvidenceMarkBlock lines={evidenceMark.lines} />
+                </Column>
+              )}
             </div>
           );
         })}

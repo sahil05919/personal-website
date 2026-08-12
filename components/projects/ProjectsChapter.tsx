@@ -1,5 +1,7 @@
 import { projectEntries, projectRecord } from "@/data/projectsChapter";
 import { ProjectEntry } from "./ProjectEntry";
+import { ProjectMargin } from "./ProjectMargin";
+import { Seam } from "./Seam";
 
 /**
  * Chapter — Projects.
@@ -25,6 +27,37 @@ import { ProjectEntry } from "./ProjectEntry";
  *   · pull-quotes, which widen to 26ch and centre;
  *   · the reconciliation table, which widens to 840px;
  *   · plates, which go full bleed.
+ *
+ * ── The margin (August 2026) ──
+ * The frame widened from 1080px to 1320px — closer to Journey's 1400px, and
+ * wide enough that the space either side of the centred column stops being
+ * a rounding error and starts being real canvas. The reading column itself
+ * did not move or resize; only the frame around it grew. That space is
+ * filled asymmetrically and only on the right (`ProjectMargin` — case
+ * number, a small per-project motif, one echoed figure on Equinor), never
+ * on the left, which stays deliberate whitespace rather than a second rail.
+ * This is not a reversal of the note above: that dead-paper problem was
+ * empty, unexplained space; this is populated, and only where there's
+ * enough width (`xl` and up) for it to read as considered rather than
+ * cramped. Mobile and tablet see none of it — the single centred column is
+ * still the whole page below `xl`.
+ *
+ * ── Fast layer / slow layer (August 2026) ──
+ * The page works at two speeds by tightening the existing essay model, not
+ * by bolting a second UI on top of it: no overview grid, no card layer, no
+ * separate detail route. Title and lede are already the fast layer on most
+ * entries; the addition here is `evidenceMark` (see data/projectsChapter.ts)
+ * — a real sentence already in an essay's own prose, promoted in place and
+ * set in cobalt, so a twenty-second reader meets the actual insight without
+ * reading the whole piece. Used on two of five entries (USS, the dashboard)
+ * where a genuine early "aha" existed to promote; not applied uniformly —
+ * Equinor's opening line already does this job unaided, and Netflix and the
+ * interstitial are deliberately left as they were.
+ *
+ * Cobalt here means something different than it does on /journey. There,
+ * cobalt marks an emotional turn. Here it marks analytical evidence — a
+ * reframed question, a stated reason — never decoration, never applied to a
+ * whole paragraph or a whole entry.
  *
  * ── What is deliberately absent ──
  *   · No "Measured Outcome" field. It sat above six unmeasured sentences and
@@ -55,7 +88,7 @@ export function ProjectsChapter() {
     <div className="overflow-x-clip bg-paper">
       <section
         aria-labelledby="projects-title"
-        className="mx-auto max-w-[1080px] px-6 pb-32 sm:px-10"
+        className="relative mx-auto max-w-[1320px] px-6 pb-32 sm:px-10 xl:px-16"
       >
         {/* ── Opening ──
             The standfirst alone, occupying most of the first screen, with the
@@ -65,7 +98,7 @@ export function ProjectsChapter() {
 
             min-h with vertical centring rather than a hard 100vh — robust on
             short landscape viewports and against mobile browser chrome. */}
-        <header className="flex min-h-[82svh] flex-col justify-center py-24">
+        <header className="relative flex min-h-[82svh] flex-col justify-center py-24">
           <div className="mx-auto w-full max-w-[64ch]">
             <h1
               id="projects-title"
@@ -84,33 +117,57 @@ export function ProjectsChapter() {
             <p className="mt-10 max-w-[15ch] text-balance font-serif-display text-[clamp(3rem,9vw,5.25rem)] font-normal leading-[0.98] tracking-[-0.03em] text-ink">
               Some refused to leave me alone until I built something.
             </p>
+
+            {/* Second-line positioning, the same device /media uses under its
+                own standfirst ("Proof of presence, not a portfolio."). Names
+                what the five entries below actually are, so a reader knows
+                within seconds this isn't a tool list before reading one.
+                Sahil's own wording (August 2026), replacing the placeholder
+                line proposed during the visual pass. */}
+            <p className="mt-6 max-w-[38ch] text-balance font-serif-display italic text-[1.0625rem] leading-[1.6] text-ink sm:text-[1.1875rem]">
+              The problems I explored, the thinking behind them, and what I
+              found along the way.
+            </p>
+          </div>
+
+          {/* The one purely decorative mark on the page — five ledger lines
+              of falling weight, an abstract stand-in for "a record" before
+              the reader has met any of it. Not a chart: no axis, no values,
+              nothing that could be mistaken for a claim. xl and up only. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute right-0 top-1/2 hidden -translate-y-1/2 xl:block"
+          >
+            <svg viewBox="0 0 120 140" className="h-32 w-28 opacity-70" aria-hidden="true">
+              <line x1="10" y1="20" x2="90" y2="20" stroke="rgb(var(--through-line))" strokeWidth="1.25" opacity="0.5" />
+              <line x1="10" y1="46" x2="70" y2="46" stroke="rgb(var(--through-line))" strokeWidth="1.25" opacity="0.4" />
+              <line x1="10" y1="72" x2="100" y2="72" stroke="rgb(var(--through-line))" strokeWidth="1.25" opacity="0.3" />
+              <line x1="10" y1="98" x2="60" y2="98" stroke="rgb(var(--through-line))" strokeWidth="1.25" opacity="0.22" />
+              <line x1="10" y1="124" x2="80" y2="124" stroke="rgb(var(--through-line))" strokeWidth="1.25" opacity="0.15" />
+              <circle cx="90" cy="20" r="2" fill="rgb(var(--through-line))" opacity="0.55" />
+            </svg>
           </div>
         </header>
 
         {/* ── The essays ──
             Seams are per-entry rather than a uniform space-y: the interstitial
             needs noticeably more air around it than the essays need between
-            them, and that difference is the pacing mechanism.
+            them, and that difference is the pacing mechanism. `Seam` now
+            draws in on scroll rather than simply being there — see Seam.tsx.
 
-            The seam rule is a short centred hairline, not a full-width divider.
-            It is the printed-book section break — enough to tell the eye a
-            movement has ended, not enough to become furniture. */}
+            Each entry sits in a `relative` wrapper so `ProjectMargin` can
+            anchor to the entry's own right edge rather than the page's. */}
         {projectEntries.map((entry, index) => (
           <div key={entry.id}>
             {index > 0 && (
-              <div
-                aria-hidden
-                className={
-                  entry.rhythm.seam === "wide"
-                    ? "flex justify-center py-40 sm:py-56"
-                    : "flex justify-center py-28 sm:py-40"
-                }
-              >
-                <span className="block h-px w-16 bg-hairline" />
-              </div>
+              <Seam
+                wide={entry.rhythm.seam === "wide"}
+                variant={entry.id === "did-both-jobs" ? "evidence" : "hairline"}
+              />
             )}
-            <div className={index === 0 ? "pt-8" : ""}>
+            <div className={["relative", index === 0 ? "pt-8" : ""].join(" ")}>
               <ProjectEntry entry={entry} />
+              <ProjectMargin id={entry.id} />
             </div>
           </div>
         ))}
@@ -132,6 +189,13 @@ export function ProjectsChapter() {
           >
             A record
           </h2>
+
+          {/* One line, so the index reads as "more of the same kind of
+              work" rather than an unexplained list appearing after the
+              chapter has already ended. */}
+          <p className="mt-3 max-w-[48ch] font-serif-display italic text-[15px] leading-[1.6] text-graphite">
+            The rest of it — briefer, and without the essays&rsquo; commentary.
+          </p>
 
           {/* Set as a book's index: title flush left, hairline leader, context
               and year flush right. One line each, no descriptions. It does not

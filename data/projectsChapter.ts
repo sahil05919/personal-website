@@ -11,8 +11,9 @@
  * There is deliberately no `outcome`, `impact`, `lesson` or `techStack` field —
  * anything that mattered is in the sentences.
  *
- * `data/projectsData.ts` and `types/project.ts` are still live: the home page
- * imports `featuredProjects`. Migrate home, then delete both.
+ * `data/projectsData.ts` and `types/project.ts` are gone (August 2026). Both
+ * were confirmed unused — no page imported `featuredProjects` — so this is a
+ * correction of a stale comment, not a migration that still needs doing.
  */
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -78,6 +79,25 @@ export interface ProjectTable {
   note?: string;
 }
 
+/**
+ * A short, real fragment of evidence-of-thinking, promoted out of the body
+ * prose and set in cobalt.
+ *
+ * This is the Projects equivalent of Journey's `MarkMoment` — same colour
+ * token, deliberately different job. Journey uses cobalt for an emotional
+ * turn; here it marks a moment of analytical reasoning already sitting in
+ * the essay (a reframed question, a stated reason) so a fast reader meets it
+ * without reading the whole piece. The lines are always lifted verbatim from
+ * the entry's own prose, never written new for this purpose — see each
+ * entry below for exactly which sentence moved and why.
+ */
+export interface EvidenceMark {
+  /** Zero-based index into `body`, AFTER extraction — i.e. the array as it
+   *  reads once the marked line(s) have already been removed from it. */
+  insertAfter: number;
+  lines: string[];
+}
+
 export interface ProjectEntry {
   id: string;
   title: string;
@@ -94,6 +114,7 @@ export interface ProjectEntry {
   table?: ProjectTable;
   /** Zero-based paragraph index after which the figure is inserted. */
   mediaAfterParagraph?: number;
+  evidenceMark?: EvidenceMark;
 }
 
 /**
@@ -123,14 +144,27 @@ export const projectEntries: ProjectEntry[] = [
       "The strange part was that I had all the information already. Every number I needed existed, in a file I had made, and I still had to spend an hour assembling it into an answer.",
       "The first version was just a better spreadsheet, and for a while that was enough. What changed wasn't that it broke. It was that I kept wanting different views of the same information — by month, by category, by what was already committed — and every one of those meant going back and altering the file where everything was recorded.",
       "So I split it in two. The sheets stayed where they were, as the place I actually update things: a new policy, a changed balance, a payment I'd committed to. Everything else moved into Power BI, which only reads. That way I could change how something was calculated without touching where it was recorded, and change what I recorded without breaking the calculations.",
-      "It sounds like a technical decision. It wasn't, particularly. I made it because I was tired of editing one file to answer a different question.",
+      "It sounds like a technical decision. It wasn't, particularly.",
       "What I got back was the hour, but that isn't quite the point either. What I got was a place to stand — one view, current, that answers the question without being asked twice. Assets, what I owe, what's committed, what's actually mine.",
       "It's still running. I still change it, usually when something in my life changes first: a new commitment, a different currency, a category that stopped making sense. It has never been finished, and I've stopped expecting it to be.",
     ],
+    // The sentence that used to close this paragraph — "I made it because I
+    // was tired of editing one file to answer a different question." — is
+    // the real reason for the architecture two paragraphs up. Promoted to an
+    // evidence mark rather than left as the tail end of a shorter paragraph,
+    // so a fast reader meets the actual decision before the payoff line.
+    evidenceMark: {
+      insertAfter: 4,
+      lines: [
+        "I made it because I was tired of editing one file to answer a different question.",
+      ],
+    },
     // TODO(sahil): no crop supplied. When one exists, set treatment: "plate".
     // The strongest image is NOT a net-worth chart — it's the panel that
     // answers the Sunday question. Leave `image` undefined until a real file
-    // exists; a placeholder path ships a 404.
+    // exists; a placeholder path ships a 404. Once it exists, this is also
+    // the point to reconsider whether it can move earlier than paragraph 5
+    // for scan speed.
     mediaAfterParagraph: 5,
   },
 
@@ -139,21 +173,22 @@ export const projectEntries: ProjectEntry[] = [
     title: "The wrong first question",
     attribution:
       "Group project with USS, MSc Business Analytics, Bayes Business School, 2025.",
-    // Encounter shape: moves toward a moment. Paragraphs 6 and 8 already
+    // Encounter shape: moves toward a moment. The two indices below already
     // function as section breaks in the prose; set as pull-quotes, the page
-    // agrees rather than argues.
+    // agrees rather than argues. A third line \u2014 the reversal itself \u2014 is
+    // promoted separately below as an evidence mark, not a pull-quote: see
+    // the note on `evidenceMark`.
     rhythm: {
       measure: "reading",
       seam: "normal",
       lede: true,
-      isolate: [6, 8],
+      isolate: [5, 7],
     },
     body: [
       "Someone has paid into a pension for fifteen years. Money leaves their salary every month, statements arrive once a year, and if you asked them what they'll actually have at retirement, most would say they don't really know. Not because they haven't tried. Because to answer it, they'd first have to learn what defined benefit means, and how it differs from defined contribution, and what a risk profile is, and what any of that has to do with them.",
       "The brief was about a pension concept. What we kept finding, the further into the research we went, was that the difficulty wasn't the pension. Every number a member needed already existed. It was arriving in a form that required them to become fluent in someone else's vocabulary before they could ask their own question.",
-      "So we turned it round. Not \u201chere is your scheme, now learn to read it,\u201d but: what are you trying to do?",
       // The two questions below are representative of the principle, not
-      // literal prototype copy — the exact wording isn't remembered.
+      // literal prototype copy \u2014 the exact wording isn't remembered.
       "The first thing a member saw wasn't contribution rates or investment options. It was a question about them. Not what the scheme offers, but what they wanted: when they hoped to stop, what they hoped to be living on. Then the pension arrived as an answer \u2014 this is what that would take, this is where you currently are, this is what changes if you adjust the amount going in. Same information. It just stopped being a document to decode and became a response to something they'd asked.",
       "That reversal was the project. The dashboard came afterwards, and so did everything else \u2014 the scenarios, the visualisations, the real-time feedback when someone moved a number. Those were the consequences of the decision, not the decision.",
       // The chapter's only group-work clause. One sentence, once.
@@ -166,9 +201,35 @@ export const projectEntries: ProjectEntry[] = [
       "Somewhere in the middle of it, one of them asked whose idea the member-first approach had been. Before I could say anything, my professor said, \u201cSahil.\u201d",
       "I don't know what came of the rest of it. Possibly nothing; these things move slowly and I'm not in the room any more.",
     ],
-    // TODO(sahil): if a crop is supplied it should show the goal-setting
-    // interaction, not a results chart. treatment: "plate".
-    mediaAfterParagraph: 3,
+    // "So we turned it round..." used to open its own paragraph right after
+    // the brief's difficulty is stated. It's the actual insight the rest of
+    // the essay works out the consequences of \u2014 moved out of the body and
+    // into an evidence mark so a fast reader meets it second in the essay,
+    // rather than waiting for the pull-quotes further down.
+    evidenceMark: {
+      insertAfter: 1,
+      lines: [
+        "So we turned it round.",
+        "Not \u201chere is your scheme, now learn to read it,\u201d but: what are you trying to do?",
+      ],
+    },
+    // Real crop, supplied by Sahil (August 2026): the prototype's own
+    // goal-setting screen, not a results chart, cropped down to exactly
+    // that — both scenarios' Goal / Lower Bound / Upper Bound controls,
+    // nothing from the collapsible detail sections or the chart underneath.
+    // Full-bleed, as originally planned: the panel's own blue reads as
+    // quoted material against the page's paper/ink/cobalt, the way a
+    // photograph inserted into a printed essay looks different from the
+    // typesetting around it on purpose.
+    image: {
+      src: "/images/projects/uss-goal-setting.webp",
+      alt: "The USS prototype's Scenario 1 and Scenario 2 panels: a Goal selector and Lower Bound / Upper Bound sliders next to a plain-language readout of what the DC pot would need to reach the goal.",
+      treatment: "plate",
+      aspectRatio: "1294 / 337",
+      caption:
+        "The prototype's goal-setting screen, mid-session. Two scenarios, side by side.",
+    },
+    mediaAfterParagraph: 2,
   },
 
   {
@@ -222,9 +283,14 @@ export const projectEntries: ProjectEntry[] = [
     // Discrepancy shape. Opens cold on eight words — the only essay that
     // starts at its own ending. Paragraph 5 closes the argument and opens the
     // table; as a pull-quote directly above the figure it does both.
+    //
+    // seam: "wide" (August 2026 visual pass) — previously "normal". This is
+    // the essay the whole order builds toward; the extra air on the way in
+    // is a small, reversible presentational choice, not a change to the
+    // order or the writing.
     rhythm: {
       measure: "reading",
-      seam: "normal",
+      seam: "wide",
       lede: true,
       isolate: [5],
     },
@@ -288,6 +354,15 @@ export const projectEntries: ProjectEntry[] = [
  *
  * Network Analytics is listed here by default rather than by decision — it
  * was left pending when the chapter closed at five essays.
+ *
+ * TWO ADDED QUIETLY (August 2026) — HR Analytics Dashboard and the City
+ * St George's reporting model. Both were real academic work, both used to
+ * exist only in the now-deleted `projectsData.ts`, invisible on the live
+ * site entirely. Title and year carry over from that file with reasonable
+ * confidence; `context` is a reconstruction, not a confirmed module name —
+ * flagged per item below. No outcome or description added for either: the
+ * old file's language ("centralised", "improved visibility") was template
+ * boilerplate, not something to reproduce here.
  */
 export interface RecordItem {
   title: string;
@@ -334,5 +409,21 @@ export const projectRecord: RecordItem[] = [
     context: "Fashion Brand Management",
     year: "2025",
     href: `${LI}/151924291/treasury/`,
+  },
+  {
+    title: "HR Analytics Dashboard",
+    // TODO(sahil): context reconstructed from the old file's category field
+    // ("Business Intelligence") — confirm the actual module name if there's
+    // a more specific one.
+    context: "Academic project",
+    year: "2025",
+    // No href supplied for this one — no LinkedIn overlay link exists.
+  },
+  {
+    title: "Business Intelligence Reporting Model",
+    // Context taken directly from the old subtitle ("developed for City
+    // St George's"), so more reliable than the entry above.
+    context: "City St George's, University of London",
+    year: "2025",
   },
 ];
