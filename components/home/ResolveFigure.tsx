@@ -80,10 +80,16 @@ export interface FigureLayout {
   influence: number;
 }
 
+/**
+ * The field is 160 units deep, not 240. The figure now sits directly under the
+ * title rather than above it, so the scatter has to read as a disturbance
+ * *around* a rule rather than as a cloud falling into one — and once resolved,
+ * a shallower field leaves no dead band between the title and the caption.
+ */
 export const FIGURE_WIDE: FigureLayout = {
   width: 1080,
-  height: 240,
-  baselineY: 202,
+  height: 160,
+  baselineY: 128,
   influence: 190,
 };
 
@@ -95,8 +101,8 @@ export const FIGURE_WIDE: FigureLayout = {
  */
 export const FIGURE_TALL: FigureLayout = {
   width: 380,
-  height: 250,
-  baselineY: 214,
+  height: 210,
+  baselineY: 178,
   influence: 120,
 };
 
@@ -198,15 +204,28 @@ function useEndpoint(
       const offsetX = Math.cos(radians) * fragment.half;
       const offsetY = Math.sin(radians) * fragment.half;
 
+      /**
+       * Rounded to three decimals, and this is not cosmetic.
+       *
+       * React serialises a number attribute on the server with full float
+       * precision and the client compares it against its own float, which can
+       * differ in the last bit — so the server writes y1="52.259885782312345"
+       * and the client computes 52.25988578231234 and reports a hydration
+       * mismatch on eighteen fragments at once. Quantising both sides to the
+       * same grid removes the class of bug entirely. Three decimals is far
+       * finer than a sub-pixel in a 1080-unit view box.
+       */
+      const round = (value: number) => Math.round(value * 1000) / 1000;
+
       switch (which) {
         case 'x1':
-          return centreX + dx - offsetX;
+          return round(centreX + dx - offsetX);
         case 'y1':
-          return centreY + dy - offsetY;
+          return round(centreY + dy - offsetY);
         case 'x2':
-          return centreX + dx + offsetX;
+          return round(centreX + dx + offsetX);
         default:
-          return centreY + dy + offsetY;
+          return round(centreY + dy + offsetY);
       }
     }
   );

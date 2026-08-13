@@ -24,7 +24,7 @@ import { Leaf, LeafRow, MarginNote } from './Leaf';
 export function Close() {
   return (
     <Leaf className="px-6 pb-28 pt-20 md:px-10 md:pb-36 md:pt-28">
-      <div className="mx-auto w-full max-w-[1400px]">
+      <div className="mx-auto w-full max-w-[62rem]">
         <LeafRow note={<MarginNote>{close.date}</MarginNote>}>
           <div>
             <p className="max-w-[46rem] font-serif-display text-[2rem] font-normal leading-[1.1] tracking-[-0.03em] text-ink md:text-[3rem] lg:text-[3.5rem]">

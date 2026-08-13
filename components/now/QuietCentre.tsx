@@ -29,7 +29,7 @@ import { Leaf } from './Leaf';
 export function QuietCentre() {
   return (
     <Leaf ruled={false} className="px-6 py-40 md:px-10 md:py-48 lg:py-56">
-      <div className="mx-auto w-full max-w-[1400px]">
+      <div className="mx-auto w-full max-w-[62rem]">
         <div className="lg:pl-[12.5rem]">
           <p className="max-w-[46rem] font-serif-display text-[2.25rem] font-normal leading-[1.05] tracking-[-0.03em] text-ink md:text-[3.5rem] lg:text-[4.25rem]">
             {quiet.line}

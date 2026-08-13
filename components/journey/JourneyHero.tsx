@@ -20,7 +20,10 @@ export default function JourneyHero() {
          page's max-width now live in app/journey/page.tsx, which also
          places this section next to the desktop rail — this component no
          longer centres itself, it just sits hard-left in its grid column. */
-      className="pt-14 pb-20 md:pt-16 md:pb-24"
+      /* The opening of a chapter, not a section of a page: it holds most of
+         the first screen, so the title lands before the reader has to decide
+         whether to keep going. */
+      className="pt-[clamp(3rem,9vh,6rem)] pb-[clamp(4rem,10vh,7rem)]"
     >
       <motion.div
         initial="hidden"
@@ -28,26 +31,29 @@ export default function JourneyHero() {
         animate="show"
         variants={fadeUp}
       >
-        <p className="font-mono text-[11px] tracking-[0.06em] text-graphite mb-6">
+        <p className="apparatus normal-case tracking-[0.08em] mb-7">
           {journeyIntro.eyebrow}
         </p>
 
+        {/* Display scale, on the site's own type ramp. This was set at a
+            hard 3rem, which was the largest thing on the page back when the
+            body was 16px Inter and is now smaller than Home's contents rows.
+            The measure breaks to `wide` because a display line held to the
+            reading measure looks trapped rather than emphatic. */}
         <h1
           id="journey-title"
-          className="font-serif-display font-medium text-[2.25rem] md:text-[3rem] leading-[1.12] tracking-tight mb-6 max-w-lg"
+          className="hang font-serif-display font-normal text-fluid-display text-balance mb-8 max-w-wide"
         >
           {journeyIntro.title}
         </h1>
 
-        <p className="font-serif-display italic text-lg md:text-xl leading-relaxed text-graphite mb-10 max-w-lg">
+        <p className="font-serif-display italic text-fluid-claim font-normal leading-[1.3] text-graphite mb-10 max-w-wide text-balance">
           {journeyIntro.subtitle}
         </p>
 
-        <div className="space-y-4 max-w-lg">
+        <div className="space-y-5 max-w-measure font-reading text-fluid-read text-pretty">
           {journeyIntro.body.map((paragraph, i) => (
-            <p key={i} className="text-base leading-relaxed text-ink">
-              {paragraph}
-            </p>
+            <p key={i}>{paragraph}</p>
           ))}
         </div>
       </motion.div>

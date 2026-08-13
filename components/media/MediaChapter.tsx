@@ -59,22 +59,22 @@ export function MediaChapter() {
         <div className="mb-4 flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <h1
             id="media-title"
-            className="font-mono text-[12px] font-medium tracking-[0.16em] text-foreground"
+            className="font-mono text-[12px] font-medium tracking-[0.16em] text-ink"
           >
             Media
           </h1>
-          <span className="font-mono text-[11px] tracking-[0.12em] text-muted-foreground">
+          <span className="font-mono text-[11px] tracking-[0.12em] text-graphite">
             {spellCount(count)} {count === 1 ? "moment" : "moments"}
           </span>
         </div>
 
-        <p className="max-w-[34ch] text-balance font-serif-display text-[28px] font-medium leading-[1.15] text-foreground sm:text-4xl">
+        <p className="max-w-[34ch] text-balance font-serif-display text-[28px] font-medium leading-[1.15] text-ink sm:text-4xl">
           None of this was meant to be a record. It became one anyway.
         </p>
 
         {/* Set apart rather than appended — the line is the chapter's thesis,
             not the standfirst's third sentence. Exclusive to this page. */}
-        <p className="mt-6 font-reading text-[15px] italic text-muted-foreground">
+        <p className="mt-6 font-reading text-[15px] italic text-graphite">
           Proof of presence, not a portfolio.
         </p>
       </header>

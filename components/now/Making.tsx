@@ -25,7 +25,7 @@ import { SeasonProse } from './SeasonProse';
 export function Making() {
   return (
     <Leaf className="px-6 py-20 md:px-10 md:py-28">
-      <div className="mx-auto w-full max-w-[1400px]">
+      <div className="mx-auto w-full max-w-[62rem]">
         <LeafRow note={<LeafHeading>{work.heading}</LeafHeading>}>
           <SeasonProse paragraphs={work.paragraphs} />
         </LeafRow>

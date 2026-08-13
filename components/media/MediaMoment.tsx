@@ -60,7 +60,20 @@ function Pane({ image, aspectRatio, sizes, priority, onExpand }: PaneProps) {
       aria-haspopup="dialog"
       onClick={() => onExpand(image)}
       style={{ aspectRatio }}
-      className="group relative block w-full cursor-zoom-in overflow-hidden bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+      /*
+        THE MOUNT.
+
+        A photograph on this site is a print tipped onto a leaf, not an image
+        in a grid, and until now it was rendered as a bare rectangle butted
+        straight against the paper — which is exactly how a gallery renders an
+        asset. It now sits on a hairline with a soft cast shadow in the theme's
+        own shadow hue, so the print reads as a physical object lying on the
+        page and the paper reads as being *behind* it.
+
+        The lift on hover is a couple of pixels and half a second: the print
+        being picked up, not a card animating.
+      */
+      className="group relative block w-full cursor-zoom-in overflow-hidden border border-hairline bg-well shadow-plate transition-shadow duration-700 ease-editorial hover:shadow-lift focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
     >
       {/* A faint hover-scale — the same affordance language as Experience's
           and Projects' photographs, added as part of the sitewide motion
@@ -189,7 +202,7 @@ export function MediaMoment({
         {frame !== undefined && frameCount !== undefined && (
           <p
             aria-hidden="true"
-            className="font-mono text-[10px] tracking-[0.14em] text-muted-foreground/70"
+            className="font-mono text-[10px] tracking-[0.14em] text-graphite/70"
             style={{ marginLeft: alignEnd ? "auto" : undefined }}
           >
             {String(frame).padStart(2, "0")}
@@ -197,7 +210,7 @@ export function MediaMoment({
           </p>
         )}
         <p
-          className="mt-1 max-w-prose font-reading text-[17px] leading-[1.75] text-foreground"
+          className="mt-1 max-w-prose font-reading text-[17px] leading-[1.75] text-ink"
           style={{ marginLeft: alignEnd ? "auto" : undefined }}
         >
           {caption}
@@ -213,14 +226,14 @@ export function MediaMoment({
         aria-label="Expanded photograph"
         onClose={() => setExpanded(null)}
         onClick={closeLightbox}
-        className="m-0 h-screen max-h-screen w-screen max-w-none bg-transparent p-0 backdrop:bg-background/95"
+        className="m-0 h-screen max-h-screen w-screen max-w-none bg-transparent p-0 backdrop:bg-paper/95"
       >
         {expanded && (
           <div className="relative h-full w-full">
             <button
               type="button"
               onClick={closeLightbox}
-              className="absolute right-5 top-5 z-10 font-mono text-[11px] tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+              className="absolute right-5 top-5 z-10 font-mono text-[11px] tracking-[0.12em] text-graphite transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
             >
               Close
             </button>

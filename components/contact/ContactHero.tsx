@@ -64,7 +64,7 @@ export default function ContactHero() {
           initial={prefersReducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          className="font-mono text-[11px] tracking-[0.06em] text-graphite"
+          className="apparatus normal-case tracking-[0.08em]"
         >
           {eyebrow}
         </motion.p>
@@ -75,7 +75,7 @@ export default function ContactHero() {
           negative margin cancels the padding that keeps Fraunces' descenders
           and the full stop from being clipped by overflow-hidden.
         */}
-        <h1 className="mt-7 md:mt-9 font-serif-display font-normal text-[2.75rem] md:text-[3.5rem] leading-[1.02] tracking-[-0.02em] text-balance">
+        <h1 className="hang mt-7 md:mt-9 font-serif-display font-normal text-fluid-display text-balance">
           {/*
             The split words are separate inline-blocks with no whitespace text
             node between them — the gap is a margin — so assistive technology
@@ -115,7 +115,7 @@ export default function ContactHero() {
           initial={prefersReducedMotion ? false : 'hidden'}
           animate="show"
           variants={proseGroup}
-          className="mt-9 md:mt-11 font-reading text-[1.0625rem] md:text-[1.1875rem] leading-[1.7] space-y-6"
+          className="mt-9 md:mt-11 font-reading text-fluid-read space-y-6 text-pretty"
         >
           {body.map((paragraph) => (
             <motion.p key={paragraph.slice(0, 32)} variants={proseItem}>

@@ -27,7 +27,7 @@ export default function JourneySnapshot() {
         whileInView="show"
         viewport={{ once: true }}
         variants={fadeUp}
-        className="max-w-lg"
+        className="max-w-measure"
       >
         <p className="font-mono text-[11px] tracking-[0.06em] uppercase text-graphite mb-5">
           {journeySnapshot.heading}

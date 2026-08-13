@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import { homeContent } from '@/data/homeContent';
 import { gutter, shell, wide } from './rhythm';
 
@@ -36,18 +34,21 @@ import { gutter, shell, wide } from './rhythm';
  * copyright and the links past the end of the line says the same thing without
  * a word of new copy: the record is over, and this is the imprint.
  *
- * The slashes between the imprint items are the page's own divider idiom,
- * already used in Currently. They turn four floating links into one line.
+ * WHAT MOVED OUT
  *
- * Note this is Home's own close, not a site-wide footer. Every other page
- * currently ends without one, which remains a separate inconsistency.
+ * The copyright and links row that used to sit below the terminus has gone to
+ * components/global/Colophon.tsx, which now renders on every page. Home was
+ * the only page on the site with an imprint; keeping a second copy here would
+ * have printed it twice on the one page that already had it.
+ *
+ * What is left is the part that was only ever Home's: the line ending, and the
+ * sentence it ends under.
  */
-export default function Colophon() {
-  const { close, links } = homeContent.colophon;
-  const year = new Date().getFullYear();
+export default function Close() {
+  const { close } = homeContent.colophon;
 
   return (
-    <footer className="bg-paper text-ink">
+    <section aria-label="Close" className="bg-paper text-ink">
       <div className={shell}>
         {/* ── The last block the line accompanies ─────────────────────────
             The generous top padding is doing real work: the mark needs to
@@ -71,42 +72,12 @@ export default function Colophon() {
           </p>
         </div>
 
-        {/* ── Past the end of the line ────────────────────────────────────
-            No spine. Deliberately quieter than anything above it: 10px, wide
-            tracking, graphite. This is the imprint, and an imprint is meant to
-            be findable rather than read. */}
-        <div className="pl-6 pt-[clamp(2.5rem,6vh,4rem)] pb-[clamp(3rem,7vh,5rem)] md:pl-10">
-          <div className="flex flex-wrap items-center font-mono text-[10px] tracking-[0.08em] text-graphite">
-            <span>&copy; {year} Sahil Kumar</span>
-
-            {links.map((link) => (
-              <span key={link.href} className="flex items-center">
-                <span className="mx-3 text-hairline" aria-hidden="true">
-                  /
-                </span>
-
-                {link.external ? (
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    href={link.href}
-                    className="transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
-                  >
-                    {link.label}
-                  </Link>
-                )}
-              </span>
-            ))}
-          </div>
-        </div>
+        {/* Below the terminus the page is finished. The imprint that used to
+            sit here now renders sitewide from components/global/Colophon.tsx,
+            immediately below this section, so the sequence a reader sees is
+            unchanged — it is simply no longer unique to Home. */}
+        <div className="pb-[clamp(1.5rem,4vh,2.5rem)]" />
       </div>
-    </footer>
+    </section>
   );
 }

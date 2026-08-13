@@ -75,7 +75,7 @@ export default function BeforeYouGo() {
           {eyebrow}
         </p>
 
-        <p className="mt-6 max-w-[32rem] font-serif-display text-[1.375rem] md:text-[1.75rem] leading-[1.35] tracking-[-0.01em] text-ink text-balance">
+        <p className="mt-6 max-w-[32rem] font-serif-display font-normal text-fluid-claim leading-[1.28] text-ink text-balance">
           {prompt}
         </p>
 

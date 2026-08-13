@@ -89,7 +89,14 @@ export default function Contents() {
                   </span>
 
                   <div className="flex items-center justify-between gap-6">
-                    <h3 className="font-serif-display text-fluid-row font-medium transition-colors duration-200 group-hover:text-through-line">
+                    <h3 className="flex items-baseline gap-4 font-serif-display text-fluid-row font-medium transition-colors duration-200 group-hover:text-through-line">
+                      {/* The folio. A contents list without page numbers is a
+                          menu; with them it is a contents list. The number is
+                          the row's position in the canonical order, so it can
+                          never disagree with the navbar or the colophon. */}
+                      <span className="font-mono text-apparatus-xs text-hairline transition-colors duration-200 group-hover:text-through-line">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
                       {destination.label}
                     </h3>
 
@@ -98,14 +105,14 @@ export default function Contents() {
                         belongs relative to writing. It resolves to the
                         through-line on hover alongside the title and the
                         station. */}
-                    <span className="text-graphite/45 transition-colors duration-200 group-hover:text-through-line">
+                    <span className="shrink-0 text-graphite/70 transition-colors duration-200 group-hover:text-through-line">
                       <PageMark href={destination.href} />
                     </span>
                   </div>
 
                   {invitation ? (
                     <p
-                      className={`${measure} mt-1.5 font-reading text-fluid-aside text-balance text-graphite`}
+                      className={`${measure} ml-[2.6rem] mt-1.5 font-reading text-fluid-aside text-balance text-graphite`}
                     >
                       {invitation}
                     </p>

@@ -21,7 +21,6 @@ import type { Metadata } from 'next';
 import { homeContent } from '@/data/homeContent';
 import { lastUpdated, seasonLine } from './now/now-content';
 
-import Wayfinder from '@/components/home/Wayfinder';
 import Frontispiece from '@/components/home/Frontispiece';
 import Statement from '@/components/home/Statement';
 import Contents from '@/components/home/Contents';
@@ -39,7 +38,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <Wayfinder />
       <Frontispiece />
       <Statement />
       <Contents />

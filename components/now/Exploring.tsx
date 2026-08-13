@@ -33,7 +33,7 @@ import { Leaf, LeafRow, LeafHeading, MarginNote } from './Leaf';
 export function Exploring() {
   return (
     <Leaf className="px-6 py-20 md:px-10 md:py-28">
-      <div className="mx-auto w-full max-w-[1400px]">
+      <div className="mx-auto w-full max-w-[62rem]">
         <LeafRow note={<LeafHeading>{exploring.heading}</LeafHeading>}>
           <div>
             <p className="font-mono text-[0.625rem] uppercase tracking-[0.24em] text-graphite">

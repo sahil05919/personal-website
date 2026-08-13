@@ -1,106 +1,287 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Light Theme */
-  --background: 250 250 250;
-  --foreground: 17 17 17;
+/* ===========================================================================
+   THE THREE PAPERS
 
-  --card: 255 255 255;
-  --card-foreground: 17 17 17;
+   One token set, three inks. Every page, every component and every mark on
+   the site reads these variables and nothing else — there is no second
+   palette any more, and no `dark:` variant anywhere in the codebase. A theme
+   is a list of eleven numbers, which is the only reason three of them is
+   maintainable at all.
 
-  --border: 229 229 229;
+   Each theme is calibrated for sustained Newsreader prose rather than for
+   maximum contrast. Ink is deliberately pulled off the extremes: pure black
+   on pure white vibrates on a serif at reading size, and the whole site is
+   reading size.
 
-  --muted: 245 245 245;
-  --muted-foreground: 115 115 115;
+   --shade is the shadow hue. It is not simply black: a warm paper casts a
+   warm shadow, and a navy ground casts a blue one. Getting this wrong is
+   what makes card shadows look stuck on.
+=========================================================================== */
 
-  --primary: 81 70 229;
-  --primary-foreground: 255 255 255;
+:root,
+.light {
+  /* PAPER — warm, uncoated, slightly yellowed. Never #fff. */
+  --paper: 247 245 240;
+  --vellum: 252 251 248;
+  --well: 240 237 230;
 
-  --accent: 81 70 229;
+  --ink: 24 23 21;
+  --graphite: 108 104 97;
+  --hairline: 214 209 199;
 
-  /* Through-Line — light. The approved mockup values. */
-  --paper: 247 246 243;
-  --ink: 10 10 11;
-  --graphite: 107 107 108;
-  --hairline: 216 214 208;
-  --through-line: 43 92 230;
+  --through-line: 29 74 199;
+  --ember: 176 78 42;
+
+  --shade: 40 32 20;
+
+  /* Grain is barely there on light paper — the paper colour is already
+     doing most of the texture work. */
+  --grain-opacity: 0.04;
+  --grain-blend: multiply;
 }
 
 .dark {
-  /* Dark Theme */
-  --background: 3 3 3;
-  --foreground: 237 237 237;
+  /* INK — a warm charcoal, lifted well off true black. At #000 the serif
+     halates and the grain has nothing to sit on. */
+  --paper: 17 17 19;
+  --vellum: 25 25 28;
+  --well: 12 12 14;
 
-  --card: 10 10 10;
-  --card-foreground: 237 237 237;
+  --ink: 229 226 219;
+  --graphite: 151 148 142;
+  --hairline: 51 50 48;
 
-  --border: 22 22 22;
+  --through-line: 124 162 255;
+  --ember: 228 137 92;
 
-  --muted: 22 22 22;
-  --muted-foreground: 163 163 163;
+  --shade: 0 0 0;
 
-  --primary: 81 70 229;
-  --primary-foreground: 255 255 255;
+  --grain-opacity: 0.055;
+  --grain-blend: overlay;
+}
 
-  --accent: 81 70 229;
+.blueprint {
+  /* BLUEPRINT — the drawing-office theme. The site is full of diagrams:
+     a two-lane route, a reconciliation plot, tone curves, contact-sheet
+     frames. This is the paper those were drawn on. Cyan is the line
+     weight; amber is the annotation. */
+  --paper: 10 22 42;
+  --vellum: 15 31 57;
+  --well: 7 17 33;
 
-  /* Through-Line — dark. No longer a placeholder extrapolation. Calibrated
-     for sustained Newsreader prose rather than for maximum contrast: paper is
-     lifted off true black to stop halation on the serif, and ink is pulled
-     back to ~14:1, which reads calmer inverted than the light mode's ~18:1
-     does upright. */
-  --paper: 18 18 20;
-  --ink: 226 224 219;
-  --graphite: 158 158 156;
-  --hairline: 48 47 45;
-  --through-line: 91 140 255;
+  --ink: 221 233 250;
+  --graphite: 133 158 192;
+  --hairline: 38 62 99;
+
+  --through-line: 94 201 255;
+  --ember: 255 179 92;
+
+  --shade: 0 8 24;
+
+  --grain-opacity: 0.07;
+  --grain-blend: overlay;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Newsreader and Fraunces both carry an opsz axis. Letting the browser
+       drive it is why the reading face looks like a book at 17px and the
+       display face looks like a masthead at 88px, from one file each. */
+    font-optical-sizing: auto;
   }
 
-  /* Anchored navigation must not scroll content under the fixed 72px navbar.
-     Journey's chapters also set scroll-mt-[88px] for a little breathing room. */
+  /* Anchored navigation must not scroll content under the fixed navbar. */
   :target {
-    scroll-margin-top: 88px;
+    scroll-margin-top: 96px;
   }
 
-  /* NOTE: `font-sans` (Inter) is the wrong default for a site whose reading
-     role is Newsreader. About requests `font-reading` explicitly, but the
-     underlying default is still backwards site-wide. Flipping it belongs in
-     its own pass — it would touch every page at once. */
+  /*
+    The reading face is the default now.
+
+    It was Inter, on a site whose reading role is Newsreader — About had to
+    ask for `font-reading` explicitly and every other page silently got a UI
+    sans-serif for its body copy. That is backwards, and it is why Journey
+    and Home read as a different website from About.
+  */
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-paper text-ink font-reading;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Themes cross-fade rather than snap. next-themes sets
+       [data-theme-changing] off during the swap to avoid a flash on first
+       paint; this transition is for deliberate switches only. */
+    transition: background-color 600ms cubic-bezier(0.16, 1, 0.3, 1),
+      color 600ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   * {
-    @apply border-border;
+    @apply border-hairline;
+  }
+
+  /*
+    Fraunces carries three axes beyond weight, and using them is most of the
+    reason to choose Fraunces at all.
+
+      WONK 1   the flared, slightly wrong-footed alternates on g, y, w. This
+               is the site's single most distinctive typographic mark and it
+               only reads at display size, which is the only place this face
+               is used.
+      SOFT 18  takes the sharpest edge off the terminals so the display type
+               sits on warm paper rather than cutting into it.
+      opsz     driven by font-optical-sizing above.
+  */
+  .font-serif-display {
+    font-variation-settings: "SOFT" 18, "WONK" 1;
+  }
+
+  /* Mono is apparatus. It should never be mistaken for something to read,
+     so it is always tracked out and never runs long. */
+  .font-mono {
+    font-variation-settings: normal;
+  }
+
+  ::selection {
+    background-color: rgb(var(--through-line) / 0.16);
+    color: rgb(var(--ink));
+  }
+
+  /* One focus ring, everywhere, on the accent. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--through-line));
+    outline-offset: 3px;
+    border-radius: 1px;
   }
 
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
     }
+
+    body {
+      transition: none;
+    }
   }
 }
 
-/* ---------------------------------------------------------------------------
-   About — the chrome unwind.
+@layer components {
+  /* -------------------------------------------------------------------
+     PLATE — a surface raised off the paper.
 
-   The reader arrives at a face on paper with nothing competing. `ChromeUnwind`
-   adds this class on mount and removes it once they've scrolled past the
-   frontispiece. It resolves once and then holds — it does not reappear on
-   scroll direction, which would be an effect, and this page has none.
-   Reduced-motion users never get the class at all.
---------------------------------------------------------------------------- */
+     Used for the About facts ledger, the Now workbench, media frames and
+     the contact rows. It is a paper stock change, not a card: one hairline,
+     a soft cast shadow in the theme's own shadow hue, and no radius beyond
+     2px. Rounded corners are what make an editorial page look like a
+     dashboard.
+  ------------------------------------------------------------------- */
+  .plate {
+    @apply border border-hairline bg-vellum shadow-plate;
+    border-radius: 2px;
+  }
+
+  /* A surface sunk into the page rather than raised off it. Quotes, errata,
+     anything the page is holding rather than presenting. */
+  .well {
+    @apply bg-well shadow-well;
+    border-radius: 2px;
+  }
+
+  /* -------------------------------------------------------------------
+     RULED — feint lines, the way a notebook is ruled.
+
+     Sits behind content at very low contrast. The line spacing is tied to
+     the reading leading so text set on top of it lands on the rules.
+  ------------------------------------------------------------------- */
+  .ruled {
+    background-image: linear-gradient(
+      to bottom,
+      transparent calc(2rem - 1px),
+      rgb(var(--hairline) / 0.5) calc(2rem - 1px),
+      rgb(var(--hairline) / 0.5) 2rem
+    );
+    background-size: 100% 2rem;
+  }
+
+  /* The drawing-office grid. Only ever used as a faint field behind a
+     figure — never behind prose. */
+  .gridded {
+    background-image: linear-gradient(
+        to right,
+        rgb(var(--hairline) / 0.45) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgb(var(--hairline) / 0.45) 1px,
+        transparent 1px
+      );
+    background-size: 2.5rem 2.5rem;
+  }
+
+  /* -------------------------------------------------------------------
+     LINK-RULE — the site's one link idiom.
+
+     A hairline that thickens and takes the accent, rather than a colour
+     change. Underlines that already exist and merely change colour read as
+     UI; a rule that grows reads as a mark being made.
+  ------------------------------------------------------------------- */
+  .link-rule {
+    @apply relative text-ink transition-colors duration-300 ease-editorial;
+    text-decoration: none;
+  }
+
+  .link-rule::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.15em;
+    height: 1px;
+    background-color: rgb(var(--hairline));
+    transition: background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      height 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .link-rule:hover {
+    color: rgb(var(--through-line));
+  }
+
+  .link-rule:hover::after {
+    height: 1.5px;
+    background-color: rgb(var(--through-line));
+  }
+
+  /* The margin label. Every page uses it for its apparatus, and having it
+     in one place is what keeps nine pages sounding like one voice. */
+  .apparatus {
+    @apply font-mono text-apparatus uppercase text-graphite;
+  }
+}
+
+@layer utilities {
+  /* Optical hanging for display type set flush left. Fraunces' cap forms
+     leave a visible notch against a hard left edge at large sizes. */
+  .hang {
+    margin-left: -0.045em;
+  }
+
+  /* Deep, quiet vertical rhythm between major page movements. */
+  .movement {
+    padding-block: clamp(3.5rem, 9vh, 7rem);
+  }
+}
+
+/* ===========================================================================
+   ABOUT — the chrome unwind.
+
+   The reader arrives at a face on paper with nothing competing. The class
+   is added on mount and removed once they've scrolled past the frontispiece.
+   It resolves once and then holds. Reduced-motion users never get it.
+=========================================================================== */
 
 html.about-frontispiece header,
 html.about-frontispiece header * {
@@ -115,8 +296,6 @@ html.about-frontispiece header {
   background-color: transparent;
   border-color: transparent;
   box-shadow: none;
-  /* The navbar carries backdrop-blur-2xl. Without this, a transparent header
-     still lays a blurred band across the top of the portrait. */
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
@@ -125,16 +304,10 @@ html.about-frontispiece header * {
   opacity: 0.18;
 }
 
-/* The wordmark goes to zero rather than 0.18. During the frontispiece it is
-   the one element that says *website*, and it sits directly above the plate
-   caption carrying the same name. It returns with everything else. */
-html.about-frontispiece header a[href='/'] {
+html.about-frontispiece header a[href="/"] {
   opacity: 0;
 }
 
-/* Anything near-invisible must not stay focusable-but-unseen. Keyboard focus
-   or a deliberate hover restores the header immediately — the unwind is an
-   atmosphere, not a lock. */
 html.about-frontispiece header:hover,
 html.about-frontispiece header:focus-within {
   background-color: rgb(var(--paper) / 0.95);
@@ -145,63 +318,20 @@ html.about-frontispiece header:focus-within {
 
 html.about-frontispiece header:hover *,
 html.about-frontispiece header:focus-within *,
-html.about-frontispiece header a[href='/']:focus-visible {
+html.about-frontispiece header a[href="/"]:focus-visible {
   opacity: 1;
 }
 
-/* --------------------------------------------------------------------------- */
+/* ===========================================================================
+   NOW — the stamp settle.
 
-/* Print — the navbar's `fixed` is applied on the element via Tailwind, which
-   beat the old `position: static` on specificity and struck the navbar through
-   the first line of every page after the first. */
-@media print {
-  header {
-    position: static !important;
-    opacity: 1 !important;
-  }
+   The date on the Now page is set as a postmark and presses once on load,
+   resolving to a residual tilt that it keeps. A stamp that lands perfectly
+   square is a UI element; one that lands slightly off is a stamp.
 
-  main {
-    padding-top: 0;
-  }
-
-  /* About's silences are structural on screen and dead paper in print. */
-  [aria-hidden='true'] {
-    display: none;
-  }
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgb(var(--background));
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgb(var(--border));
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--muted-foreground));
-}
-/* ---------------------------------------------------------------------------
-   Now — the stamp settle.
-
-   The date on the Now page is set as a postmark, not as metadata, and it
-   presses once on load: a fraction of scale and rotation resolving to a
-   residual tilt that it keeps. It does not loop, it does not repeat on scroll,
-   and it is the only entrance animation on the page.
-
-   The tilt is held rather than resolved to zero because a stamp that lands
-   perfectly square is a UI element; one that lands slightly off is a stamp.
-
-   Only opacity and transform are animated — no layout property — so this
-   cannot cause a shift. Under reduced motion the element is simply present,
-   still tilted, with no animation at all.
---------------------------------------------------------------------------- */
+   Only opacity and transform animate, so this cannot cause a layout shift.
+   Under reduced motion the element is simply present, still tilted.
+=========================================================================== */
 
 .now-stamp {
   transform: rotate(-0.75deg);
@@ -226,4 +356,57 @@ html.about-frontispiece header a[href='/']:focus-visible {
       transform: rotate(-0.75deg) scale(1);
     }
   }
+}
+
+/* ===========================================================================
+   PRINT
+=========================================================================== */
+
+@media print {
+  header,
+  nav[aria-label="Contents"] {
+    position: static !important;
+    opacity: 1 !important;
+  }
+
+  nav[aria-label="Contents"],
+  [data-texture] {
+    display: none !important;
+  }
+
+  main {
+    padding-top: 0;
+  }
+
+  /* Structural silences on screen are dead paper in print. */
+  [aria-hidden="true"] {
+    display: none;
+  }
+}
+
+/* ===========================================================================
+   SCROLLBAR — themed, thin, and out of the way.
+=========================================================================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--paper));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--hairline));
+  border: 3px solid rgb(var(--paper));
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--graphite));
+}
+
+html {
+  scrollbar-color: rgb(var(--hairline)) rgb(var(--paper));
 }

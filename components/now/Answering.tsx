@@ -29,7 +29,7 @@ import { Pile } from './Pile';
 export function Answering() {
   return (
     <Leaf className="px-6 py-20 md:px-10 md:py-28">
-      <div className="mx-auto w-full max-w-[1400px]">
+      <div className="mx-auto w-full max-w-[62rem]">
         <LeafRow note={<LeafHeading>{answering.heading}</LeafHeading>}>
           <p className="max-w-[36rem] font-reading text-[1.0625rem] leading-[1.75] text-ink md:text-[1.1875rem]">
             {answering.standfirst}

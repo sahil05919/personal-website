@@ -57,7 +57,7 @@ export default function NowPage() {
           sentence rather than a note about one, so a reader meets the page's
           whole idea within about three seconds of arriving. */}
       <Leaf className="px-6 pb-4 md:px-10">
-        <div className="mx-auto w-full max-w-[1400px]">
+        <div className="mx-auto w-full max-w-[62rem]">
           <LeafRow note={<MarginNote tone="change">what changed</MarginNote>}>
             <SeasonProse paragraphs={opening} />
           </LeafRow>

@@ -140,7 +140,7 @@ const SPACING: Record<BecomingItem['kind'], string> = {
 export function Workbench() {
   return (
     <Leaf className="px-6 pb-20 pt-14 md:px-10 md:pb-28 md:pt-16">
-      <div className="mx-auto w-full max-w-[1400px]">
+      <div className="mx-auto w-full max-w-[62rem]">
         <LeafRow note={<LeafHeading>{becoming.heading}</LeafHeading>}>
           <p className="max-w-[36rem] font-reading text-[1.0625rem] leading-[1.75] text-ink md:text-[1.1875rem]">
             {becoming.standfirst}

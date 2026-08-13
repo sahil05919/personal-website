@@ -98,7 +98,7 @@ function pathFor(tone: ChapterTone, h: number): string {
 }
 
 /**
- * The connector is constrained to the same `max-w-lg` measure as the chapter
+ * The connector is constrained to the same `max-w-measure` measure as the chapter
  * body so it centres on the reading column, not on the wider outer container.
  *
  * The line draws in via `pathLength` (0 → 1) rather than the previous
@@ -131,7 +131,7 @@ function Connector({
   const d = pathFor(tone, h);
 
   return (
-    <div className="max-w-lg" aria-hidden="true">
+    <div className="max-w-measure" aria-hidden="true">
       <div className="flex justify-center" style={{ height: h }}>
         <svg width="40" height={h} viewBox={`0 0 40 ${h}`} fill="none">
           <motion.path
@@ -257,7 +257,7 @@ function ChapterArtifact({ id }: { id: string }) {
 
 /**
  * AIR 35 — the page's one "result" register. Breaks the reading measure
- * slightly wider than the surrounding `max-w-lg` prose (a small negative
+ * slightly wider than the surrounding `max-w-measure` prose (a small negative
  * margin, not a full-bleed section) so it reads as a page the reader moves
  * *through* rather than past. No border, no background panel, no badge —
  * an editorial numeral, the same grammar Experience's ledger already uses
@@ -301,7 +301,7 @@ function MarkMoment({ lines }: MarkMomentData) {
       {lines.map((line, i) => (
         <p
           key={i}
-          className="font-serif-display font-medium text-[1.625rem] sm:text-[2rem] leading-snug tracking-tight"
+          className="font-serif-display font-normal text-fluid-claim leading-[1.22] text-balance"
           style={{ color: 'rgb(var(--through-line))' }}
         >
           {line}
@@ -404,15 +404,15 @@ export default function JourneyChapters() {
               aria-labelledby={`chapter-${chapter.id}-title`}
               className={
                 hasMargin
-                  ? 'lg:grid lg:grid-cols-[minmax(0,34rem)_1fr] lg:gap-x-10 xl:gap-x-14 pb-2 scroll-mt-[88px]'
-                  : 'max-w-lg pb-2 scroll-mt-[88px]'
+                  ? 'lg:grid lg:grid-cols-[minmax(0,36rem)_minmax(0,13rem)] lg:gap-x-10 xl:gap-x-14 pb-2 scroll-mt-[88px]'
+                  : 'max-w-measure pb-2 scroll-mt-[88px]'
               }
             >
               {/* The measure lives here so the era label, title and prose
                   share one column and one right edge, on every breakpoint —
                   at `lg` and up this is the grid's first track; below `lg`,
-                  where there's no grid, `max-w-lg` alone does the job. */}
-              <div className="max-w-lg lg:max-w-none">
+                  where there's no grid, `max-w-measure` alone does the job. */}
+              <div className="max-w-measure lg:max-w-none">
                 <div className="flex items-center justify-between mb-4">
                   <span className="font-mono text-[11px] tracking-[0.06em] text-graphite">
                     {chapter.era}
@@ -427,7 +427,7 @@ export default function JourneyChapters() {
 
                 <h2
                   id={`chapter-${chapter.id}-title`}
-                  className="font-serif-display font-medium text-2xl md:text-[1.75rem] leading-snug tracking-tight mb-5"
+                  className="font-serif-display font-normal text-fluid-row leading-[1.2] mb-5 text-balance"
                 >
                   {chapter.title}
                 </h2>
@@ -435,7 +435,7 @@ export default function JourneyChapters() {
                 <div className="space-y-4 mb-6">
                   {chapter.body.map((paragraph, pi) => (
                     <Fragment key={pi}>
-                      <p className="text-[15px] md:text-base leading-relaxed text-ink">
+                      <p className="font-reading text-fluid-read text-ink text-pretty">
                         {paragraph}
                       </p>
                       {chapter.markMoment?.insertAfter === pi && (

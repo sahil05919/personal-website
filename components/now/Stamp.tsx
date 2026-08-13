@@ -23,7 +23,7 @@ import { season, revisionCount } from '@/app/now/now-content';
 export function Stamp() {
   return (
     <header className="px-6 pb-16 pt-14 md:px-10 md:pb-24 md:pt-20">
-      <div className="mx-auto w-full max-w-[1400px]">
+      <div className="mx-auto w-full max-w-[62rem]">
         <div className="lg:grid lg:grid-cols-[9.5rem_minmax(0,46rem)] lg:gap-x-12">
           <div className="mb-8 lg:mb-0 lg:pt-3 lg:text-right">
             <span className="block font-mono text-[0.625rem] uppercase tracking-[0.24em] text-graphite">

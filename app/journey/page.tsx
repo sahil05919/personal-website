@@ -56,8 +56,14 @@ export default function JourneyPage() {
           'radial-gradient(ellipse 900px 480px at 18% -8%, rgb(var(--through-line) / 0.05), transparent 65%)',
       }}
     >
-      <div className="mx-auto max-w-[1400px] px-6 md:px-10 lg:px-14 xl:px-16">
-        <div className="lg:grid lg:grid-cols-[180px_minmax(0,1fr)] lg:gap-x-12 xl:grid-cols-[200px_minmax(0,1fr)] xl:gap-x-16">
+      {/* 76rem, not 1400px. At 1400 the rail sat 200px in from the viewport
+          edge and the narrative — capped at its own reading measure — left
+          roughly 700px of empty paper down the right of every chapter. The
+          frame is now sized to what the page actually contains: a rail, a
+          reading measure, and a margin wide enough for the artifacts. The
+          measure itself is unchanged; only the emptiness around it is. */}
+      <div className="mx-auto max-w-[76rem] px-5 sm:px-8 lg:px-10">
+        <div className="lg:grid lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-x-12 xl:grid-cols-[13rem_minmax(0,1fr)] xl:gap-x-16">
           <aside className="hidden lg:block">
             {/* 112px ≈ navbar (72px) + a little breathing room, so the rail
                 never sits flush under the fixed header. */}

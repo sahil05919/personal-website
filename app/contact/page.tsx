@@ -32,7 +32,7 @@ import { contactContent } from '@/data/contactData';
  * browser-default size in the default font.
  *
  * min-h-screen is no longer needed for length, but stays: body still carries
- * bg-background (#FAFAFA) while the book is set on paper (#F7F6F3), and
+ * bg-paper (#FAFAFA) while the book is set on paper (#F7F6F3), and
  * without it an over-scroll shows the seam.
  */
 export const metadata: Metadata = {

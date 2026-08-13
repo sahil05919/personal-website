@@ -171,7 +171,7 @@ export default function Imprint() {
 
             <motion.p
               variants={rise}
-              className="mt-4 mb-8 md:mb-10 max-w-[34rem] font-reading text-[1.0625rem] leading-[1.7] text-graphite"
+              className="mt-4 mb-8 md:mb-10 max-w-[34rem] font-reading text-fluid-read text-graphite text-pretty"
             >
               {g.line}
             </motion.p>

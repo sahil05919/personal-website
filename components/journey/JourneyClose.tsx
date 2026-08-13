@@ -21,7 +21,7 @@ export default function JourneyClose() {
       <div>
         {/* Constrained to the same measure as the chapters so the resolving
             mark sits on the through-line's axis rather than 5rem to its right. */}
-        <div className="max-w-lg">
+        <div className="max-w-measure">
           <div className="flex justify-center mb-2" aria-hidden="true">
             <svg width="40" height="72" viewBox="0 0 40 72">
               <line
@@ -52,13 +52,13 @@ export default function JourneyClose() {
             variants={fadeUp}
             className="text-center"
           >
-            <p className="font-serif-display italic text-xl md:text-2xl leading-relaxed mx-auto mb-10">
+            <p className="font-serif-display italic text-fluid-claim font-normal leading-[1.35] mx-auto mb-10 text-balance">
               &ldquo;{journeyClose.quote}&rdquo;
             </p>
 
             <div className="space-y-3 max-w-md mx-auto">
               {journeyClose.body.map((paragraph, i) => (
-                <p key={i} className="text-[15px] leading-relaxed text-ink">
+                <p key={i} className="font-reading text-fluid-aside text-ink">
                   {paragraph}
                 </p>
               ))}
