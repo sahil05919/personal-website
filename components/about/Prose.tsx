@@ -95,6 +95,75 @@ const reveal = {
   show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
+/**
+ * THE LEDGER — movement IV, and the only paragraph on this page not set as a
+ * paragraph.
+ *
+ * The stanza is four sentences that begin the same way ("I optimise work. / I
+ * optimise projects. / I optimise decisions. / I optimise the way I organise
+ * my time, my notes and sometimes even my weekends.") and the line that
+ * follows it is "I've never done that with my family."
+ *
+ * Set as four <br />-separated lines in a single block — which is what this
+ * was — the reversal has to do all its own work in the reading, because
+ * nothing on the page has drawn the pattern it reverses. The sentence means:
+ * I keep a ledger for everything except this. So the four are drawn as a
+ * ledger — ruled rows sharing one left edge, bracketed by a vertical rule —
+ * and the turn that follows (rendered by the ordinary `turn` mode, unchanged)
+ * sits OUTSIDE that bracket, further left, in cobalt, with no rule above it,
+ * beneath it or beside it. The entry that was never made.
+ *
+ * The idiom is not imported for this. /about opens on a ledger: the front
+ * matter at the head of the page is already hairline rows with values in
+ * Fraunces. The climax answers the page's own first section rather than
+ * introducing a new language nine paragraphs in.
+ *
+ * The rules draw in, left to right, one after another — the only reason this
+ * block carries motion at all. A ledger being ruled, and then a line that
+ * never gets one. `scaleX`/`scaleY` are transform keys, so MotionConfig's
+ * reducedMotion="user" (app/layout.tsx) renders every rule at full length
+ * instantly and the composition survives intact.
+ *
+ * NOT A TABLE, and deliberately not numbered: indices down the left would
+ * turn four sentences into a checklist, which is a joke this page does not
+ * make about itself.
+ */
+function Ledger({ lines, className }: { lines: string[]; className: string }) {
+  return (
+    <div className="relative pl-6 md:pl-9">
+      {/* The bracket. Spans the entries and stops with them — the turn below
+          begins to the left of where this rule sits. */}
+      <motion.span
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 top-0 w-px origin-top bg-hairline"
+        initial={{ scaleY: 0 }}
+        whileInView={{ scaleY: 1 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      />
+
+      {lines.map((line, index) => (
+        <div key={index} className="relative py-3 md:py-4">
+          <p className={className}>{line}</p>
+
+          <motion.span
+            aria-hidden="true"
+            className="absolute bottom-0 left-0 right-0 h-px origin-left bg-hairline"
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{
+              duration: 0.6,
+              delay: 0.15 + index * 0.12,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Prose({
   paragraphs,
   className = '',
@@ -154,20 +223,24 @@ export function Prose({
                 )
               ) : null}
 
-              <p
-                className={`${styles[mode]} ${
-                  outdented
-                    ? 'max-w-none lg:ml-0'
-                    : 'max-w-[35.5rem] lg:ml-[11.5rem] lg:max-w-[35.5rem]'
-                }`}
-              >
-                {lines.map((line, lineIndex) => (
-                  <span key={lineIndex}>
-                    {line}
-                    {lineIndex < lines.length - 1 && <br />}
-                  </span>
-                ))}
-              </p>
+              {mode === 'stanza' ? (
+                <Ledger lines={lines} className={styles[mode]} />
+              ) : (
+                <p
+                  className={`${styles[mode]} ${
+                    outdented
+                      ? 'max-w-none lg:ml-0'
+                      : 'max-w-[35.5rem] lg:ml-[11.5rem] lg:max-w-[35.5rem]'
+                  }`}
+                >
+                  {lines.map((line, lineIndex) => (
+                    <span key={lineIndex}>
+                      {line}
+                      {lineIndex < lines.length - 1 && <br />}
+                    </span>
+                  ))}
+                </p>
+              )}
             </motion.div>
           );
         })}

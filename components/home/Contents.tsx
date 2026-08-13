@@ -7,6 +7,7 @@ import { homeContent } from '@/data/homeContent';
 import { destinations } from '@/data/navigation';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 import Column from './Column';
+import { PageMark } from './PageMark';
 import { full, measure, sectionY } from './rhythm';
 
 /**
@@ -27,8 +28,17 @@ import { full, measure, sectionY } from './rhythm';
  * down from the figure, and the stations are simply the points on it where
  * something is written.
  *
- * Nothing on this page moves on hover. The station fills and the title takes
- * the through-line colour; that is a colour change and nothing else.
+ * Nothing on this page moves on hover. The station fills, the title takes the
+ * through-line colour, and the row's mark takes it with them; that is a colour
+ * change and nothing else.
+ *
+ * THE MARKS. Each row carries a miniature of the destination page's own visual
+ * motif — see components/home/PageMark.tsx for what each one is and why it is
+ * that and not an icon. They sit at the right end of the title's line, in the
+ * slack the row already had, so the reading column is unchanged and the marks
+ * form their own column down the right-hand edge. They inherit the row's
+ * colour rather than carrying their own, which is what keeps the hover a
+ * single gesture instead of a second thing happening.
  */
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -78,9 +88,20 @@ export default function Contents() {
                     <span className="h-[7px] w-[7px] rounded-full border border-hairline bg-paper transition-colors duration-200 group-hover:border-through-line group-hover:bg-through-line" />
                   </span>
 
-                  <h3 className="font-serif-display text-fluid-row font-medium transition-colors duration-200 group-hover:text-through-line">
-                    {destination.label}
-                  </h3>
+                  <div className="flex items-center justify-between gap-6">
+                    <h3 className="font-serif-display text-fluid-row font-medium transition-colors duration-200 group-hover:text-through-line">
+                      {destination.label}
+                    </h3>
+
+                    {/* Apparatus weight at rest — graphite at 45% sits below
+                        the invitation line beneath it, which is where a mark
+                        belongs relative to writing. It resolves to the
+                        through-line on hover alongside the title and the
+                        station. */}
+                    <span className="text-graphite/45 transition-colors duration-200 group-hover:text-through-line">
+                      <PageMark href={destination.href} />
+                    </span>
+                  </div>
 
                   {invitation ? (
                     <p
