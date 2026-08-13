@@ -1,8 +1,9 @@
 'use client';
 
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 
 import { homeContent } from '@/data/homeContent';
+import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 import ResolveFigure, { FIGURE_TALL, FIGURE_WIDE } from './ResolveFigure';
 import { full, gutter, shell } from './rhythm';
 
@@ -44,7 +45,7 @@ const arrivalItem: Variants = {
 };
 
 export default function Frontispiece() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
 
   return (
     <section

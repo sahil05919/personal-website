@@ -54,6 +54,7 @@
 
 import type { Metadata } from "next";
 import Image from "next/image";
+import { Reveal } from "@/components/motion/Reveal";
 import {
   chapterLabel,
   dateSlot,
@@ -95,6 +96,83 @@ const LEDE =
 const META = "font-mono text-[11px] text-graphite sm:text-[12px]";
 
 /**
+ * Fallback place for the two entries whose stub omits `place` (both `plain`
+ * tier, so they render with no left-column stub at all). Kept as a small
+ * local lookup rather than parsed out of `attribution`'s free text, which
+ * would be one string-format change away from silently breaking.
+ */
+const PLACE_FALLBACK: Record<string, string> = {
+  "jay-bharat-maruti": "Gurgaon",
+  "middlesex-university": "London",
+};
+
+/**
+ * The route. A second apparatus alongside the ledger, reading the same
+ * eleven-stop record as a shape instead of a set of figures: nine years on
+ * one side of a line, everything after on the other. It is not a map and
+ * not a calendar — points sit in the order the chapter tells them, which is
+ * occasionally not chronological (Unitemps runs behind St Luke's in date but
+ * after it in the text, on purpose — see the note in experience-content.ts),
+ * because this diagram is illustrating the essay's own sequence, not
+ * relitigating it against a calendar.
+ *
+ * Two lanes only — India/remote above, London below — because that is the
+ * one geographic fact the whole chapter turns on. The single diagonal
+ * segment is the hinge drawn as a line instead of only stated in prose; it
+ * lands on the same entry (`enhanceer`) that `hinge.after` already names, so
+ * the two devices cannot disagree with each other.
+ */
+function RouteDiagram() {
+  const stops = [
+    { id: "prologue", lane: 0 as const },
+    ...entries.map((entry) => ({
+      id: entry.id,
+      lane: (entry.place ?? PLACE_FALLBACK[entry.id]) === "London" ? 1 : (0 as 0 | 1),
+    })),
+  ];
+
+  const W = 880;
+  const H = 64;
+  const xPad = 4;
+  const upperY = 14;
+  const lowerY = 50;
+  const usableWidth = W - xPad * 2;
+  const x = (i: number) => xPad + (usableWidth * i) / (stops.length - 1);
+  const y = (lane: 0 | 1) => (lane === 0 ? upperY : lowerY);
+
+  const line = "rgb(var(--through-line))";
+  const path = stops
+    .map((s, i) => `${i === 0 ? "M" : "L"}${x(i)},${y(s.lane)}`)
+    .join(" ");
+
+  const hingeIndex = stops.findIndex((s) => s.id === "enhanceer");
+
+  return (
+    <div className="mt-10 sm:mt-12" aria-hidden="true">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="presentation">
+        <path d={path} stroke={line} strokeWidth="1.25" fill="none" opacity="0.5" />
+        {stops.map((s, i) => (
+          <circle
+            key={s.id}
+            cx={x(i)}
+            cy={y(s.lane)}
+            r={i === hingeIndex ? 3.5 : 2}
+            fill={i === hingeIndex ? "rgb(var(--paper))" : line}
+            stroke={line}
+            strokeWidth={i === hingeIndex ? 1.5 : 0}
+            opacity={i === hingeIndex ? 1 : 0.55}
+          />
+        ))}
+      </svg>
+      <div className="mt-1.5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.1em] text-graphite sm:text-[11px]">
+        <span>Mahendragarh &rarr; Ahmedabad</span>
+        <span>London</span>
+      </div>
+    </div>
+  );
+}
+
+/**
  * The opening plate. Right-aligned figures against left-aligned glosses — a
  * ledger, which is both the correct editorial form and, given the current job,
  * quietly apt.
@@ -115,9 +193,13 @@ const META = "font-mono text-[11px] text-graphite sm:text-[12px]";
 function Ledger() {
   return (
     <dl className="m-0 p-0">
-      {ledger.map((row) => (
-        <div
+      {ledger.map((row, i) => (
+        <Reveal
           key={row.figure}
+          index={i}
+          step={0.06}
+          duration={0.5}
+          margin="-60px"
           style={
             {
               "--fig": `${row.scale}px`,
@@ -132,7 +214,7 @@ function Ledger() {
           <dd className="m-0 font-reading text-[15px] leading-[1.45] text-graphite sm:text-[17px]">
             {row.gloss}
           </dd>
-        </div>
+        </Reveal>
       ))}
     </dl>
   );
@@ -190,16 +272,28 @@ function Entry({
               wider than its own prose and the only element reaching the
               container's right edge, which is what makes it an event.
               `sizes` is expressed in terms of rendered width; a hardcoded pixel
-              value was a live bug on /media. */}
+              value was a live bug on /media.
+
+              Reveals on scroll and gains a faint hover-scale — the same
+              restrained "image responds to touch" language used on Media and
+              Projects, added here as part of the sitewide motion pass. The
+              scale lives on the <Image>, the border/margin/overflow-hidden on
+              its wrapper, so the crop never grows past its frame. */}
           {entry.image && entry.imageAfterParagraph === index && (
-            <Image
-              src={entry.image.src}
-              alt={entry.image.alt}
-              width={entry.image.width}
-              height={entry.image.height}
-              sizes="(max-width: 640px) 100vw, 880px"
-              className="my-10 h-auto w-full border border-hairline bg-hairline sm:my-14 sm:max-w-[880px]"
-            />
+            <Reveal
+              as="div"
+              margin="-80px"
+              className="group my-10 overflow-hidden border border-hairline bg-hairline sm:my-14 sm:max-w-[880px]"
+            >
+              <Image
+                src={entry.image.src}
+                alt={entry.image.alt}
+                width={entry.image.width}
+                height={entry.image.height}
+                sizes="(max-width: 640px) 100vw, 880px"
+                className="h-auto w-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:group-hover:scale-[1.02]"
+              />
+            </Reveal>
           )}
         </div>
       ))}
@@ -293,9 +387,18 @@ export default function ExperiencePage() {
             <span className={`${META} tracking-[0.12em]`}>{dateSlot}</span>
           </div>
 
-          <p className="max-w-[34ch] text-balance font-serif-display text-[32px] font-medium leading-[1.12] text-ink sm:text-[48px]">
+          <Reveal
+            as="p"
+            duration={0.7}
+            margin="0px"
+            className="max-w-[34ch] text-balance font-serif-display text-[32px] font-medium leading-[1.12] text-ink sm:text-[48px]"
+          >
             {standfirst}
-          </p>
+          </Reveal>
+
+          <Reveal as="div" duration={0.7} margin="0px" index={1} step={0.1}>
+            <RouteDiagram />
+          </Reveal>
         </header>
 
         {/* The plate. Two hairlines frame it and are the only rules on the first
@@ -313,9 +416,9 @@ export default function ExperiencePage() {
         </div>
         <div className="border-t border-hairline" />
 
-        <div className="mt-24 sm:mt-40">
+        <Reveal as="div" duration={0.7} margin="-60px" className="mt-24 sm:mt-40">
           <Entry entry={prologue} isPrologue />
-        </div>
+        </Reveal>
 
         <hr className="my-20 border-0 border-t border-hairline sm:my-[120px]" />
 
@@ -334,9 +437,9 @@ export default function ExperiencePage() {
 
             return (
               <div key={entry.id}>
-                <div className={gapClass}>
+                <Reveal as="div" duration={0.6} margin="-12% 0px" className={gapClass}>
                   <Entry entry={entry} />
-                </div>
+                </Reveal>
 
                 {/* The single display line on the page, at the chapter's real
                     hinge: nine years in India end here, everything after is
@@ -347,15 +450,24 @@ export default function ExperiencePage() {
                     aria-hidden because a screen-reader user should not hear the
                     same sentence twice, once as writing and once as display.
 
+                    Given the slightly slower `duration` and larger `y` here
+                    (matching Journey's `settleIn`) — the page's other single-
+                    beat moments (the ledger's opening, the coda's return)
+                    move at the ordinary pace; this one is allowed a fraction
+                    longer because it is the chapter's actual turn.
+
                     This is the most cuttable element in the design. If it reads
                     as decorative, delete this block and the `hinge` export. */}
                 {hinge.after === entry.id && (
-                  <p
+                  <Reveal
+                    as="p"
+                    duration={0.8}
+                    margin="-15%"
                     aria-hidden="true"
                     className="mt-24 font-serif-display text-[26px] font-normal leading-[1.25] text-ink sm:mt-[120px] sm:text-[40px]"
                   >
                     {hinge.line}
-                  </p>
+                  </Reveal>
                 )}
               </div>
             );
@@ -369,12 +481,16 @@ export default function ExperiencePage() {
             prologue's measure so the page closes at the width it opened at. */}
         <section aria-label="Afterword" className="sm:max-w-[720px]">
           {coda.map((paragraph, index) => (
-            <p
+            <Reveal
               key={index}
+              as="p"
+              index={index}
+              step={0.12}
+              margin="-10%"
               className={`${BODY} ${index === 0 ? "" : "mt-[22px] sm:mt-[26px]"}`}
             >
               {paragraph}
-            </p>
+            </Reveal>
           ))}
         </section>
       </div>

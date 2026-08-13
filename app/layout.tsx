@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import "./globals.css";
 import Navbar from "@/components/global/Navbar";
+import { Grain } from "@/components/global/Grain";
+import { PageTransition } from "@/components/global/PageTransition";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 
 const inter = Inter({
@@ -36,9 +38,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             resolve instantly under reduced motion instead of animating. */}
         <MotionConfig reducedMotion="user">
           <ThemeProvider>
+            <Grain />
             <Navbar />
             <main className="pt-[72px]">
-              {children}
+              <PageTransition>{children}</PageTransition>
             </main>
           </ThemeProvider>
         </MotionConfig>

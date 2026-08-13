@@ -3,9 +3,12 @@
 import { motion } from 'framer-motion';
 import { journeyIntro } from '@/data/journeyData';
 
+// Ease unified to the site's signature settle curve (was 'easeOut') as part
+// of the sitewide motion pass — Journey was the one page still on Framer's
+// named easing instead of [0.16, 1, 0.3, 1].
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' as const } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export default function JourneyHero() {

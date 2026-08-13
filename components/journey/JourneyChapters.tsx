@@ -10,10 +10,13 @@ import {
   type MarkMoment as MarkMomentData,
   type MilestoneMoment as MilestoneMomentData,
 } from '@/data/journeyData';
+import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 
+// Ease unified to the site's signature settle curve (was Framer's named
+// 'easeOut') as part of the sitewide motion pass — see JourneyHero.tsx.
 const fadeUp = {
   hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' as const } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 /**
@@ -25,16 +28,28 @@ const fadeUp = {
  */
 const settleIn = {
   hidden: { opacity: 0, y: 22 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' as const } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
-/** How the through-line segment leaving a chapter should read, visually. */
-const SEGMENT_STYLE: Record<ChapterTone, string> = {
-  calm: 'w-[1.5px] bg-through-line/70',
-  building: 'w-[1.5px] bg-through-line/85',
-  rupture: 'w-0 border-l border-dashed border-graphite/50',
-  uncertain: 'w-[1.5px] bg-graphite/40',
-  resolving: 'w-[1.5px] bg-through-line',
+/**
+ * Stroke language per tone. The connector used to be a single vertical bar
+ * that only varied in width, opacity and dash — colour doing all the work.
+ * It now also varies in *shape*: the line a chapter leaves behind is drawn
+ * to read like the chapter itself, not like a progress rail between them.
+ * This is the page's one concession to the brief's "tree with branches"
+ * idea — not a literal tree, which would fight the page's restraint, but a
+ * path whose bend genuinely means something before you've read the next
+ * chapter's heading.
+ */
+const STROKE_STYLE: Record<
+  ChapterTone,
+  { stroke: string; width: number; opacity: number; dash?: string }
+> = {
+  calm: { stroke: 'rgb(var(--through-line))', width: 1.5, opacity: 0.7 },
+  building: { stroke: 'rgb(var(--through-line))', width: 1.5, opacity: 0.85 },
+  rupture: { stroke: 'rgb(var(--graphite))', width: 1.25, opacity: 0.55, dash: '1 5' },
+  uncertain: { stroke: 'rgb(var(--graphite))', width: 1.5, opacity: 0.45 },
+  resolving: { stroke: 'rgb(var(--through-line))', width: 1.75, opacity: 1 },
 };
 
 /**
@@ -49,29 +64,106 @@ const PAUSE_HEIGHT: Record<ChapterPause, number> = {
 };
 
 /**
+ * Each tone gets its own path, built proportionally to the connector's own
+ * height so a `short` (40px) and a `long` (140px) instance of the same tone
+ * still read as the same gesture at different lengths. Every path starts
+ * and ends on the shared centre line (x = 20) so consecutive connectors of
+ * different tones still stack into one continuous spine — only the
+ * *interior* of the line editorialises.
+ *
+ *   calm       — a near-straight run. Nothing to say between these chapters.
+ *   building   — bows out and back: reach, then return, gaining ground.
+ *   rupture    — a sharp lateral kink, dashed either side of it. A line that
+ *                does not simply continue.
+ *   uncertain  — two opposed bows in sequence: a line that keeps changing
+ *                its mind before it arrives anywhere.
+ *   resolving  — starts off-centre and swings deliberately back onto the
+ *                spine, landing precisely on it. Arrival, not drift.
+ */
+function pathFor(tone: ChapterTone, h: number): string {
+  switch (tone) {
+    case 'calm':
+      return `M20,0 C 20,${h * 0.33} 20,${h * 0.67} 20,${h}`;
+    case 'building':
+      return `M20,0 C 27,${h * 0.35} 25,${h * 0.72} 20,${h}`;
+    case 'rupture': {
+      const kink = Math.min(h * 0.22, 9);
+      return `M20,0 L20,${h * 0.4} L${20 + kink},${h * 0.5} L20,${h * 0.6} L20,${h}`;
+    }
+    case 'uncertain':
+      return `M20,0 C 12,${h * 0.22} 28,${h * 0.4} 15,${h * 0.58} C 8,${h * 0.7} 26,${h * 0.86} 20,${h}`;
+    case 'resolving':
+      return `M14,0 C 25,${h * 0.32} 11,${h * 0.62} 20,${h}`;
+  }
+}
+
+/**
  * The connector is constrained to the same `max-w-lg` measure as the chapter
  * body so it centres on the reading column, not on the wider outer container.
  *
- * The bar itself now draws in — scaleY from 0 to 1, transform-origin top —
- * rather than simply fading with the rest of the chapter. This is the one
- * element on the page with its own distinct motion signature (settling vs.
- * drawing), so the two read as different things rather than "everything
- * fades up." Under reduced motion, `scaleY` is a transform-keyed value, so
- * MotionConfig's `reducedMotion="user"` (set in app/layout.tsx) replaces
- * this animation with an instant jump to full length — verified against the
- * installed framer-motion source, not assumed.
+ * The line draws in via `pathLength` (0 → 1) rather than the previous
+ * `scaleY`: a curved path scaled vertically would distort its own bend, so
+ * only an actual stroke-draw reads correctly once the connector stopped
+ * being a straight bar. `pathLength` is not one of framer-motion's
+ * positional keys (checked against the installed motion-dom source), so
+ * MotionConfig's `reducedMotion="user"` does *not* auto-snap it the way it
+ * does `scaleY` elsewhere on this page — reduced motion is handled by hand
+ * here instead, rendering the finished line with no draw animation.
+ *
+ * `branch` marks the three connectors that lead into a chapter with a
+ * promoted moment (AIR 35, the motorcycle's mark, the Bayes milestone): a
+ * short offshoot splits from the main line in its final third and ends in a
+ * small point, a quiet "something happens here" a beat before the reader
+ * reaches it.
  */
-function Connector({ tone, pause }: { tone: ChapterTone; pause: ChapterPause }) {
+function Connector({
+  tone,
+  pause,
+  branch,
+}: {
+  tone: ChapterTone;
+  pause: ChapterPause;
+  branch: boolean;
+}) {
+  const prefersReducedMotion = useReducedMotionSafe();
+  const h = PAUSE_HEIGHT[pause];
+  const style = STROKE_STYLE[tone];
+  const d = pathFor(tone, h);
+
   return (
     <div className="max-w-lg" aria-hidden="true">
-      <div className="flex justify-center" style={{ height: PAUSE_HEIGHT[pause] }}>
-        <motion.div
-          className={`h-full origin-top ${SEGMENT_STYLE[tone]}`}
-          initial={{ scaleY: 0 }}
-          whileInView={{ scaleY: 1 }}
-          viewport={{ once: true, margin: '-10%' }}
-          transition={{ duration: 0.9, ease: 'easeOut' }}
-        />
+      <div className="flex justify-center" style={{ height: h }}>
+        <svg width="40" height={h} viewBox={`0 0 40 ${h}`} fill="none">
+          <motion.path
+            d={d}
+            stroke={style.stroke}
+            strokeWidth={style.width}
+            strokeOpacity={style.opacity}
+            strokeDasharray={style.dash}
+            strokeLinecap="round"
+            initial={prefersReducedMotion ? false : { pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          />
+          {branch && (
+            <motion.g
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: '-10%' }}
+              transition={{ duration: 0.5, delay: prefersReducedMotion ? 0 : 0.6 }}
+            >
+              <path
+                d={`M20,${h * 0.72} L30,${h * 0.84}`}
+                stroke={style.stroke}
+                strokeWidth={1}
+                strokeOpacity={0.5}
+                strokeLinecap="round"
+              />
+              <circle cx="30" cy={h * 0.84} r="1.75" fill={style.stroke} opacity="0.65" />
+            </motion.g>
+          )}
+        </svg>
       </div>
     </div>
   );
@@ -375,7 +467,15 @@ export default function JourneyChapters() {
             </motion.article>
 
             {i < journeyChapters.length - 1 && (
-              <Connector tone={chapter.tone} pause={chapter.pause} />
+              <Connector
+                tone={chapter.tone}
+                pause={chapter.pause}
+                branch={Boolean(
+                  journeyChapters[i + 1].resultMoment ||
+                    journeyChapters[i + 1].markMoment ||
+                    journeyChapters[i + 1].milestone
+                )}
+              />
             )}
           </div>
         );

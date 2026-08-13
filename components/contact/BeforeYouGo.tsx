@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion, type Variants } from 'framer-motion';
+import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { contactContent } from '@/data/contactData';
+import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 
 /**
  * BeforeYouGo — the last thing on the record, behind one deliberate click.
@@ -35,7 +36,7 @@ const SWEEP =
   'transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none';
 
 export default function BeforeYouGo() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const [open, setOpen] = useState(false);
   const { eyebrow, prompt, action, lines } = contactContent.lastNote;
 

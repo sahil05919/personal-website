@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { Question } from "@/data/questions-content";
+import { useReducedMotionSafe } from "@/hooks/use-reduced-motion-safe";
 
 type Props = {
   questions: Question[];
@@ -10,7 +11,7 @@ type Props = {
 };
 
 export default function QuestionsExperience({ questions, intro, closing }: Props) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionSafe();
 
   // One shared reveal used everywhere on the page — deliberately the only
   // motion this page has. No hover states, no repeat triggers: it fires once,
@@ -42,7 +43,12 @@ export default function QuestionsExperience({ questions, intro, closing }: Props
           return (
             <div key={q.id}>
               <motion.section {...reveal} className="mx-auto max-w-[62ch]">
-                <h2 className="font-serif-display text-2xl italic leading-snug text-ink sm:text-3xl">
+                <h2
+                  className={[
+                    "font-serif-display text-2xl italic leading-snug sm:text-3xl",
+                    hasAnswer ? "text-ink" : "text-graphite",
+                  ].join(" ")}
+                >
                   {q.question}
                 </h2>
 
@@ -54,7 +60,14 @@ export default function QuestionsExperience({ questions, intro, closing }: Props
                       </p>
                     ))
                   ) : (
-                    <p className="italic text-graphite">
+                    // Set as apparatus (mono, small, tracked) rather than as
+                    // a paragraph of prose — the six unwritten questions
+                    // were previously six near-identical italic sentences in
+                    // reading type, which read as an unfinished essay rather
+                    // than an intentionally held page. A shorter mono note,
+                    // matched to the dimmed heading above it, reads instead
+                    // like a bookplate: held, not broken.
+                    <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-graphite">
                       Answer coming soon — updating this page as I go.
                     </p>
                   )}

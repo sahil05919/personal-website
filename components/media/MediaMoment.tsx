@@ -60,15 +60,21 @@ function Pane({ image, aspectRatio, sizes, priority, onExpand }: PaneProps) {
       aria-haspopup="dialog"
       onClick={() => onExpand(image)}
       style={{ aspectRatio }}
-      className="relative block w-full cursor-zoom-in overflow-hidden bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+      className="group relative block w-full cursor-zoom-in overflow-hidden bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
     >
+      {/* A faint hover-scale — the same affordance language as Experience's
+          and Projects' photographs, added as part of the sitewide motion
+          pass. It stays inside the frame (overflow-hidden on the button)
+          rather than pushing anything else, and it's the site's one visual
+          hint that this image is more than decoration before the cursor
+          becomes a zoom icon. */}
       <Image
         src={image.src}
         alt={image.alt}
         fill
         sizes={sizes}
         priority={priority}
-        className="object-cover"
+        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:group-hover:scale-[1.035]"
       />
     </button>
   );
@@ -77,9 +83,17 @@ function Pane({ image, aspectRatio, sizes, priority, onExpand }: PaneProps) {
 interface MediaMomentProps {
   moment: MediaMomentType;
   priority?: boolean;
+  /** 1-based position in the sequence, for the frame-number apparatus. */
+  frame?: number;
+  frameCount?: number;
 }
 
-export function MediaMoment({ moment, priority }: MediaMomentProps) {
+export function MediaMoment({
+  moment,
+  priority,
+  frame,
+  frameCount,
+}: MediaMomentProps) {
   const { ref, isVisible } = useRevealOnView<HTMLElement>();
   const { image, secondary, widthPercent, aspectRatio, caption, alignEnd } =
     moment;
@@ -112,7 +126,7 @@ export function MediaMoment({ moment, priority }: MediaMomentProps) {
     <figure
       ref={ref}
       className={[
-        "transition-all duration-700 ease-out motion-reduce:transition-none",
+        "transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
         isVisible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
       ].join(" ")}
     >
@@ -156,10 +170,34 @@ export function MediaMoment({ moment, priority }: MediaMomentProps) {
       </div>
 
       {/* One rule, applied eight times: the caption always follows its
-          photograph. Reflection reads better after the thing it reflects on. */}
-      <figcaption className="mt-4">
+          photograph. Reflection reads better after the thing it reflects on
+          — now true in time as well as in position: the caption's own
+          transition carries a short extra delay, so on arrival the
+          photograph settles a beat before the reflection on it appears. */}
+      <figcaption
+        className={[
+          "mt-4 transition-opacity duration-500 delay-150 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none motion-reduce:delay-0",
+          isVisible ? "opacity-100" : "opacity-0",
+        ].join(" ")}
+      >
+        {/* The frame number — a contact-sheet convention, not a page
+            counter: it marks this photograph's place in the roll rather than
+            in a paginated list, which is the register the whole chapter is
+            already working in ("proof of presence, not a portfolio"). The
+            sequence is already legible from scroll order, so this is
+            aria-hidden rather than announced a second time. */}
+        {frame !== undefined && frameCount !== undefined && (
+          <p
+            aria-hidden="true"
+            className="font-mono text-[10px] tracking-[0.14em] text-muted-foreground/70"
+            style={{ marginLeft: alignEnd ? "auto" : undefined }}
+          >
+            {String(frame).padStart(2, "0")}
+            <span className="opacity-50"> / {String(frameCount).padStart(2, "0")}</span>
+          </p>
+        )}
         <p
-          className="max-w-prose font-reading text-[17px] leading-[1.75] text-foreground"
+          className="mt-1 max-w-prose font-reading text-[17px] leading-[1.75] text-foreground"
           style={{ marginLeft: alignEnd ? "auto" : undefined }}
         >
           {caption}

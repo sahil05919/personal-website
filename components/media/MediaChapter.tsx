@@ -86,6 +86,8 @@ export function MediaChapter() {
             moment={moment}
             // Only the first photograph is above the fold on any viewport.
             priority={index === 0}
+            frame={index + 1}
+            frameCount={count}
           />
         ))}
       </div>

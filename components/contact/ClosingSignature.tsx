@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { contactContent } from '@/data/contactData';
+import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 
 /**
  * ClosingSignature — the mark, the place, and the way back.
@@ -28,7 +29,7 @@ const SWEEP =
   'transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none';
 
 export default function ClosingSignature() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const { signature, place, returnLabel } = contactContent.close;
 
   const settle: Variants = {

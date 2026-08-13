@@ -84,9 +84,9 @@ function imageSizes(image: ProjectImage): string {
 
 function Plate({ image }: { image: ProjectImage }) {
   return (
-    <figure className="my-24 sm:my-32" style={bleed}>
+    <figure className="group my-24 sm:my-32" style={bleed}>
       <div
-        className="relative w-full bg-hairline/40"
+        className="relative w-full overflow-hidden bg-hairline/40"
         style={{ aspectRatio: image.aspectRatio }}
       >
         <Image
@@ -94,7 +94,7 @@ function Plate({ image }: { image: ProjectImage }) {
           alt={image.alt}
           fill
           sizes={imageSizes(image)}
-          className="object-cover"
+          className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:group-hover:scale-[1.025]"
         />
       </div>
       {image.caption && (
@@ -109,11 +109,11 @@ function Plate({ image }: { image: ProjectImage }) {
 function Inset({ image }: { image: ProjectImage }) {
   return (
     <figure
-      className="my-14"
+      className="group my-14"
       style={{ width: `${image.widthPercent ?? 100}%`, maxWidth: "100%" }}
     >
       <div
-        className="relative w-full bg-hairline/40"
+        className="relative w-full overflow-hidden bg-hairline/40"
         style={{ aspectRatio: image.aspectRatio }}
       >
         <Image
@@ -121,7 +121,7 @@ function Inset({ image }: { image: ProjectImage }) {
           alt={image.alt}
           fill
           sizes={imageSizes(image)}
-          className="object-cover"
+          className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:group-hover:scale-[1.035]"
         />
       </div>
       {image.caption && (
@@ -130,6 +130,143 @@ function Inset({ image }: { image: ProjectImage }) {
         </figcaption>
       )}
     </figure>
+  );
+}
+
+/**
+ * The reconciliation chart — a small paired-point plot, sitting above the
+ * table it visualises rather than replacing it.
+ *
+ * FORM. Four years, two figures each (reported vs. reconstructed) and one
+ * year where they disagree by a wide margin. A bar chart from a zero
+ * baseline would waste most of its height on the shared ~11–12.5 range that
+ * every year sits in; what actually matters is the *gap* between the two
+ * figures in a given year, which a bar can't show directly. A dumbbell
+ * (two points, one connecting stroke, no baseline) plots that gap as a
+ * literal distance instead of asking the reader to subtract two bar heights
+ * — and because nothing here reads off a baseline, an un-truncated,
+ * non-zero y-domain is legitimate rather than the usual bar-chart sin.
+ *
+ * COLOUR. Two series, assigned by identity and never re-cycled: graphite
+ * for the reported figure (what was filed), the site's accent for the
+ * reconstructed one (what the analysis rebuilt). The single row that
+ * doesn't reconcile is marked by a wider stroke and a faint ring around
+ * both points — a difference in weight, not a third hue, so the chart
+ * doesn't smuggle in a colour the rest of the site doesn't use for "wrong."
+ *
+ * LABELS. A two-item inline legend (swatch + mono word, not coloured text —
+ * the mark carries identity, the label stays in ink) stands in for axis
+ * titles; year labels sit under each pair; the one residual worth reading
+ * on the chart itself — the 2024 gap — is set beside it in mono. The other
+ * three residuals are already in the table a few lines below and aren't
+ * repeated here.
+ *
+ * DATA. Parsed from `table.rows` at render time rather than re-entered, so
+ * the chart cannot drift from the table it sits above.
+ */
+function ReconciliationChart({ table }: { table: ProjectTable }) {
+  const points = table.rows.map((row, i) => ({
+    year: row[0],
+    reported: parseFloat(row[1]),
+    reconstructed: parseFloat(row[2]),
+    residual: row[3],
+    emphasised: i === table.emphasisRow,
+  }));
+
+  const values = points.flatMap((p) => [p.reported, p.reconstructed]);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const pad = (max - min) * 0.3 || 1;
+  const domainMin = min - pad;
+  const domainMax = max + pad;
+
+  const W = 760;
+  const H = 220;
+  const xPad = 64;
+  const yTop = 26;
+  const yBottom = 168;
+  const usableWidth = W - xPad * 2;
+
+  const x = (i: number) =>
+    points.length > 1 ? xPad + (usableWidth * i) / (points.length - 1) : W / 2;
+  const y = (v: number) =>
+    yBottom - ((v - domainMin) / (domainMax - domainMin)) * (yBottom - yTop);
+
+  const reportedColor = 'rgb(var(--graphite))';
+  const reconstructedColor = 'rgb(var(--through-line))';
+
+  return (
+    <div className="mx-auto w-full" style={{ maxWidth: TABLE_MAX }}>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full"
+        role="img"
+        aria-label="Reported versus reconstructed emissions by year, showing a wide gap in 2024 that the analysis could not fully explain."
+      >
+        {points.map((p, i) => {
+          const cx = x(i);
+          const yReported = y(p.reported);
+          const yReconstructed = y(p.reconstructed);
+          return (
+            <g key={p.year}>
+              {p.emphasised && (
+                <>
+                  <circle cx={cx} cy={yReported} r={7} fill="none" stroke={reportedColor} strokeOpacity={0.25} />
+                  <circle cx={cx} cy={yReconstructed} r={7} fill="none" stroke={reconstructedColor} strokeOpacity={0.3} />
+                </>
+              )}
+              <line
+                x1={cx}
+                y1={yReported}
+                x2={cx}
+                y2={yReconstructed}
+                stroke={reconstructedColor}
+                strokeOpacity={p.emphasised ? 0.55 : 0.28}
+                strokeWidth={p.emphasised ? 1.75 : 1}
+                strokeDasharray={p.emphasised ? undefined : '2 3'}
+              />
+              <circle cx={cx} cy={yReported} r={3.25} fill={reportedColor} />
+              <circle cx={cx} cy={yReconstructed} r={3.25} fill={reconstructedColor} />
+
+              {p.emphasised && (
+                <text
+                  x={cx + 12}
+                  y={(yReported + yReconstructed) / 2 + 4}
+                  className="font-mono"
+                  fontSize="11"
+                  fill="rgb(var(--ink))"
+                >
+                  {p.residual}
+                </text>
+              )}
+
+              <text
+                x={cx}
+                y={H - 8}
+                textAnchor="middle"
+                className="font-mono"
+                fontSize="11"
+                fill="rgb(var(--graphite))"
+              >
+                {p.year}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Inline legend — two swatches, not a boxed key. */}
+      <div className="mt-1 flex items-center gap-6 font-mono text-[11px] uppercase tracking-[0.08em] text-graphite">
+        <span className="flex items-center gap-2">
+          <span className="h-[7px] w-[7px] rounded-full" style={{ backgroundColor: reportedColor }} />
+          {table.columns[1]}
+        </span>
+        <span className="flex items-center gap-2">
+          <span className="h-[7px] w-[7px] rounded-full" style={{ backgroundColor: reconstructedColor }} />
+          {table.columns[2]}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -230,7 +367,10 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
       <Inset image={image} />
     )
   ) : table ? (
-    <ReconciliationTable table={table} />
+    <>
+      <ReconciliationChart table={table} />
+      <ReconciliationTable table={table} />
+    </>
   ) : null;
 
   /** Everything that is not a break sits in this column, centred on the
@@ -248,7 +388,7 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
       className={[
         // The chapter's only motion. No parallax, no scroll-linked type, no
         // progress indicator, no reading-position mechanics.
-        "transition-all duration-[900ms] ease-out motion-reduce:transition-none",
+        "transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
         isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0",
         rhythm.centered ? "text-center" : "",
       ].join(" ")}

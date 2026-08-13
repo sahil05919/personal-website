@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import { homeContent } from '@/data/homeContent';
 import { destinations } from '@/data/navigation';
+import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 import Column from './Column';
 import { full, measure, sectionY } from './rhythm';
 
@@ -33,7 +34,7 @@ import { full, measure, sectionY } from './rhythm';
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function Contents() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
 
   return (
     <section aria-labelledby="contents-heading" className="bg-paper text-ink">

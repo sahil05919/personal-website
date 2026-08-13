@@ -53,7 +53,7 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={closeMenu}
-          className="font-serif-display text-[17px] text-ink transition-opacity duration-300 hover:opacity-80"
+          className="rounded-sm font-serif-display text-[17px] text-ink transition-opacity duration-300 hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
         >
           Sahil Kumar
         </Link>
@@ -70,7 +70,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   aria-current={active ? "page" : undefined}
-                  className={`relative py-2 font-mono text-[11px] uppercase tracking-[0.08em] transition-all duration-300 ${
+                  className={`relative rounded-sm py-2 font-mono text-[11px] uppercase tracking-[0.08em] transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line ${
                     active
                       ? "text-ink"
                       : "text-graphite hover:text-ink"
@@ -100,7 +100,7 @@ export default function Navbar() {
           aria-expanded={isOpen}
           aria-controls="mobile-menu"
           aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-          className="flex h-10 w-10 items-center justify-center rounded-md border border-hairline bg-paper text-ink transition-colors hover:bg-hairline/30 md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-md border border-hairline bg-paper text-ink transition-colors hover:bg-hairline/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-through-line md:hidden"
         >
           {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -127,7 +127,7 @@ export default function Navbar() {
                     href={link.href}
                     onClick={closeMenu}
                     aria-current={active ? "page" : undefined}
-                    className={`rounded-md px-3 py-3 font-mono text-[13px] uppercase tracking-[0.06em] transition-colors ${
+                    className={`rounded-md px-3 py-3 font-mono text-[13px] uppercase tracking-[0.06em] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-through-line ${
                       active
                         ? "bg-hairline/40 text-ink"
                         : "text-graphite hover:bg-hairline/30 hover:text-ink"

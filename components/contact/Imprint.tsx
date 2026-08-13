@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import BrandMark from '@/components/contact/BrandMark';
 import {
   contactInfo,
@@ -8,6 +8,7 @@ import {
   type Channel,
   type MarkName,
 } from '@/data/contactData';
+import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 
 /**
  * Imprint — the doors.
@@ -132,7 +133,7 @@ function ChannelRow({
 }
 
 export default function Imprint() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const { groups, apparatus, walk } = contactContent;
 
   const group: Variants = {

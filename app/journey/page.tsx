@@ -42,7 +42,20 @@ export const metadata: Metadata = {
  */
 export default function JourneyPage() {
   return (
-    <div className="bg-paper text-ink">
+    // A single, fixed-position, barely-perceptible vignette above the hero —
+    // the page's one atmosphere touch, added for the sitewide motion pass.
+    // Warmer and more directional than the sitewide Grain (which is uniform
+    // and identical on every route): a hint of light falling from upper
+    // left, cinematic rather than decorative, gone entirely by the time the
+    // first chapter starts. Background only — no motion, so it costs nothing
+    // extra under reduced motion and nothing at all once scrolled past.
+    <div
+      className="bg-paper bg-no-repeat text-ink"
+      style={{
+        backgroundImage:
+          'radial-gradient(ellipse 900px 480px at 18% -8%, rgb(var(--through-line) / 0.05), transparent 65%)',
+      }}
+    >
       <div className="mx-auto max-w-[1400px] px-6 md:px-10 lg:px-14 xl:px-16">
         <div className="lg:grid lg:grid-cols-[180px_minmax(0,1fr)] lg:gap-x-12 xl:grid-cols-[200px_minmax(0,1fr)] xl:gap-x-16">
           <aside className="hidden lg:block">

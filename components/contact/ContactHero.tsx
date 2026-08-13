@@ -1,7 +1,8 @@
 'use client';
 
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { contactContent } from '@/data/contactData';
+import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 
 /**
  * ContactHero — the endpaper's opening.
@@ -32,7 +33,7 @@ const REVEAL_EASE = [0.16, 1, 0.3, 1] as const;
 const SETTLE_EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function ContactHero() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const { eyebrow, headline, body } = contactContent.hero;
 
   const words = headline.split(' ');
@@ -62,7 +63,7 @@ export default function ContactHero() {
         <motion.p
           initial={prefersReducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.05, ease: 'easeOut' }}
+          transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
           className="font-mono text-[11px] tracking-[0.06em] text-graphite"
         >
           {eyebrow}

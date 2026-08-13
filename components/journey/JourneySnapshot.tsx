@@ -13,9 +13,10 @@ import { journeySnapshot } from '@/data/journeyData';
  * label/value data, the same reasoning Experience's ledger uses elsewhere
  * on the site.
  */
+// Ease unified to the site's signature settle curve — see JourneyHero.tsx.
 const fadeUp = {
   hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export default function JourneySnapshot() {

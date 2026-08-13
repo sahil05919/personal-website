@@ -5,11 +5,11 @@ import {
   animate,
   motion,
   useMotionValue,
-  useReducedMotion,
   useSpring,
   useTransform,
   type MotionValue,
 } from 'framer-motion';
+import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 
 /**
  * Fig. 01 — the resolve.
@@ -321,7 +321,7 @@ export default function ResolveFigure({
   interactive,
   className = '',
 }: ResolveFigureProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const svgRef = useRef<SVGSVGElement>(null);
 
   const finePointer = useFinePointer();

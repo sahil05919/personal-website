@@ -4,14 +4,15 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { journeyClose, journeyExit } from '@/data/journeyData';
 
+// Ease unified to the site's signature settle curve — see JourneyHero.tsx.
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' as const } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 const fadeIn = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { duration: 0.6, ease: 'easeOut' as const } },
+  show: { opacity: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
 export default function JourneyClose() {
@@ -80,7 +81,7 @@ export default function JourneyClose() {
             </p>
             <Link
               href={journeyExit.href}
-              className="font-reading italic text-[15px] md:text-base text-ink underline decoration-hairline underline-offset-4 hover:decoration-through-line transition-colors"
+              className="rounded-sm font-reading italic text-[15px] md:text-base text-ink underline decoration-hairline underline-offset-4 transition-colors hover:decoration-through-line focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
             >
               {journeyExit.line}
             </Link>
