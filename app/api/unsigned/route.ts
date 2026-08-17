@@ -105,10 +105,50 @@ function refuse(status: number, error: string) {
   return Response.json({ ok: false, error }, { status });
 }
 
+/**
+ * Diagnostics for a failed hand-off, and the line this file will not cross.
+ *
+ * The promise on /contact is that nothing is stored and nothing is logged.
+ * That promise is about the READER: their message, their reply address, their
+ * IP. It has never been a promise to run blind — and running blind is exactly
+ * what happened the first time delivery failed in production, where the only
+ * signal was a visitor-facing "The message could not be delivered." and no way
+ * to tell a wrong URL from a rejected key.
+ *
+ * So: the provider's HTTP status and a short slice of the provider's own
+ * response body. Both are the mail service talking about itself. Neither
+ * contains a single character the reader typed.
+ *
+ * If you ever extend this, the test is: could this line reveal who wrote in, or
+ * what they said? If yes, it does not go in.
+ */
+function logDeliveryFailure(detail: string) {
+  console.error(`[unsigned] delivery failed — ${detail}`);
+}
+
 export async function POST(request: Request) {
   const endpoint = process.env.UNSIGNED_ENDPOINT;
   if (!endpoint) {
     return refuse(503, "This form is not connected to anything yet.");
+  }
+
+  /*
+    Validate the endpoint is actually a URL before using it.
+    `fetch("some-access-key")` throws a TypeError that lands in the same catch
+    as a network failure, so pasting the two environment variables into each
+    other's boxes — an easy thing to do, and the first thing to suspect — looked
+    identical to the mail provider being down.
+  */
+  let endpointUrl: URL;
+  try {
+    endpointUrl = new URL(endpoint);
+  } catch {
+    logDeliveryFailure(
+      "UNSIGNED_ENDPOINT is not a valid absolute URL. It should look like " +
+        "https://api.web3forms.com/submit — check the two environment " +
+        "variables have not been swapped.",
+    );
+    return refuse(500, "This form is misconfigured.");
   }
 
   let payload: unknown;
@@ -180,9 +220,24 @@ export async function POST(request: Request) {
     });
 
     if (!delivery.ok) {
+      // The provider's own words about its own refusal. Web3Forms returns 400
+      // with {"success":false,"message":"..."} for a bad or unverified access
+      // key, which is the difference between "your key is wrong" and "the
+      // service is down" — and it is not visible anywhere else.
+      const said = await delivery.text().catch(() => "");
+      logDeliveryFailure(
+        `${endpointUrl.host} returned ${delivery.status}. It said: ${said.slice(0, 300)}`,
+      );
       return refuse(502, "The message could not be delivered.");
     }
-  } catch {
+  } catch (error) {
+    // Never the error object wholesale — a thrown fetch error can carry the
+    // request in some runtimes. Name and message only.
+    const name = error instanceof Error ? error.name : "Error";
+    const message = error instanceof Error ? error.message : "unknown";
+    logDeliveryFailure(
+      `request to ${endpointUrl.host} threw ${name}: ${message}`,
+    );
     return refuse(502, "The message could not be delivered.");
   }
 
