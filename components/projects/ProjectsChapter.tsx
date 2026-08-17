@@ -1,7 +1,51 @@
 import { projectEntries, projectRecord } from "@/data/projectsChapter";
+import {
+  GlanceContents,
+  type GlanceItem,
+} from "@/components/global/GlanceContents";
+import { GlanceRail } from "@/components/global/GlanceRail";
 import { ProjectEntry } from "./ProjectEntry";
 import { ProjectMargin } from "./ProjectMargin";
 import { Seam } from "./Seam";
+
+/**
+ * Shorten an attribution down to something a contents row can hold.
+ *
+ * The full strings are written to close an essay, where a whole clause is
+ * right: "Applied Research Project, MSc Business Analytics, Bayes Business
+ * School, 2025." Dropped into a 64ch contents column they wrapped to a second
+ * line and, on the longest title, forced the title itself into a three-line
+ * stack with the attribution beside it — verified in a screenshot, not
+ * predicted.
+ *
+ * So: the first clause, which is the part that actually distinguishes one
+ * entry from another ("Built for myself", "Group project with USS", "Applied
+ * Research Project"), plus the year if the string ends on one. Everything
+ * between them is the same school named five times.
+ */
+function shortAttribution(attribution: string): string {
+  const clause = attribution.split(",")[0]?.trim().replace(/\.$/, "") ?? "";
+  const year = attribution.match(/(\d{4}(?:[–-][a-z]+)?)\.?\s*$/i)?.[1];
+
+  if (!year) return clause;
+  if (clause.includes(year)) return clause;
+  return `${clause} · ${year}`;
+}
+
+/**
+ * The chapter's contents, built from `projectEntries` rather than typed out —
+ * so an essay added, removed or reordered cannot leave a dead anchor here.
+ *
+ * The marker is the case number the margin already uses. That "Built for
+ * myself" recurs on two of the five is exactly the signal worth showing
+ * somebody deciding where to start.
+ */
+const glanceItems: GlanceItem[] = projectEntries.map((entry, i) => ({
+  id: entry.id,
+  marker: `Case ${String(i + 1).padStart(2, "0")}`,
+  label: entry.title,
+  note: shortAttribution(entry.attribution),
+}));
 
 /**
  * Chapter — Projects.
@@ -86,6 +130,34 @@ export function ProjectsChapter() {
     // overflow-x-clip contains full-bleed plates. `clip`, not `hidden`, so
     // this does not become a scroll container.
     <div className="overflow-x-clip bg-paper">
+      {/*
+        THE RAIL COLUMN.
+
+        The chapter keeps its own centred axis exactly as designed — the
+        <section> below is untouched and still caps at 1320px with the prose
+        centred inside it. What is new is a grid wrapped around it holding a
+        sticky contents rail on the left at `lg` and up.
+
+        This overrides the note in the header above about the left margin being
+        "deliberate whitespace rather than a second rail". That was the right
+        call when the alternative was decoration; it is the wrong call when the
+        alternative is the only way to reach the fourth essay from the first
+        without scrolling back to the top. The whitespace was never the point —
+        not filling it with ornament was.
+      */}
+      <div className="mx-auto max-w-[84rem] lg:px-10">
+        <div className="lg:grid lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-x-10 xl:grid-cols-[13rem_minmax(0,1fr)]">
+          <aside className="hidden lg:block">
+            <div className="sticky top-[112px] pt-[26vh]">
+              <GlanceRail
+                heading="In this chapter"
+                items={glanceItems}
+                summary="The last one is the one I would read."
+              />
+            </div>
+          </aside>
+
+          <div className="min-w-0">
       <section
         aria-labelledby="projects-title"
         className="relative mx-auto max-w-[1320px] px-6 pb-32 sm:px-10 xl:px-16"
@@ -148,6 +220,32 @@ export function ProjectsChapter() {
             </svg>
           </div>
         </header>
+
+        {/* ── At a glance ──
+            Five essays, and until now the only way to find out what they were
+            about was to read them in order. This sits on the same centred axis
+            as the prose, directly under the standfirst, so it is the first
+            thing after the opening rather than a sidebar competing with it —
+            the chapter's own table of contents, at the moment a reader is
+            deciding whether to start.
+
+            It is deliberately NOT the "overview grid" the file header rules
+            out further up: no cards, no thumbnails, no summaries. Five ruled
+            rows of title and attribution, which is apparatus, not a second
+            presentation of the same work. */}
+        {/* Static equivalent, below `lg` only — above it the sticky rail is
+            doing this job and rendering both would list the five essays twice
+            on one screen. */}
+        <div className="mx-auto w-full max-w-[64ch] pb-8 lg:hidden">
+          <GlanceContents
+            heading="In this chapter"
+            note="Five, and the last one is the one I would read."
+            items={glanceItems}
+            // These titles run long enough that some rows fit their
+            // attribution inline and some don't. Below, always.
+            notesBelow
+          />
+        </div>
 
         {/* ── The essays ──
             Seams are per-entry rather than a uniform space-y: the interstitial
@@ -256,6 +354,9 @@ export function ProjectsChapter() {
           </p>
         </section>
       </section>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

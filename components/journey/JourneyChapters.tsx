@@ -2,6 +2,7 @@
 
 import { Fragment } from 'react';
 import { motion } from 'framer-motion';
+import { ChapterOpening } from '@/components/type/ChapterOpening';
 import {
   journeyChapters,
   type ChapterTone,
@@ -435,9 +436,22 @@ export default function JourneyChapters() {
                 <div className="space-y-4 mb-6">
                   {chapter.body.map((paragraph, pi) => (
                     <Fragment key={pi}>
-                      <p className="font-reading text-fluid-read text-ink text-pretty">
-                        {paragraph}
-                      </p>
+                      {/* The first paragraph of each chapter opens on a drop
+                          cap; every one after it is ordinary prose. Nine
+                          chapters, nine openings — the thing that lets a reader
+                          scrolling fast see where each one begins.
+                          ChapterOpening declines on its own where the text is
+                          too short or starts on punctuation. */}
+                      {pi === 0 ? (
+                        <ChapterOpening
+                          text={paragraph}
+                          className="font-reading text-fluid-read text-ink text-pretty"
+                        />
+                      ) : (
+                        <p className="font-reading text-fluid-read text-ink text-pretty">
+                          {paragraph}
+                        </p>
+                      )}
                       {chapter.markMoment?.insertAfter === pi && (
                         <MarkMoment {...chapter.markMoment} />
                       )}

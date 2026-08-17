@@ -24,17 +24,28 @@ export function useRevealOnView<T extends HTMLElement>() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) {
-      setIsVisible(true);
-      return;
-    }
-
     const node = ref.current;
     if (!node) return;
+
+    /*
+      REDUCED MOTION IS HANDLED BY THE OBSERVER, NOT BY AN EARLY setState.
+
+      This used to read the media query first and call setIsVisible(true)
+      synchronously in the effect body when it matched — which is a real
+      cascading render (React flags it: "Avoid calling setState() directly
+      within an effect"), paid on every revealed element on the page by exactly
+      the readers who asked for less work, not more.
+
+      Observing unconditionally reaches the same end state: the element is on
+      screen or it soon will be, the observer fires, and `isVisible` flips once
+      through the same path everyone else uses. What reduced motion actually
+      needs to suppress is the TRANSITION, and that is already handled where it
+      belongs — every consumer of this hook pairs its transition classes with
+      `motion-reduce:transition-none`, so the element simply appears.
+
+      The one behaviour lost is revealing content that never enters the
+      viewport, which was never happening anyway.
+    */
 
     const observer = new IntersectionObserver(
       ([entry]) => {

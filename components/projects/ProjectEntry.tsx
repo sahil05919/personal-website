@@ -7,6 +7,7 @@ import type {
   ProjectTable,
 } from "@/data/projectsChapter";
 import { useRevealOnView } from "@/hooks/use-reveal-on-view";
+import { ChapterOpening } from "@/components/type/ChapterOpening";
 
 /**
  * Evidence mark.
@@ -163,6 +164,39 @@ function Inset({ image }: { image: ProjectImage }) {
  *
  * DATA. Parsed from `table.rows` at render time rather than re-entered, so
  * the chart cannot drift from the table it sits above.
+ *
+ * ---------------------------------------------------------------------------
+ * REBUILT, AUGUST 2026. The form above was right and is kept exactly. Five
+ * things about the execution were not, and every one of them was a real defect
+ * rather than a matter of taste:
+ *
+ *   1. TEXT INSIDE THE SVG. Year labels and the residual were <text> at
+ *      fontSize 11 inside a 760-wide viewBox scaled to the container. On a
+ *      360px phone that is a 0.47 scale factor, so an 11px label rendered at
+ *      roughly five pixels. The marks now live in a scaling coordinate space
+ *      and every piece of TYPE is real DOM text at a real size, positioned as
+ *      a percentage. Nothing on this chart shrinks below its stylesheet size.
+ *
+ *   2. THE EMPHASISED ROW WAS THE FAINTEST. Its connector was drawn at
+ *      strokeOpacity 0.55 while the others sat at 0.28 — technically more
+ *      opaque, but still translucent, so the one mark carrying the finding was
+ *      never at full strength. Emphasis is now full opacity against graphite.
+ *
+ *   3. DASHED CONNECTORS. The three reconciling years were dashed to de-
+ *      emphasise them, which reads as "estimated" or "projected" in every
+ *      other chart a reader has ever seen. They are neither: they are the most
+ *      solid data here. Weight and colour carry the emphasis; the line stays
+ *      solid.
+ *
+ *   4. 6.5px MARKS, NO RING. Below the 8px floor for a marker, and with no
+ *      surface ring the two dots merged into one smudge on exactly the three
+ *      rows whose whole point is that the two figures nearly coincide.
+ *
+ *   5. NO INTERACTION. A static image of four pairs, where three of the four
+ *      residuals were simply not on the chart. Each year is now a hover and
+ *      focus target that states its own gap, so the figure answers the
+ *      question it raises instead of deferring all of it to the table.
+ * ---------------------------------------------------------------------------
  */
 function ReconciliationChart({ table }: { table: ProjectTable }) {
   const points = table.rows.map((row, i) => ({
@@ -170,6 +204,7 @@ function ReconciliationChart({ table }: { table: ProjectTable }) {
     reported: parseFloat(row[1]),
     reconstructed: parseFloat(row[2]),
     residual: row[3],
+    note: row[4] ?? "",
     emphasised: i === table.emphasisRow,
   }));
 
@@ -180,89 +215,115 @@ function ReconciliationChart({ table }: { table: ProjectTable }) {
   const domainMin = min - pad;
   const domainMax = max + pad;
 
-  const W = 760;
-  const H = 220;
-  const xPad = 64;
-  const yTop = 26;
-  const yBottom = 168;
-  const usableWidth = W - xPad * 2;
-
-  const x = (i: number) =>
-    points.length > 1 ? xPad + (usableWidth * i) / (points.length - 1) : W / 2;
-  const y = (v: number) =>
-    yBottom - ((v - domainMin) / (domainMax - domainMin)) * (yBottom - yTop);
-
-  const reportedColor = 'rgb(var(--graphite))';
-  const reconstructedColor = 'rgb(var(--through-line))';
+  /** Value → percentage up from the floor of the plot. */
+  const height = (v: number) =>
+    ((v - domainMin) / (domainMax - domainMin)) * 100;
 
   return (
     <div className="mx-auto w-full" style={{ maxWidth: TABLE_MAX }}>
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        className="w-full"
+      {/*
+        The plot. A row of equal columns, each holding two marks positioned by
+        percentage of the column's height — so the geometry is responsive while
+        the type is not, which is the whole reason this is not an SVG.
+
+        `group//chart` is not used: each column owns its own hover state through
+        CSS `group` scoping, so no React state and no re-render is involved in
+        pointing at a year.
+      */}
+      <div
+        className="flex h-[220px] items-stretch gap-1 sm:gap-2"
         role="img"
-        aria-label="Reported versus reconstructed emissions by year, showing a wide gap in 2024 that the analysis could not fully explain."
+        aria-label="Reported versus reconstructed emissions by year. Three years agree to within a rounding difference; 2024 differs by 1.5 million tonnes, which the analysis could not fully explain."
       >
-        {points.map((p, i) => {
-          const cx = x(i);
-          const yReported = y(p.reported);
-          const yReconstructed = y(p.reconstructed);
+        {points.map((p) => {
+          const low = Math.min(height(p.reported), height(p.reconstructed));
+          const high = Math.max(height(p.reported), height(p.reconstructed));
+
+          /* Colour is identity, fixed per series and never reassigned:
+             graphite is always the filed figure, cobalt always the rebuilt
+             one. Emphasis is carried by weight and opacity instead, so the
+             chart never needs a third hue meaning "wrong". */
           return (
-            <g key={p.year}>
-              {p.emphasised && (
-                <>
-                  <circle cx={cx} cy={yReported} r={7} fill="none" stroke={reportedColor} strokeOpacity={0.25} />
-                  <circle cx={cx} cy={yReconstructed} r={7} fill="none" stroke={reconstructedColor} strokeOpacity={0.3} />
-                </>
-              )}
-              <line
-                x1={cx}
-                y1={yReported}
-                x2={cx}
-                y2={yReconstructed}
-                stroke={reconstructedColor}
-                strokeOpacity={p.emphasised ? 0.55 : 0.28}
-                strokeWidth={p.emphasised ? 1.75 : 1}
-                strokeDasharray={p.emphasised ? undefined : '2 3'}
+            <div
+              key={p.year}
+              tabIndex={0}
+              className="group relative flex-1 rounded-[2px] outline-none focus-visible:ring-2 focus-visible:ring-through-line focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
+            >
+              {/* The connector — the mark that IS the finding. Solid, 2px. */}
+              <span
+                aria-hidden="true"
+                className={`absolute left-1/2 w-[2px] -translate-x-1/2 rounded-full bg-through-line ${
+                  p.emphasised ? "opacity-100" : "opacity-30"
+                }`}
+                style={{ bottom: `${low}%`, height: `${high - low}%` }}
               />
-              <circle cx={cx} cy={yReported} r={3.25} fill={reportedColor} />
-              <circle cx={cx} cy={yReconstructed} r={3.25} fill={reconstructedColor} />
 
-              {p.emphasised && (
-                <text
-                  x={cx + 12}
-                  y={(yReported + yReconstructed) / 2 + 4}
-                  className="font-mono"
-                  fontSize="11"
-                  fill="rgb(var(--ink))"
-                >
-                  {p.residual}
-                </text>
-              )}
+              {/* Reported. The ring is in the surface colour so the two marks
+                  stay separable where they almost coincide. */}
+              <span
+                aria-hidden="true"
+                className="absolute left-1/2 h-[9px] w-[9px] -translate-x-1/2 translate-y-1/2 rounded-full bg-graphite ring-2 ring-paper"
+                style={{ bottom: `${height(p.reported)}%` }}
+              />
 
-              <text
-                x={cx}
-                y={H - 8}
-                textAnchor="middle"
-                className="font-mono"
-                fontSize="11"
-                fill="rgb(var(--graphite))"
+              {/* Reconstructed. */}
+              <span
+                aria-hidden="true"
+                className="absolute left-1/2 h-[9px] w-[9px] -translate-x-1/2 translate-y-1/2 rounded-full bg-through-line ring-2 ring-paper"
+                style={{ bottom: `${height(p.reconstructed)}%` }}
+              />
+
+              {/*
+                The residual. Permanent on the emphasised year — it is the one
+                number the essay turns on and it should never need pointing at.
+                Revealed on hover or focus for the other three, so the chart can
+                answer for itself without printing four numbers at once.
+              */}
+              <span
+                /* translate-y-1/2, matching the dots. With `bottom`
+                   positioning the element's BOTTOM edge sits at the given
+                   percentage, so centring it on that value means moving it
+                   down by half its height, not up. The two marks above use
+                   the same transform for the same reason; a label using the
+                   opposite sign sat half a line high against its own dots. */
+                className={`pointer-events-none absolute left-1/2 ml-3 translate-y-1/2 whitespace-nowrap font-mono text-apparatus-xs uppercase tabular-nums transition-opacity duration-300 ease-editorial motion-reduce:transition-none ${
+                  p.emphasised
+                    ? "text-ink opacity-100"
+                    : "text-graphite opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
+                }`}
+                style={{ bottom: `${(low + high) / 2}%` }}
               >
-                {p.year}
-              </text>
-            </g>
+                {p.residual}
+              </span>
+            </div>
           );
         })}
-      </svg>
+      </div>
 
-      {/* Inline legend — two swatches, not a boxed key. */}
-      <div className="mt-1 flex items-center gap-6 font-mono text-[11px] uppercase tracking-[0.08em] text-graphite">
+      {/* Year labels — real text, outside the scaling box, on the same column
+          grid as the marks above them. */}
+      <div className="mt-3 flex gap-1 sm:gap-2">
+        {points.map((p) => (
+          <span
+            key={p.year}
+            className={`flex-1 text-center font-mono text-apparatus-xs tabular-nums ${
+              p.emphasised ? "text-ink" : "text-graphite"
+            }`}
+          >
+            {p.year}
+          </span>
+        ))}
+      </div>
+
+      {/* Inline legend — two swatches, not a boxed key. Always present, because
+          two series must never be told apart by colour-matching alone. */}
+      <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.08em] text-graphite">
         <span className="flex items-center gap-2">
-          <span className="h-[7px] w-[7px] rounded-full" style={{ backgroundColor: reportedColor }} />
+          <span className="h-[9px] w-[9px] rounded-full bg-graphite" />
           {table.columns[1]}
         </span>
         <span className="flex items-center gap-2">
-          <span className="h-[7px] w-[7px] rounded-full" style={{ backgroundColor: reconstructedColor }} />
+          <span className="h-[9px] w-[9px] rounded-full bg-through-line" />
           {table.columns[2]}
         </span>
       </div>
@@ -356,6 +417,15 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
 
   const measure = MEASURE[rhythm.measure];
   const isolate = new Set(rhythm.isolate ?? []);
+
+  /**
+   * Which paragraph carries the drop cap: the first one that is neither the
+   * standfirst nor a pull-quote — i.e. the first run of ordinary reading type.
+   * -1 when the entry has no such paragraph, in which case nothing gets a cap.
+   */
+  const capIndex = body.findIndex(
+    (_, i) => !(i === 0 && rhythm.lede) && !isolate.has(i),
+  );
   const mediaIndex =
     mediaAfterParagraph !== undefined ? mediaAfterParagraph : body.length - 1;
   const evidenceMarkIndex = evidenceMark?.insertAfter;
@@ -373,9 +443,21 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
     </>
   ) : null;
 
-  /** Everything that is not a break sits in this column, centred on the
-   *  page's single vertical axis. */
-  const Column = ({ children }: { children: React.ReactNode }) => (
+  /*
+    Everything that is not a break sits in this column, centred on the page's
+    single vertical axis.
+
+    A PLAIN FUNCTION, NOT A COMPONENT. This was `const Column = ({children}) =>
+    ...` declared inside the render body, which React flags as "Cannot create
+    components during render": a new component type on every render means React
+    unmounts and remounts the entire subtree each time — losing DOM state and
+    restarting any transition inside it — because it cannot know the two
+    identically-shaped closures are the same component.
+
+    Called as `column(<>…</>)` rather than rendered as `<Column>`, so it is
+    unambiguously a helper that returns markup.
+  */
+  const column = (children: React.ReactNode) => (
     <div className="mx-auto w-full" style={{ maxWidth: measure }}>
       {children}
     </div>
@@ -384,8 +466,14 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
   return (
     <article
       ref={ref}
+      // The anchor the chapter's contents list jumps to. `scroll-mt` clears
+      // the fixed header — globals.css sets that for `:target`, but this is a
+      // same-page hash on an element that is not always the target, so the
+      // margin has to be on the element itself.
+      id={entry.id}
       aria-labelledby={`project-${entry.id}`}
       className={[
+        "scroll-mt-28",
         // The chapter's only motion. No parallax, no scroll-linked type, no
         // progress indicator, no reading-position mechanics.
         "transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
@@ -393,7 +481,8 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
         rhythm.centered ? "text-center" : "",
       ].join(" ")}
     >
-      <Column>
+      {column(
+<>
         {/* Titles are the page's fixed landmarks: one size on every entry,
             large enough to read as a movement beginning rather than as
             slightly bigger text. The essays run from roughly 150 to 500 words
@@ -407,7 +496,8 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
         >
           {title}
         </h2>
-      </Column>
+      </>
+)}
 
       <div className="mt-10 sm:mt-12">
         {body.map((paragraph, i) => {
@@ -429,36 +519,55 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
                 </p>
                 {i === mediaIndex && figure}
                 {i === evidenceMarkIndex && evidenceMark && (
-                  <Column>
+                  column(
+<>
                     <EvidenceMarkBlock lines={evidenceMark.lines} />
-                  </Column>
+                  </>
+)
                 )}
               </div>
             );
           }
 
+          const proseClass = [
+            isLede
+              ? // Standfirst: Fraunces, not Newsreader. Gives a real
+                // three-step hierarchy (title → standfirst → body)
+                // instead of two sizes of the same face.
+                "font-serif-display text-[clamp(1.375rem,2.6vw,1.625rem)] font-normal leading-[1.4] tracking-[-0.01em] text-ink"
+              : "font-reading text-[1.1875rem] leading-[1.8] text-ink",
+            i > 0 ? "mt-7" : "",
+          ].join(" ");
+
           return (
             <div key={i}>
-              <Column>
-                <p
-                  className={[
-                    isLede
-                      ? // Standfirst: Fraunces, not Newsreader. Gives a real
-                        // three-step hierarchy (title → standfirst → body)
-                        // instead of two sizes of the same face.
-                        "font-serif-display text-[clamp(1.375rem,2.6vw,1.625rem)] font-normal leading-[1.4] tracking-[-0.01em] text-ink"
-                      : "font-reading text-[1.1875rem] leading-[1.8] text-ink",
-                    i > 0 ? "mt-7" : "",
-                  ].join(" ")}
-                >
+              {column(
+<>
+                {/*
+                  The drop cap goes on the first paragraph set in the READING
+                  face, which is not always the first paragraph. Three of the
+                  five essays open on a Fraunces standfirst, and a cap inside a
+                  standfirst is two display treatments fighting over the same
+                  four words — so on those entries the cap lands on the
+                  paragraph after it, and on the other two it lands first.
+                  `capIndex` is computed once per entry above.
+                */}
+                {i === capIndex ? (
+                  <ChapterOpening text={paragraph} className={proseClass} />
+                ) : (
+                <p className={proseClass}>
                   {paragraph}
                 </p>
-              </Column>
+                )}
+              </>
+)}
               {i === mediaIndex && figure}
               {i === evidenceMarkIndex && evidenceMark && (
-                <Column>
+                column(
+<>
                   <EvidenceMarkBlock lines={evidenceMark.lines} />
-                </Column>
+                </>
+)
               )}
             </div>
           );
@@ -467,11 +576,13 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
 
       {/* Attribution at the foot, not under the title. A credit line, not a
           header. Mono so it reads as apparatus. */}
-      <Column>
+      {column(
+<>
         <p className="mt-16 font-mono text-[11px] leading-[1.7] tracking-[0.1em] text-graphite">
           {attribution}
         </p>
-      </Column>
+      </>
+)}
     </article>
   );
 }

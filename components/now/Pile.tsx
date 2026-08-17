@@ -98,7 +98,7 @@ export function Pile({ fragments }: { fragments: readonly Fragment[] }) {
                       href={fragment.became.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-4 inline-block font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ink underline decoration-hairline underline-offset-[6px] transition-colors hover:decoration-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                      className="link-rule mt-4 inline-block font-mono text-[0.625rem] uppercase tracking-[0.16em] text-ink"
                     >
                       {fragment.became.label} →
                     </a>

@@ -73,7 +73,7 @@ function Pane({ image, aspectRatio, sizes, priority, onExpand }: PaneProps) {
         The lift on hover is a couple of pixels and half a second: the print
         being picked up, not a card animating.
       */
-      className="group relative block w-full cursor-zoom-in overflow-hidden border border-hairline bg-well shadow-plate transition-shadow duration-700 ease-editorial hover:shadow-lift focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
+      className="plate group relative block w-full cursor-zoom-in overflow-hidden transition-shadow duration-700 ease-editorial hover:shadow-lift focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
     >
       {/* A faint hover-scale — the same affordance language as Experience's
           and Projects' photographs, added as part of the sitewide motion

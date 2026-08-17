@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 
 import PaperSwitch from "@/components/ui/PaperSwitch";
+import Search from "@/components/global/Search";
 import { destinations, isActiveRoute, navigation } from "@/data/navigation";
 
 /**
@@ -163,6 +164,22 @@ export default function Navbar() {
             </AnimatePresence>
           </Link>
 
+          {/*
+            ONE Search, outside both responsive clusters.
+
+            It was first placed inside each of them — the desktop bar and the
+            mobile one — which mounts the component twice, because those
+            clusters are hidden with CSS rather than unmounted. Two instances
+            means two global `/` key listeners and two `fixed inset-0` dialogs
+            opening on top of each other, both grabbing focus. Caught by a
+            strict-mode locator resolving to two elements, not by the build.
+
+            The search mark is useful at every size, so it lives here, once,
+            and the clusters sit beside it.
+          */}
+          <div className="flex items-center gap-4 lg:gap-8">
+            <Search />
+
           {/* ── Desktop contents ─────────────────────────────────────────── */}
           <div className="hidden items-center gap-8 lg:flex">
             <nav aria-label="Primary">
@@ -239,6 +256,7 @@ export default function Navbar() {
                 />
               </span>
             </button>
+          </div>
           </div>
         </div>
 

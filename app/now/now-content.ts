@@ -32,6 +32,8 @@
 // stay as-is.
 // ---------------------------------------------------------------------------
 
+import { publishedForNow } from '@/data/writingData';
+
 /* -------------------------------------------------------------------------- */
 /* Prose with revisions                                                        */
 /* -------------------------------------------------------------------------- */
@@ -74,7 +76,7 @@ export const season = {
   /** The <h1>. The season is the identity of the entry — "Now" is navigation. */
   name: 'Summer 2026',
   /** Present tense on purpose. Not "updated" — "true on". */
-  stamp: 'True on 29 July 2026',
+  stamp: 'True on 16 August 2026',
   /** Increments with each new entry. Entry 01 is the first kept season. */
   entryNo: 'Entry 01',
 } as const;
@@ -137,6 +139,18 @@ export const work = {
       },
       '. Nobody announced that. It just started happening.',
     ],
+    // REAL — the direction was settled in August 2026 after a full review of
+    // what the work has actually been. The struck wording is what this page and
+    // the CV both said until then.
+    [
+      'The other thing that moved this season was quieter and took longer. I stopped ',
+      {
+        struck: 'calling myself a business and data analyst',
+        now: 'aiming at people analytics',
+        until: 'until August 2026',
+      },
+      '. The honest version is that I can write the code and I do not enjoy writing it, I spent three years in HR before any of this, and the work I keep going back to is the kind where the question is about people and the tool is Power BI. It took a lot of drafts to arrive somewhere I could have started.',
+    ],
     [
       'The rest of the season goes into things that are not finished, including the page you are reading. It is being rebuilt underneath you while it is live.',
     ],
@@ -156,12 +170,19 @@ export const work = {
    * publish the thing you would normally quietly delete.
    */
   unfinished: {
-    note: 'Unfinished on this site, 10 August 2026',
+    note: 'Unfinished on this site, 16 August 2026',
     items: [
-      'the CV does not match the Experience page',
-      'Home and Contact are serving an older build',
-      '/writing does not exist yet',
+      'the CV still opens on the old description of me',
+      'nothing on /projects is people analytics yet',
+      // "/writing does not exist yet" was here from 10 August. It exists now,
+      // so the line goes — this list is what is unfinished TODAY, and leaving a
+      // completed item on it to show progress would make every other line
+      // suspect.
       'six questions on /question are unwritten',
+      // This list is about what is INCOMPLETE. What is actively wrong is a
+      // different kind of admission and now has its own leaf, in the back
+      // matter, linked from the imprint on every page.
+      'what is wrong rather than unfinished is on /errata',
     ],
   },
 } as const;
@@ -322,35 +343,17 @@ export const answering = {
     },
   ] satisfies Fragment[],
 
-  /** Published pieces are exits, not the experience. REAL. */
+  /**
+   * Published pieces are exits, not the experience. REAL.
+   *
+   * The list itself now lives in data/writingData.ts, which /writing also
+   * reads. It was five hardcoded entries here and nowhere else, which made
+   * this seasonal page the canonical home of the only permanent thing on it —
+   * so a sixth piece would have had to be added in two places, and eventually
+   * would have been added in one.
+   */
   publishedNote: 'finished, eventually',
-  published: [
-    {
-      text: 'What Happens to Our Childhood Dreams?',
-      href: 'https://www.linkedin.com/pulse/what-happens-our-childhood-dreams-sahil-kumar-w0fze/',
-      source: 'LinkedIn',
-    },
-    {
-      text: 'The Year AI Became Adult',
-      href: 'https://www.linkedin.com/pulse/year-ai-became-adult-sahil-kumar-m0ume/',
-      source: 'LinkedIn',
-    },
-    {
-      text: 'When Was the Last Time You Did Something Without Knowing It Would Work?',
-      href: 'https://www.linkedin.com/pulse/when-last-time-you-did-something-without-knowing-would-sahil-kumar-u4gve/',
-      source: 'LinkedIn',
-    },
-    {
-      text: 'From Haryana to London: My Journey at Bayes Business School',
-      href: 'https://www.bayes.citystgeorges.ac.uk/study/masters/blogs/2024/december/from-haryana-to-london-my-journey-at-bayes-business-school',
-      source: 'Bayes',
-    },
-    {
-      text: 'Student to Student: How to Make the Most of Your Master’s at Bayes',
-      href: 'https://www.bayes.citystgeorges.ac.uk/study/masters/blogs/2025/september/student-to-student-how-to-make-the-most-of-your-masters-at-bayes',
-      source: 'Bayes',
-    },
-  ],
+  published: publishedForNow,
 } as const;
 
 /* -------------------------------------------------------------------------- */
@@ -416,7 +419,7 @@ export const exploring = {
 
 export const close = {
   line: 'This season will pass.',
-  date: '29 July 2026',
+  date: '16 August 2026',
   /** Kept word for word. The best sentence the old page had. */
   cadence:
     'This page changes as life does — no fixed schedule, just whenever the season shifts.',
@@ -440,7 +443,7 @@ export const archive = {
   promise:
     'When this is rewritten, this entry stays. The stamps below are how you get back to it.',
   stamps: [
-    { name: 'Summer 2026', stamped: '29 Jul 2026', current: true },
+    { name: 'Summer 2026', stamped: '16 Aug 2026', current: true },
   ] as SeasonStamp[],
 } as const;
 
@@ -468,4 +471,4 @@ export const revisionCount = countRevisions([
 export const lastUpdated = close.date;
 
 export const seasonLine =
-  'A second London summer: learning the rhythms of Accounts Payable at Middlesex, and rebuilding this site underneath itself.';
+  'A second London summer: Accounts Payable at Middlesex, a direction finally chosen, and this site being rebuilt underneath itself.';

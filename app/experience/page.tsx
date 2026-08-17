@@ -55,6 +55,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Reveal } from "@/components/motion/Reveal";
+import { ChapterOpening } from "@/components/type/ChapterOpening";
+import { GlanceContents, type GlanceItem } from "@/components/global/GlanceContents";
+import { GlanceRail } from "@/components/global/GlanceRail";
 import {
   chapterLabel,
   dateSlot,
@@ -258,15 +261,28 @@ function Entry({
 
   const prose = (
     <div className={measure}>
-      {entry.body.map((paragraph, index) => (
+      {entry.body.map((paragraph, index) => {
+        const paraClass = `${index === 0 ? LEDE : BODY} ${
+          index === 0 ? "mt-7 sm:mt-8" : "mt-[22px] sm:mt-[26px]"
+        }`;
+
+        /*
+          The drop cap goes on the first paragraph in the READING face. Index 0
+          on every entry here is a lede at a larger size, and a cap inside a
+          lede is two display treatments arguing over the same few words — so
+          the cap lands on index 1, the first run of ordinary prose. Entries
+          with only one paragraph get none, which ChapterOpening also decides
+          for itself on length.
+        */
+        const carriesCap = index === 1;
+
+        return (
         <div key={index}>
-          <p
-            className={`${index === 0 ? LEDE : BODY} ${
-              index === 0 ? "mt-7 sm:mt-8" : "mt-[22px] sm:mt-[26px]"
-            }`}
-          >
-            {paragraph}
-          </p>
+          {carriesCap ? (
+            <ChapterOpening text={paragraph} className={paraClass} />
+          ) : (
+            <p className={paraClass}>{paragraph}</p>
+          )}
 
           {/* The photograph, if it exists. Breaks to the full 880px plate —
               wider than its own prose and the only element reaching the
@@ -296,7 +312,8 @@ function Entry({
             </Reveal>
           )}
         </div>
-      ))}
+        );
+      })}
 
       <p className={`${META} mt-8 tracking-[0.02em] sm:mt-10`}>
         {entry.attribution}
@@ -362,10 +379,65 @@ function Entry({
   );
 }
 
+/**
+ * The contents list, built from the same `prologue` and `entries` the page
+ * renders — never a second hand-written list, so an entry added or reordered
+ * cannot leave a dead anchor behind. Every `id` here is an id that exists,
+ * because it is the id the heading is given a few lines further down.
+ *
+ * The prologue leads it, out of chronological order, exactly as it does on the
+ * page: it is dated "since 2011" and sits before a 2018 entry, and the reason
+ * for that is the whole first movement of the chapter.
+ */
+const glanceItems: GlanceItem[] = [
+  {
+    id: prologue.id,
+    marker: "Since 2011",
+    label: prologue.title,
+    note: "Prologue",
+  },
+  ...entries.map((entry) => ({
+    id: entry.id,
+    marker: entry.year ?? "",
+    label: entry.title,
+    note: entry.organisation,
+  })),
+];
+
 export default function ExperiencePage() {
   return (
     <div className="bg-paper">
-      <div className="mx-auto max-w-[880px] px-6 pb-[100px] sm:pb-40">
+      {/*
+        THE FRAME WIDENED, THE MEASURE DID NOT.
+
+        This page was a bare `max-w-[880px]` centred column. It is now that
+        same column sitting in the right-hand track of a two-column grid, with
+        a sticky rail in the left one — the layout /journey has always used,
+        and the reason a reader can jump between entries without scrolling back
+        to the top.
+
+        Nothing about the reading width changed: the inner container is still
+        capped at 880px and every measure inside it is untouched. What changed
+        is the emptiness around it, which is now holding a contents rail.
+
+        Below `lg` the grid collapses and the rail does not render at all —
+        GlanceContents further down is the static equivalent for those sizes.
+      */}
+      <div className="mx-auto max-w-[76rem] px-6 pb-[100px] sm:pb-40 lg:px-10">
+        <div className="lg:grid lg:grid-cols-[12rem_minmax(0,1fr)] lg:gap-x-12 xl:grid-cols-[13rem_minmax(0,1fr)] xl:gap-x-16">
+          <aside className="hidden lg:block">
+            {/* 112px ≈ the navbar plus breathing room, so the rail never sits
+                flush under the fixed header. */}
+            <div className="sticky top-[112px] pt-10 sm:pt-[72px]">
+              <GlanceRail
+                heading="At a glance"
+                items={glanceItems}
+                summary="Fifteen years, mostly not chosen."
+              />
+            </div>
+          </aside>
+
+          <div className="min-w-0 max-w-[880px]">
         {/* Header. /now convention: mono chapter label, mono date slot, Fraunces
             standfirst. The <h1> is the small label — the standfirst is a
             statement, not a heading.
@@ -415,6 +487,28 @@ export default function ExperiencePage() {
           <Ledger />
         </div>
         <div className="border-t border-hairline" />
+
+        {/* At a glance. Twelve entries across fifteen years is a lot to ask
+            somebody to start reading on faith, and the ledger above states
+            figures without saying what they belong to. This is the only place
+            on the page where the whole shape is visible at once. */}
+        {/* The static equivalent, below `lg` only — above it the sticky rail
+            in the left column is doing this job and doing it better, and
+            rendering both would state the same twelve entries twice on one
+            screen. Same split /journey makes between JourneyRail and
+            JourneySnapshot. */}
+        <Reveal
+          as="div"
+          duration={0.7}
+          margin="-60px"
+          className="mt-20 sm:mt-28 lg:hidden"
+        >
+          <GlanceContents
+            heading="At a glance"
+            note="Fifteen years, mostly not chosen. Jump to any of it."
+            items={glanceItems}
+          />
+        </Reveal>
 
         <Reveal as="div" duration={0.7} margin="-60px" className="mt-24 sm:mt-40">
           <Entry entry={prologue} isPrologue />
@@ -493,6 +587,8 @@ export default function ExperiencePage() {
             </Reveal>
           ))}
         </section>
+          </div>
+        </div>
       </div>
     </div>
   );

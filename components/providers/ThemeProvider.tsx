@@ -5,16 +5,16 @@ import { MotionConfig } from "framer-motion";
 import { ReactNode } from "react";
 
 /**
- * Three papers, not two.
+ * Five papers, not two.
  *
  * `themes` has to be declared explicitly: next-themes only knows about
- * light/dark unless told otherwise, and without this the Blueprint class is
- * never written to <html>.
+ * light/dark unless told otherwise, and without this the Blueprint, Foxed and
+ * Nocturne classes are never written to <html>.
  *
  * `enableSystem` still resolves the OS preference, but only between Paper and
- * Ink — Blueprint is a deliberate choice and no operating system can ask for
- * it. `defaultTheme="system"` keeps a first-time visitor on whichever of the
- * two their machine already prefers.
+ * Ink — the other three are deliberate choices and no operating system can ask
+ * for one. `defaultTheme="system"` keeps a first-time visitor on whichever of
+ * the two their machine already prefers.
  *
  * `disableTransitionOnChange` is deliberately OFF. globals.css gives `body` a
  * 600ms colour transition so a theme switch reads as paper being changed
@@ -35,7 +35,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
       attribute="class"
       defaultTheme="system"
       enableSystem
-      themes={["light", "dark", "blueprint"]}
+      themes={["light", "dark", "blueprint", "foxed", "nocturne"]}
     >
       <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </NextThemesProvider>

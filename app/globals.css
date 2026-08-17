@@ -8,7 +8,7 @@
    One token set, three inks. Every page, every component and every mark on
    the site reads these variables and nothing else — there is no second
    palette any more, and no `dark:` variant anywhere in the codebase. A theme
-   is a list of eleven numbers, which is the only reason three of them is
+   is a list of ten numbers, which is the only reason three of them is
    maintainable at all.
 
    Each theme is calibrated for sustained Newsreader prose rather than for
@@ -33,12 +33,16 @@
   --hairline: 214 209 199;
 
   --through-line: 29 74 199;
-  --ember: 176 78 42;
 
   --shade: 40 32 20;
 
   /* Grain is barely there on light paper — the paper colour is already
      doing most of the texture work. */
+  /* Warm catch-light below the glyph, a trace of the paper's own shadow
+     above it. */
+  --impress-high: 255 255 255 / 0.8;
+  --impress-low: 40 32 20 / 0.16;
+
   --grain-opacity: 0.04;
   --grain-blend: multiply;
 }
@@ -55,9 +59,13 @@
   --hairline: 51 50 48;
 
   --through-line: 124 162 255;
-  --ember: 228 137 92;
 
   --shade: 0 0 0;
+
+  /* On ink, the lift is the paper one step brighter, not white — white here
+     reads as a glow rather than an edge. */
+  --impress-high: 255 255 255 / 0.055;
+  --impress-low: 0 0 0 / 0.5;
 
   --grain-opacity: 0.055;
   --grain-blend: overlay;
@@ -66,8 +74,8 @@
 .blueprint {
   /* BLUEPRINT — the drawing-office theme. The site is full of diagrams:
      a two-lane route, a reconciliation plot, tone curves, contact-sheet
-     frames. This is the paper those were drawn on. Cyan is the line
-     weight; amber is the annotation. */
+     frames. This is the paper those were drawn on, and cyan is the line
+     weight. */
   --paper: 10 22 42;
   --vellum: 15 31 57;
   --well: 7 17 33;
@@ -77,11 +85,91 @@
   --hairline: 38 62 99;
 
   --through-line: 94 201 255;
-  --ember: 255 179 92;
 
   --shade: 0 8 24;
 
+  --impress-high: 148 200 255 / 0.07;
+  --impress-low: 0 6 18 / 0.55;
+
   --grain-opacity: 0.07;
+  --grain-blend: overlay;
+}
+
+/* ---------------------------------------------------------------------------
+   FIVE PAPERS, NOT THREE (August 2026).
+
+   Three was a light, a dark and a blue, which is a mode switcher wearing a
+   costume. These two are chosen the way you would choose a stock: each is a
+   different KIND of surface with its own ink and its own accent, not a hue
+   rotation of the first one.
+
+   Every value below was contrast-checked against the pairs that matter —
+   ink/paper, graphite/paper, accent/paper, ink/vellum — before it was written
+   here. Foxed's graphite started at #766552 and came in at 4.40:1, under the
+   4.5 floor for secondary text, and was darkened to #6B5B49 (5.14:1) rather
+   than shipped. If you retune a value, re-check it; a theme that only looks
+   right is a theme that some readers cannot use.
+--------------------------------------------------------------------------- */
+
+.foxed {
+  /* FOXED — an old book. "Foxing" is the brown spotting that comes up on aged
+     paper, and this is that page: warm tan ground, sepia-brown ink, and a
+     faded letterpress red where the other themes put a blue.
+
+     It is the theme that most agrees with what this site actually is. The
+     title of the record is "Things I don't want to forget"; this is the stock
+     that thought gets printed on.
+
+     Grain is pushed to 0.06 and multiplied — on a warm ground the texture is
+     doing real work here rather than sitting under the colour. */
+  --paper: 237 227 211;
+  --vellum: 246 239 228;
+  --well: 226 214 194;
+
+  --ink: 42 33 26;
+  --graphite: 107 91 73;
+  --hairline: 209 193 170;
+
+  --through-line: 154 46 32;
+
+  --shade: 74 56 34;
+
+  /* The strongest impression of the five. Aged stock is soft and takes a
+     deeper bite; this is the theme where the effect is meant to be felt. */
+  --impress-high: 255 250 240 / 0.9;
+  --impress-low: 74 56 34 / 0.2;
+
+  --grain-opacity: 0.06;
+  --grain-blend: multiply;
+}
+
+.nocturne {
+  /* NOCTURNE — reading late, by one lamp.
+
+     Deliberately not a second Ink. Ink is a neutral warm charcoal that behaves
+     like paper photographed in the dark; this has a plum cast in the ground and
+     a genuinely warm ivory for the type, so the page reads as lit rather than
+     as unlit. The accent is amber — the only warm accent in the set, and the
+     reason this theme exists rather than being a tint of an existing one.
+
+     Grain is low and overlaid: at this darkness heavy texture reads as noise
+     in the shadows rather than as tooth in the paper. */
+  --paper: 22 19 26;
+  --vellum: 31 27 38;
+  --well: 15 13 19;
+
+  --ink: 237 228 216;
+  --graphite: 158 147 136;
+  --hairline: 58 51 66;
+
+  --through-line: 232 163 61;
+
+  --shade: 0 0 0;
+
+  --impress-high: 255 240 214 / 0.06;
+  --impress-low: 0 0 0 / 0.55;
+
+  --grain-opacity: 0.05;
   --grain-blend: overlay;
 }
 
@@ -135,8 +223,43 @@
                sits on warm paper rather than cutting into it.
       opsz     driven by font-optical-sizing above.
   */
+  /*
+    THE IMPRESSION.
+
+    Letterpress does not sit on paper, it goes into it: the type is pressed and
+    the sheet deforms, so a glyph carries a shadow along its upper edge and
+    catches light along its lower one. That is the difference between ink on a
+    surface and a page you want to touch, and it is the one thing this site was
+    claiming everywhere in words — plate, imprint, colophon, set in — and doing
+    nowhere in pixels.
+
+    OFFSETS ARE IN `em`, WHICH IS THE ENTIRE TRICK. A fixed 1px deboss is
+    invisible on an 88px title and a smear on a 20px one. In em the impression
+    scales with the type, so the same one rule reads correctly on Home's mega
+    title and on a 1.25rem project heading, and nothing has to be tuned per
+    component.
+
+    Display face only. Newsreader carries the reading — thousands of words at
+    17px — and any shadow at all on sustained prose is a legibility tax paid on
+    every line. This never touches it.
+
+    The two colours come from the theme, because a deboss is a lighting effect
+    and lighting depends on the surface: on warm paper the catch-light is warm
+    white, on Nocturne it is a barely-there lift off a plum ground. Getting
+    this wrong is what makes text-shadow look like a 2009 web page.
+  */
   .font-serif-display {
     font-variation-settings: "SOFT" 18, "WONK" 1;
+    text-shadow:
+      0 0.019em 0 rgb(var(--impress-high)),
+      0 -0.011em 0.012em rgb(var(--impress-low));
+  }
+
+  /* Where the display face sits ON something rather than in the page — an
+     accent rule, a coloured mark — the impression is wrong and is removed. */
+  .no-impression,
+  .no-impression .font-serif-display {
+    text-shadow: none;
   }
 
   /* Mono is apparatus. It should never be mistaken for something to read,
@@ -170,89 +293,79 @@
 
 @layer components {
   /* -------------------------------------------------------------------
-     PLATE — a surface raised off the paper.
+     PLATE — a print lying on the page.
 
-     Used for the About facts ledger, the Now workbench, media frames and
-     the contact rows. It is a paper stock change, not a card: one hairline,
-     a soft cast shadow in the theme's own shadow hue, and no radius beyond
-     2px. Rounded corners are what make an editorial page look like a
-     dashboard.
+     A photograph on this site is a physical object tipped onto a leaf, not
+     an image in a grid: one hairline, a soft cast in the theme's own shadow
+     hue, and a 2px radius at most. Rounded corners are what make an
+     editorial page look like a dashboard.
+
+     Its consumers are the photographs, and only the photographs — Media's
+     moments and the Now workbench's prints. It is deliberately NOT used on
+     the About ledger or the Contact rows: both are ruled lists that were
+     specifically un-carded in an earlier pass, and putting them back on a
+     raised surface would reintroduce exactly what was removed.
   ------------------------------------------------------------------- */
   .plate {
     @apply border border-hairline bg-vellum shadow-plate;
     border-radius: 2px;
   }
 
-  /* A surface sunk into the page rather than raised off it. Quotes, errata,
-     anything the page is holding rather than presenting. */
+  /* -------------------------------------------------------------------
+     WELL — the space where a print isn't.
+
+     The counterpart to .plate and the reason both exist. A photograph that
+     has been taken is raised off the paper; a photograph that has not is a
+     recess in it. The Now workbench's empty plates are the only consumer,
+     and the pairing is what makes them read as waiting rather than broken.
+  ------------------------------------------------------------------- */
   .well {
     @apply bg-well shadow-well;
     border-radius: 2px;
   }
 
   /* -------------------------------------------------------------------
-     RULED — feint lines, the way a notebook is ruled.
+     LINK-RULE — the site's one inline-link idiom.
 
-     Sits behind content at very low contrast. The line spacing is tied to
-     the reading leading so text set on top of it lands on the rules.
-  ------------------------------------------------------------------- */
-  .ruled {
-    background-image: linear-gradient(
-      to bottom,
-      transparent calc(2rem - 1px),
-      rgb(var(--hairline) / 0.5) calc(2rem - 1px),
-      rgb(var(--hairline) / 0.5) 2rem
-    );
-    background-size: 100% 2rem;
-  }
+     Seven components had each written this out longhand — `underline
+     decoration-hairline underline-offset-4 transition-colors hover:text-ink
+     hover:decoration-ink` — with small drifts between them in offset and
+     duration. This is that rule, once.
 
-  /* The drawing-office grid. Only ever used as a faint field behind a
-     figure — never behind prose. */
-  .gridded {
-    background-image: linear-gradient(
-        to right,
-        rgb(var(--hairline) / 0.45) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
-        to bottom,
-        rgb(var(--hairline) / 0.45) 1px,
-        transparent 1px
-      );
-    background-size: 2.5rem 2.5rem;
-  }
+     Implemented with text-decoration rather than a positioned ::after. An
+     absolutely-positioned pseudo-element only underlines the first fragment
+     of an inline link that wraps across a line break, and several of these
+     links sit mid-sentence in reading prose where wrapping is normal.
 
-  /* -------------------------------------------------------------------
-     LINK-RULE — the site's one link idiom.
+     It sets no resting colour, deliberately: these links live inside
+     paragraphs that are sometimes graphite and sometimes ink, and the link
+     should belong to its sentence until it is pointed at.
 
-     A hairline that thickens and takes the accent, rather than a colour
-     change. Underlines that already exist and merely change colour read as
-     UI; a rule that grows reads as a mark being made.
+     The hover resolves to ink, not to the accent. On the Now page cobalt is
+     a legend — it means "this stopped being true" and nothing else — and a
+     link that turned cobalt on hover would quietly break the one rule that
+     page is built on.
   ------------------------------------------------------------------- */
   .link-rule {
-    @apply relative text-ink transition-colors duration-300 ease-editorial;
-    text-decoration: none;
-  }
-
-  .link-rule::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -0.15em;
-    height: 1px;
-    background-color: rgb(var(--hairline));
-    transition: background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
-      height 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    text-decoration-line: underline;
+    text-decoration-color: rgb(var(--hairline));
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      text-decoration-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      text-decoration-thickness 300ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .link-rule:hover {
-    color: rgb(var(--through-line));
+    color: rgb(var(--ink));
+    text-decoration-color: rgb(var(--ink));
+    text-decoration-thickness: 1.5px;
   }
 
-  .link-rule:hover::after {
-    height: 1.5px;
-    background-color: rgb(var(--through-line));
+  @media (prefers-reduced-motion: reduce) {
+    .link-rule {
+      transition: none;
+    }
   }
 
   /* The margin label. Every page uses it for its apparatus, and having it
@@ -267,11 +380,6 @@
      leave a visible notch against a hard left edge at large sizes. */
   .hang {
     margin-left: -0.045em;
-  }
-
-  /* Deep, quiet vertical rhythm between major page movements. */
-  .movement {
-    padding-block: clamp(3.5rem, 9vh, 7rem);
   }
 }
 
@@ -354,6 +462,36 @@ html.about-frontispiece header a[href="/"]:focus-visible {
     to {
       opacity: 1;
       transform: rotate(-0.75deg) scale(1);
+    }
+  }
+}
+
+/* ===========================================================================
+   THE SENDING INDICATOR — three dots, breathing.
+
+   Was `.clock-separator`, a blink for the digital clock's colon. That clock is
+   now a pair of dials with hands and has no colon to blink, but the unsigned
+   form on /contact borrowed the class for its "Sending · · ·" state and that
+   use is real. Renamed to what it actually does, so the next person to read it
+   is not looking for a clock.
+
+   A fade rather than a hard blink: an on/off at 1Hz is an alarm clock, and
+   nothing on this site should look like one. Off entirely under reduced
+   motion, where the dots simply sit at full opacity.
+=========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-soft {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.28;
     }
   }
 }

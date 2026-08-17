@@ -114,7 +114,7 @@ export const homeContent = {
       { label: 'GitHub', href: 'https://github.com/sahil05919', external: true },
       {
         label: 'LinkedIn',
-        href: 'https://www.linkedin.com/in/sahil-business-analyst/',
+        href: 'https://www.linkedin.com/in/reach-sahil/',
         external: true,
       },
       { label: 'Contact', href: '/contact', external: false },

@@ -1,5 +1,6 @@
 'use client';
 
+import { ChapterOpening } from '@/components/type/ChapterOpening';
 import { motion } from 'framer-motion';
 
 import type { EssayMode, EssayParagraph } from '@/data/profileContent';
@@ -166,14 +167,44 @@ function Ledger({ lines, className }: { lines: string[]; className: string }) {
 
 export function Prose({
   paragraphs,
+  dropCap = false,
   className = '',
 }: {
   paragraphs: EssayParagraph[];
+  /**
+   * Set a drop cap on this block's first quiet paragraph.
+   *
+   * OFF by default and set only on the opening. This component renders twice
+   * on /about — once for `essay.opening` and once for `essay.coda` — so a cap
+   * decided purely from the paragraph list gave the page TWO of them, one at
+   * the essay's start and one after the Marginalia. Verified by counting them
+   * in the rendered page, not by reading the code.
+   *
+   * The coda is a continuation of the same essay across an interruption, not a
+   * new chapter, and a second capital announces a beginning that is not there.
+   */
+  dropCap?: boolean;
   className?: string;
 }) {
   /** The cobalt cap belongs on the first segment that actually gets drawn,
    *  which is not necessarily the first paragraph — the coda opens on a stanza. */
   const firstSpine = paragraphs.findIndex(({ mode }) => !OUTDENT[mode]);
+
+  /**
+   * Which paragraph carries the drop cap: the first quiet, single-line one —
+   * i.e. the first run of ordinary reading prose. Display lines, the turn and
+   * the ledger are all excluded, so the cap can never land on something already
+   * set at display scale.
+   *
+   * -1 when there is no such paragraph, in which case nothing gets a cap. The
+   * coda opens on a stanza and correctly gets none.
+   */
+  const capIndex = dropCap
+    ? paragraphs.findIndex(
+        ({ mode, text }) =>
+          (mode === 'body' || mode === 'break') && !text.includes('\n'),
+      )
+    : -1;
 
   return (
     <section className={`py-20 md:py-28 ${className}`}>
@@ -225,6 +256,25 @@ export function Prose({
 
               {mode === 'stanza' ? (
                 <Ledger lines={lines} className={styles[mode]} />
+              ) : index === capIndex ? (
+                /*
+                  The essay's opening, and the only drop cap on this page.
+
+                  About was the last long chapter without one. It is also the
+                  most carefully set page on the site, so the cap goes on the
+                  FIRST QUIET PARAGRAPH ONLY — never on a display line, a turn
+                  or the ledger, where a three-line capital would be a second
+                  display treatment arguing with the one already there.
+
+                  `lines.join('\n')` is safe here because ChapterOpening only
+                  ever receives a paragraph that has no internal break: the
+                  multi-line paragraphs on this page are the stanza and the
+                  turn, and both are excluded by `capIndex`.
+                */
+                <ChapterOpening
+                  text={lines.join('\n')}
+                  className={`${styles[mode]} max-w-[35.5rem] lg:ml-[11.5rem] lg:max-w-[35.5rem]`}
+                />
               ) : (
                 <p
                   className={`${styles[mode]} ${

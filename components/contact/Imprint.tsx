@@ -200,7 +200,7 @@ export default function Imprint() {
           {apparatus.telephoneLabel}{' '}
           <a
             href={`tel:${contactInfo.phone.replace(/[^\d+]/g, '')}`}
-            className="underline decoration-hairline underline-offset-4 transition-colors duration-500 hover:text-ink hover:decoration-ink focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-through-line motion-reduce:transition-none"
+            className="link-rule"
           >
             {formatPhone(contactInfo.phone)}
           </a>
@@ -210,7 +210,7 @@ export default function Imprint() {
           <a
             href={`/documents/${contactInfo.resume.fileName}`}
             download
-            className="group underline decoration-hairline underline-offset-4 transition-colors duration-500 hover:text-ink hover:decoration-ink focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-through-line motion-reduce:transition-none"
+            className="link-rule group"
           >
             {apparatus.cvLabel}
             <span

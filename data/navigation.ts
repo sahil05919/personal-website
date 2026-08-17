@@ -18,12 +18,29 @@
 export interface Destination {
   href: string;
   label: string;
+  /**
+   * This chapter ends on a turn of its own, so the sitewide PageTurn suppresses
+   * its "Next" panel and renders only the footer bar beneath it.
+   *
+   * /about is the only one: it closes on a full-bleed hover inversion
+   * (components/about/Exit.tsx) that was the best interaction on the site
+   * before PageTurn existed and is the block PageTurn was generalised FROM.
+   * Rendering both put two turn-page panels to the same destination one above
+   * the other.
+   *
+   * This lived as a hardcoded `Set` of one inside PageTurn, which was the wrong
+   * shape: whether a chapter has its own ending is a fact about the chapter,
+   * not a special case in a component. As data it is declared once, beside the
+   * route it describes, and a second chapter that earns a bespoke ending is a
+   * one-word change rather than an edit to shared navigation logic.
+   */
+  ownExit?: boolean;
 }
 
 /** Canonical order, Home first. */
 export const navigation: Destination[] = [
   { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
+  { href: '/about', label: 'About', ownExit: true },
   { href: '/journey', label: 'Journey' },
   { href: '/now', label: 'Now' },
   { href: '/projects', label: 'Projects' },

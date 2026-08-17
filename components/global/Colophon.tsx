@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import TwoClocks from "@/components/global/TwoClocks";
 import { homeContent } from "@/data/homeContent";
 import { destinations } from "@/data/navigation";
 
@@ -50,6 +51,36 @@ export default function Colophon() {
 
             <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-apparatus-xs uppercase text-graphite">
               <li>&copy; {year}</li>
+              {/* Back matter, and the reason it sits here rather than in the
+                  running head: an index and an errata leaf belong after the
+                  text, beside the imprint, not alongside the chapters. This is
+                  also the one place a reader would think to look for either. */}
+              <li>
+                {/* /a-z, not /index — Next normalises the latter to "/" and
+                    the page silently served Home. See app/a-z/page.tsx. */}
+                <Link
+                  href="/a-z"
+                  className="transition-colors duration-300 ease-editorial hover:text-through-line"
+                >
+                  Index
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/writing"
+                  className="transition-colors duration-300 ease-editorial hover:text-through-line"
+                >
+                  Writing
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/errata"
+                  className="transition-colors duration-300 ease-editorial hover:text-through-line"
+                >
+                  Errata
+                </Link>
+              </li>
               {links.map((link) => (
                 <li key={link.href}>
                   {link.external ? (
@@ -96,10 +127,24 @@ export default function Colophon() {
           </nav>
         </div>
 
-        {/* ── The materials ───────────────────────────────────────────── */}
-        <p className="mt-14 border-t border-hairline pt-5 font-mono text-apparatus-xs uppercase text-graphite/80">
-          Set in Fraunces, Newsreader and JetBrains Mono
-        </p>
+        {/* ── The imprint line: where, and what out of ─────────────────────
+            Two clocks on the left, the materials on the right. Both are the
+            same kind of statement — an imprint records the place a thing was
+            made and the stuff it was made from — so they share one rule and
+            one register. On narrow screens the materials line drops below the
+            clocks rather than squeezing alongside them. */}
+        {/* No top padding on this row: the clocks hang from a cord that starts
+            at the rule itself, so any gap breaks the one detail that makes them
+            read as objects on a wall rather than two icons. The materials line
+            takes its own padding instead. */}
+        <div className="mt-14 flex flex-col gap-10 border-t border-hairline sm:flex-row sm:items-start sm:justify-between sm:gap-10">
+          <TwoClocks />
+
+          <p className="font-mono text-apparatus-xs uppercase leading-[2] text-graphite/80 sm:pt-6 sm:text-right">
+            Set in Fraunces, Newsreader
+            <br className="hidden sm:inline" /> and JetBrains Mono
+          </p>
+        </div>
       </div>
     </footer>
   );

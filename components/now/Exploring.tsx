@@ -60,7 +60,7 @@ export function Exploring() {
                     href={place.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-ink underline decoration-hairline underline-offset-[5px] transition-colors hover:decoration-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                    className="link-rule text-ink"
                   >
                     {place.name}
                   </a>

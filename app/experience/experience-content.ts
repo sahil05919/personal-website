@@ -357,7 +357,11 @@ export const entries: ExperienceEntry[] = [
     tier: "plain",
     year: "2026–present",
     body: [
-      "This came through Unitemps as well, which is the tidiest thing about it — a permanent job at the end of two years of temporary ones, by the same route.",
+      // "a permanent job" until August 2026, which it is not: this is a fixed
+      // contract running to March 2027. The sentence still turns on the same
+      // contrast — a settled thing arriving by the route that had only ever
+      // produced unsettled ones — so only the false word needed replacing.
+      "This came through Unitemps as well, which is the tidiest thing about it — a contract with an end date on it at the end of two years of week-to-week ones, by the same route.",
       "Accounts payable. Invoices through Oracle, coded correctly, discrepancies chased down, the payment queue kept moving. Fifty to seventy invoices on an ordinary day, more when it backs up.",
       "It is repetitive and it has to be right. An invoice that is wrong becomes somebody else's problem further down the line, usually a supplier waiting to be paid, so the accuracy is not abstract. I find that I like it.",
       // "I have been here four months" is a live temporal claim. It will need

@@ -11,12 +11,24 @@
  *      last page of the record into a job application.
  *
  *   2. "The CV is the same record as the Experience page, compressed to one."
- *      Drafted, then cut, because it is false today. The PDF at
- *      /public/documents/Sahil_Kumar_CV.pdf is an HR / People Analyst CV:
- *      Middlesex dated Jan 2026 against April 2026 on /experience, Enhanceer
- *      Aug 2022–Sep 2023 against Sep 2023–Aug 2024, SolutionTech Jan 2021–
- *      Jul 2022 against Jul 2021–Sep 2023, hiring efficiency 20% against 30%.
- *      Restore it only once the PDF matches.
+ *      Drafted, then cut, and still cut — but for a different reason than the
+ *      one recorded here before.
+ *
+ *      This note used to list four date conflicts between the PDF and
+ *      /experience. Checked against the actual file in August 2026: they are
+ *      gone. The PDF has since been replaced and its dates now agree with the
+ *      Experience page — Middlesex April 2026, Enhanceer Sep 2023–Aug 2024,
+ *      SolutionTech Jul 2021–Aug 2023. The "20% against 30%" was never a
+ *      conflict at all; it was a misreading of "time-to-hire from 30 days to
+ *      20 days", which is one figure, not two.
+ *
+ *      What is still true is smaller and harder to fix in a comment: the PDF
+ *      opens "Business and data analyst with an MSc in Business Analytics",
+ *      leads its skills with SQL and Python, and selects Equinor and the USS
+ *      pension tool as its two projects. That is the positioning this record
+ *      has moved away from. Restore the line when the CV is the people
+ *      analytics one — not before, because the sentence claims the two
+ *      documents are the same record and they currently describe two people.
  *
  *   3. "I believe ambition gives us direction..." Moved out, not lost. Two
  *      closing statements compete; the note under `lastNote` is now the thing
@@ -31,7 +43,7 @@ export const contactInfo = {
   phone: '+447562267371',
   whatsapp: 'https://wa.me/447562267371',
   location: 'London',
-  linkedin: 'https://www.linkedin.com/in/sahil-business-analyst/',
+  linkedin: 'https://www.linkedin.com/in/reach-sahil/',
   github: 'https://github.com/sahil05919',
   instagram: 'https://www.instagram.com/driftwithsahil/',
   resume: { fileName: 'Sahil_Kumar_CV.pdf' },
@@ -63,11 +75,45 @@ export interface ChannelGroup {
   channels: readonly Channel[];
 }
 
+/**
+ * The unsigned note.
+ *
+ * Every other door on this page costs the reader something: an email address
+ * has their name on it, LinkedIn tells him who looked, WhatsApp is a phone
+ * number. This one costs nothing, and the copy has to say so plainly without
+ * turning into a privacy policy — the promise is one sentence, and it is a
+ * promise the implementation actually keeps (app/api/unsigned/route.ts stores
+ * nothing and logs no addresses).
+ *
+ * `reply` is optional and labelled optional twice, because a "way to reply"
+ * field that looks required defeats the entire point of the section.
+ */
+export interface UnsignedContent {
+  eyebrow: string;
+  heading: string;
+  line: string;
+  messageLabel: string;
+  messagePlaceholder: string;
+  replyLabel: string;
+  replyHint: string;
+  action: string;
+  sending: string;
+  /** Shown in place of the form once it has gone. */
+  sentHeading: string;
+  sentLine: string;
+  again: string;
+  /** Used when the request fails for any reason we can't be specific about. */
+  failure: string;
+  /** Shown in place of the controls when no delivery endpoint is configured. */
+  unconfigured: string;
+}
+
 export interface ContactContent {
   meta: { title: string; description: string };
   hero: { eyebrow: string; headline: string; body: readonly string[] };
   groups: readonly ChannelGroup[];
   apparatus: { telephoneLabel: string; cvLabel: string };
+  unsigned: UnsignedContent;
   walk: { eyebrow: string; lines: readonly string[] };
   lastNote: {
     eyebrow: string;
@@ -149,6 +195,27 @@ export const contactContent: ContactContent = {
   apparatus: {
     telephoneLabel: 'By telephone',
     cvLabel: 'Download CV',
+  },
+
+  unsigned: {
+    eyebrow: 'Unsigned',
+    heading: "Or say it without saying who you are.",
+    line: "Every other way of reaching me here comes with your name attached. This one doesn't. Nothing is stored, nothing is logged, and it arrives with no address on it — so if you have something to tell me that you would not put your name to, this is the door for that.",
+    messageLabel: 'Your message',
+    messagePlaceholder: 'Type it here.',
+    replyLabel: 'A way to reply',
+    replyHint:
+      "Optional, and the only thing on this page that would identify you. Leave it empty and I'll have no way to write back — which is a fine thing to choose.",
+    action: 'Send',
+    sending: 'Sending',
+    sentHeading: 'Sent.',
+    sentLine:
+      "It reached me without a name on it. I read all of these, and I don't always know who to thank — so: thank you.",
+    again: 'Send another',
+    failure:
+      "That didn't send, and I'd rather tell you than pretend. Try again in a moment, or use one of the doors above.",
+    unconfigured:
+      "This one isn't connected yet — I'd rather say so than give you a box that swallows what you wrote. Until it is, the nearest thing is",
   },
 
   walk: {

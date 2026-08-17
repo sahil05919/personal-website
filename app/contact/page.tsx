@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import ContactHero from '@/components/contact/ContactHero';
 import Imprint from '@/components/contact/Imprint';
+import Unsigned from '@/components/contact/Unsigned';
 import BeforeYouGo from '@/components/contact/BeforeYouGo';
 import ClosingSignature from '@/components/contact/ClosingSignature';
 import { contactContent } from '@/data/contactData';
@@ -41,10 +42,34 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
+  /*
+    THE SECTION ALWAYS RENDERS. Whether it can actually deliver is a separate
+    question, answered here and passed down.
+
+    The first version of this hid the whole section when `UNSIGNED_ENDPOINT`
+    was unset, on the reasoning that a form which cannot deliver is worse than
+    no form at all. That reasoning was fine and the behaviour was wrong: it
+    meant the section was invisible until an environment variable existed
+    somewhere, so the person who owns the site could not see the thing that had
+    been built for it. A feature you cannot look at is a feature you cannot
+    judge.
+
+    So it renders either way, and when it is not connected it says so in its
+    own voice and points at the email address instead of offering a Send button
+    that would fail. Nobody is invited to compose something and then lose it.
+
+    `UNSIGNED_ENDPOINT` is a plain server variable — read at render, never sent
+    to the browser. Set it in Vercel → Settings → Environment Variables; see
+    app/api/unsigned/route.ts for the two variables and what accepts them.
+  */
+  const unsignedConfigured = Boolean(process.env.UNSIGNED_ENDPOINT);
+
   return (
     <article className="min-h-screen bg-paper text-ink">
       <ContactHero />
       <Imprint />
+
+      <Unsigned configured={unsignedConfigured} />
 
       {/* The breath. Nothing goes in it — the emptiness is the device, and it
           only reads as deliberate because every other gap on the page is

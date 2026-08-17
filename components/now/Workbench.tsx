@@ -43,8 +43,13 @@ function Plate({
   size: 'wide' | 'small';
 }) {
   return (
+    /* `well` — the counterpart to the mount above. A photograph that has been
+       taken sits raised on the paper; one that has not is a recess in it. The
+       dashed edge stays, because that is what says *waiting* rather than
+       *empty*. The tint was a bespoke `bg-ink/[0.015]` doing the same job the
+       theme's own recessed surface already does, in every theme. */
     <div
-      className={`flex items-end border border-dashed border-hairline bg-ink/[0.015] p-4 ${
+      className={`well flex items-end border border-dashed border-hairline p-4 ${
         size === 'wide' ? 'aspect-[3/2]' : 'aspect-square'
       }`}
     >
@@ -65,8 +70,12 @@ function Item({ item }: { item: BecomingItem }) {
       return (
         <figure className={wide ? 'max-w-[46rem]' : 'max-w-[17rem] lg:ml-24'}>
           {item.src ? (
+            /* `plate` — the same mount Media's photographs sit on. A print
+               that exists is a physical object lying on the leaf, and it
+               should be that object on both pages rather than a bare
+               rectangle here and a mounted one there. */
             <div
-              className={`relative overflow-hidden ${
+              className={`plate relative overflow-hidden ${
                 wide ? 'aspect-[3/2]' : 'aspect-square'
               }`}
             >

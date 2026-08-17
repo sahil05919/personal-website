@@ -147,7 +147,14 @@ export const mediaMoments: MediaMoment[] = [
     id: "brighton",
     image: {
       src: "/images/media/brighton.jpg",
-      alt: "Brighton Pier with the sea behind.",
+      // Was "Brighton Pier with the sea behind.", which described a different
+      // photograph from the one in the file — the frame is a figure on a
+      // breakwater with the pier small and distant, not the pier itself. A
+      // screen reader was being told about a picture that isn't here. Recorded
+      // on /errata, where the date it sat wrong is part of the point; the
+      // mismatch was first written down in app/now/now-content.ts on 29 July
+      // 2026 and only fixed on 16 August.
+      alt: "Standing on a breakwater at Brighton, arms out, the pier small in the distance.",
     },
     widthPercent: 60,
     aspectRatio: "4 / 3",

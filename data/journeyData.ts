@@ -345,3 +345,34 @@ export const journeyExit = {
   line: "The story isn't finished. This is simply where it stands today.",
   action: 'See where it stands',
 };
+
+/**
+ * The inverse of `chapterToSnapshotIndex`: glance point → the chapter to jump
+ * to when a reader clicks that year in the rail.
+ *
+ * DERIVED, never hand-written. That map is the editorial judgement; this is a
+ * mechanical consequence of it, so a chapter added or re-anchored there updates
+ * both directions at once. A hand-maintained reverse map is how the two would
+ * eventually disagree, and a glance point that scrolls to the wrong chapter is
+ * exactly the quiet kind of wrongness this site keeps a whole page about.
+ *
+ * Two chapters share point 6 — "The Leap" and "Finding Direction" cover the
+ * same period from two angles — so the FIRST in narrative order wins. A reader
+ * clicking 2024 wants the beginning of that stretch; landing halfway through it
+ * reads as a broken anchor.
+ *
+ * DECLARED HERE, at the foot of the file, and not beside `chapterToSnapshotIndex`
+ * where it belongs conceptually. `journeyChapters` is a `const` declared below
+ * that point, so an initialiser reading it from up there hits the temporal dead
+ * zone and throws at module evaluation — which takes the whole site down, not
+ * just this rail. Position is load-bearing; leave it last.
+ */
+export const snapshotToChapterId: Record<number, string> = (() => {
+  const map: Record<number, string> = {};
+  for (const chapter of journeyChapters) {
+    const point = chapterToSnapshotIndex[chapter.id];
+    if (point === undefined) continue;
+    if (map[point] === undefined) map[point] = chapter.id;
+  }
+  return map;
+})();

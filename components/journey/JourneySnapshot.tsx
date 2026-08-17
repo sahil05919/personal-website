@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { journeySnapshot } from '@/data/journeyData';
+import { journeySnapshot, snapshotToChapterId } from '@/data/journeyData';
 
 /**
  * The mobile/tablet counterpart to JourneyRail. Below `lg` there's no room
@@ -33,13 +33,45 @@ export default function JourneySnapshot() {
           {journeySnapshot.heading}
         </p>
 
-        <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4">
-          {journeySnapshot.points.map((point) => (
-            <div key={point.year}>
-              <dt className="font-mono text-[11px] text-graphite mb-0.5">{point.year}</dt>
-              <dd className="text-[13px] text-ink leading-snug">{point.label}</dd>
-            </div>
-          ))}
+        {/* Each pair jumps to its chapter, exactly as the desktop rail does.
+            Wrapping the <a> around both <dt> and <dd> is not valid — a <dl>
+            may only contain <div>, <dt> and <dd> — so the link sits inside
+            the <dd> and the year moves into it, which keeps the markup legal
+            and still gives a thumb the whole label to hit. */}
+        <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-1">
+          {journeySnapshot.points.map((point, i) => {
+            const chapterId = snapshotToChapterId[i];
+
+            return (
+              <div key={point.year}>
+                <dt className="sr-only">{point.year}</dt>
+                <dd>
+                  {chapterId ? (
+                    <a
+                      href={`#${chapterId}`}
+                      className="group block rounded-[2px] py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-through-line focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                    >
+                      <span className="mb-0.5 block font-mono text-[11px] text-graphite transition-colors duration-300 group-hover:text-through-line">
+                        {point.year}
+                      </span>
+                      <span className="block text-[13px] leading-snug text-ink">
+                        {point.label}
+                      </span>
+                    </a>
+                  ) : (
+                    <span className="block py-2">
+                      <span className="mb-0.5 block font-mono text-[11px] text-graphite">
+                        {point.year}
+                      </span>
+                      <span className="block text-[13px] leading-snug text-ink">
+                        {point.label}
+                      </span>
+                    </span>
+                  )}
+                </dd>
+              </div>
+            );
+          })}
         </dl>
 
         <p className="font-reading italic text-[13px] leading-relaxed text-graphite mt-6">

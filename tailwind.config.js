@@ -29,8 +29,8 @@ module.exports = {
          and every page is on these tokens.
 
          The values themselves live in app/globals.css, once per theme:
-         .theme-paper (light), .dark (Ink), .theme-blueprint. Nothing here
-         knows which theme is active — that is the entire point.
+         `:root, .light` (Paper), `.dark` (Ink) and `.blueprint`. Nothing
+         here knows which theme is active — that is the entire point.
       ------------------------------------------------------------------ */
       colors: {
         /** The page ground. Warm, never pure white, never pure black. */
@@ -47,15 +47,14 @@ module.exports = {
         /** Rules, borders, the spine at rest. */
         hairline: "rgb(var(--hairline) / <alpha-value>)",
 
-        /** The accent. One blue on the whole site. */
-        "through-line": "rgb(var(--through-line) / <alpha-value>)",
         /**
-         * The second accent, and it is rationed. Ember marks the human
-         * register — marginalia, a correction, the sentence that turns.
-         * If it appears more than twice on a page it has stopped meaning
-         * anything.
+         * The accent. One blue on the whole site, and there is deliberately
+         * no second one: a warm counter-accent was defined here and then
+         * used nowhere, which is the same defect as the `boxShadow.premium`
+         * and `StatusChip` this pass removed. If a second accent is ever
+         * genuinely needed, add it at the moment it acquires a consumer.
          */
-        ember: "rgb(var(--ember) / <alpha-value>)",
+        "through-line": "rgb(var(--through-line) / <alpha-value>)",
       },
 
       fontFamily: {

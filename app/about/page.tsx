@@ -27,7 +27,7 @@ export default function AboutPage() {
     <article className="bg-paper text-ink">
       <Masthead />
       <Facts />
-      <Prose paragraphs={aboutContent.essay.opening} />
+      <Prose paragraphs={aboutContent.essay.opening} dropCap />
       <Marginalia />
       <Prose paragraphs={aboutContent.essay.coda} />
       <Exit />

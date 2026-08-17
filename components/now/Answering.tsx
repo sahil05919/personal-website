@@ -85,7 +85,7 @@ export function Answering() {
                   href={piece.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-reading text-[1rem] leading-[1.6] text-ink underline decoration-hairline underline-offset-[5px] transition-colors hover:decoration-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                  className="link-rule font-reading text-[1rem] leading-[1.6] text-ink"
                 >
                   {piece.text}
                 </a>

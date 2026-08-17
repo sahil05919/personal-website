@@ -363,6 +363,18 @@ export const projectEntries: ProjectEntry[] = [
  * flagged per item below. No outcome or description added for either: the
  * old file's language ("centralised", "improved visibility") was template
  * boilerplate, not something to reproduce here.
+ *
+ * ORDER (August 2026) — this list is NOT chronological and never was; it ran
+ * in the order the LinkedIn links arrived. The two people/BI items now lead it
+ * because they are the only entries in the chapter pointing at the direction
+ * the work is actually going, and seventh of eight is where a reader stops.
+ * The six strategy and ML pieces keep their relative order behind them.
+ *
+ * STILL MISSING, and the real gap: no people-analytics project of Sahil's own
+ * exists on this page yet. The HR Analytics Dashboard is coursework. When the
+ * attrition/retention analysis is actually built it belongs in `entries` above
+ * as a sixth essay, not down here as a line — do not add it to either list
+ * before it exists.
  */
 export interface RecordItem {
   title: string;
@@ -371,9 +383,25 @@ export interface RecordItem {
   href?: string;
 }
 
-const LI = "https://www.linkedin.com/in/sahil-business-analyst/overlay/Project";
+const LI = "https://www.linkedin.com/in/reach-sahil/overlay/Project";
 
 export const projectRecord: RecordItem[] = [
+  {
+    title: "HR Analytics Dashboard",
+    // TODO(sahil): context reconstructed from the old file's category field
+    // ("Business Intelligence") — confirm the actual module name if there's
+    // a more specific one.
+    context: "Academic project",
+    year: "2025",
+    // No href supplied for this one — no LinkedIn overlay link exists.
+  },
+  {
+    title: "Business Intelligence Reporting Model",
+    // Context taken directly from the old subtitle ("developed for City
+    // St George's"), so more reliable than the entry above.
+    context: "City St George's, University of London",
+    year: "2025",
+  },
   {
     title: "Enhancing R&D Project Success through Network Analytics",
     context: "MSc Business Analytics",
@@ -409,21 +437,5 @@ export const projectRecord: RecordItem[] = [
     context: "Fashion Brand Management",
     year: "2025",
     href: `${LI}/151924291/treasury/`,
-  },
-  {
-    title: "HR Analytics Dashboard",
-    // TODO(sahil): context reconstructed from the old file's category field
-    // ("Business Intelligence") — confirm the actual module name if there's
-    // a more specific one.
-    context: "Academic project",
-    year: "2025",
-    // No href supplied for this one — no LinkedIn overlay link exists.
-  },
-  {
-    title: "Business Intelligence Reporting Model",
-    // Context taken directly from the old subtitle ("developed for City
-    // St George's"), so more reliable than the entry above.
-    context: "City St George's, University of London",
-    year: "2025",
   },
 ];

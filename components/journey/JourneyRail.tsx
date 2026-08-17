@@ -1,7 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { journeySnapshot, journeyChapters, chapterToSnapshotIndex } from '@/data/journeyData';
+import {
+  journeySnapshot,
+  journeyChapters,
+  chapterToSnapshotIndex,
+  snapshotToChapterId,
+} from '@/data/journeyData';
 
 /**
  * Scroll-spy for the desktop rail. Self-contained: reads the chapter
@@ -71,31 +76,72 @@ export default function JourneyRail() {
           className="absolute left-[3px] top-1 bottom-1 w-px bg-hairline"
           aria-hidden="true"
         />
-        <ol className="relative space-y-2.5">
+        {/*
+          Every point is a link into the chapter it anchors.
+
+          The rail already knew which chapter you were reading and lit the
+          matching year — it just would not take you there, which is the one
+          thing a reader looks at a contents rail and expects. It is a plain
+          in-page anchor: globals.css already sets `scroll-behavior: smooth`
+          and gives `:target` a 96px scroll-margin so the chapter heading
+          clears the fixed header, so no scroll handler is needed and the
+          links keep working with JavaScript unavailable.
+
+          The whole row is the target rather than the year alone — a 7px dot
+          and an 11px number are not a hit area — and the hover state moves
+          the label to ink so the affordance is visible before the click.
+        */}
+        <ol className="relative">
           {journeySnapshot.points.map((point, i) => {
             const isActive = i === activeIndex;
-            return (
-              <li key={point.year} className="flex items-baseline gap-2.5">
+            const chapterId = snapshotToChapterId[i];
+
+            const row = (
+              <>
                 <span
                   className={`h-[7px] w-[7px] rounded-full shrink-0 transition-colors duration-300 ${
-                    isActive ? 'bg-through-line' : 'bg-hairline'
+                    isActive
+                      ? 'bg-through-line'
+                      : 'bg-hairline group-hover:bg-graphite'
                   }`}
                   aria-hidden="true"
                 />
                 <span
                   className={`font-mono text-[11px] tabular-nums transition-colors duration-300 ${
-                    isActive ? 'text-ink' : 'text-graphite/70'
+                    isActive ? 'text-ink' : 'text-graphite/70 group-hover:text-ink'
                   }`}
                 >
                   {point.year}
                 </span>
                 <span
                   className={`text-[12.5px] leading-snug transition-colors duration-300 ${
-                    isActive ? 'text-ink' : 'text-graphite/70'
+                    isActive ? 'text-ink' : 'text-graphite/70 group-hover:text-ink'
                   }`}
                 >
                   {point.label}
                 </span>
+              </>
+            );
+
+            return (
+              <li key={point.year}>
+                {chapterId ? (
+                  <a
+                    href={`#${chapterId}`}
+                    aria-current={isActive ? 'true' : undefined}
+                    className="group flex items-baseline gap-2.5 rounded-[2px] py-[5px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-through-line focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                  >
+                    {row}
+                  </a>
+                ) : (
+                  /* A glance point with no chapter behind it stays plain text
+                     rather than becoming a link to nowhere. None currently
+                     hit this branch; it exists so adding a ninth point cannot
+                     silently ship a dead anchor. */
+                  <span className="group flex items-baseline gap-2.5 py-[5px]">
+                    {row}
+                  </span>
+                )}
               </li>
             );
           })}

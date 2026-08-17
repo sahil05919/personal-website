@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 /**
  * A hydration-safe replacement for Framer Motion's own `useReducedMotion()`.
@@ -15,36 +15,53 @@ import { useEffect, useState } from "react";
  * Playwright's `reducedMotion: 'reduce'` context option during the sitewide
  * motion pass, not a theoretical one.
  *
- * This starts at `false` (matching the server's guess every time, same as
- * a user with no preference set) and only reads the real preference after
- * mount, inside an effect — the same mount-gating already used for the
- * theme toggle (components/ui/ThemeToggle.tsx) for the identical reason: a
- * client-only preference that the server cannot know in advance. The cost
- * is one extra render immediately after mount, before most users register
- * the first paint; the benefit is zero hydration errors for the part of the
- * audience that actually has Reduced Motion on — which is precisely the
- * audience this check exists to serve.
+ * ---------------------------------------------------------------------------
+ * NOW BUILT ON useSyncExternalStore (August 2026)
  *
- * Note this is unrelated to `<MotionConfig reducedMotion="user">`
- * (app/layout.tsx), which stays exactly as it was: it reads the same
- * preference imperatively, inside Framer's animation engine, only once an
- * animation actually starts — well after hydration — so it was never at
- * risk of this mismatch. This hook exists only for the handful of
- * components that branch their own JSX or variants on the preference
- * directly (Home's Frontispiece/Contents/ResolveFigure, Contact's four
- * components, Questions), which is where the mismatch was reproduced.
+ * The previous version was `useState(false)` plus an effect that called
+ * `setReduced(query.matches)` on mount. That produced the right answer and the
+ * right hydration behaviour, and it was also a setState called synchronously
+ * inside an effect body — a cascading render, and the last outstanding lint
+ * error in the codebase.
+ *
+ * `matchMedia` is an external store. It has a subscribe, it has a snapshot, and
+ * it has a server snapshot that is unambiguously `false` — which is precisely
+ * the contract this hook needs, because `false` is exactly the guess the server
+ * has to make for hydration to match. React subscribes without a render pass,
+ * so the mismatch window closes and the extra render disappears.
+ *
+ * ResolveFigure already reads its pointer-capability query this way, for the
+ * same reason. This makes the two consistent.
+ *
+ * Note this is unrelated to `<MotionConfig reducedMotion="user">` (see
+ * components/providers/ThemeProvider.tsx), which reads the same preference
+ * imperatively inside Framer's animation engine, only once an animation starts
+ * — well after hydration — so it was never at risk of this mismatch. This hook
+ * exists only for the components that branch their own JSX or variants on the
+ * preference directly.
  */
+
+const QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribe(onChange: () => void) {
+  const query = window.matchMedia(QUERY);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
+function getSnapshot(): boolean {
+  return window.matchMedia(QUERY).matches;
+}
+
+/**
+ * The server cannot know the preference, and `false` is the only value that
+ * matches what it renders. Returning `true` here would reintroduce exactly the
+ * hydration mismatch this hook was written to remove.
+ */
+function getServerSnapshot(): boolean {
+  return false;
+}
+
 export function useReducedMotionSafe(): boolean {
-  const [reduced, setReduced] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(query.matches);
-
-    const listener = (event: MediaQueryListEvent) => setReduced(event.matches);
-    query.addEventListener("change", listener);
-    return () => query.removeEventListener("change", listener);
-  }, []);
-
-  return reduced;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
