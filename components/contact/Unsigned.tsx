@@ -72,6 +72,56 @@ const MAX_MESSAGE = 4_000;
 /** Below this many characters remaining, the count appears. */
 const COUNT_FROM = 400;
 
+/**
+ * DELIVERY IS NOW DIRECT FROM THE BROWSER (August 2026).
+ *
+ * This used to POST to /api/unsigned, which forwarded to Web3Forms from the
+ * Vercel function. That worked locally and in every test, and failed in
+ * production: Web3Forms answered the Vercel server with HTTP 403. Their API is
+ * built for browser submissions and treats a datacentre IP as something to
+ * refuse. No amount of environment-variable debugging was going to change
+ * that — it was the wrong architecture for this provider, not a misconfigured
+ * one.
+ *
+ * So the form now does what Web3Forms documents: the browser posts to their
+ * endpoint itself. The server route is deleted.
+ *
+ * ---------------------------------------------------------------------------
+ * THE ACCESS KEY IS PUBLIC NOW, AND THAT IS THE TRADE
+ *
+ * `NEXT_PUBLIC_` means Next inlines the value into the JavaScript bundle at
+ * BUILD time. Anyone who opens devtools can read it. That is not a mistake and
+ * it is not avoidable with this provider — a Web3Forms access key is designed
+ * to be a public form identifier, the same way a Formspree URL is. It grants
+ * exactly one capability: sending mail to the address the key is registered to.
+ * It cannot read submissions, and it can be rotated from the Web3Forms
+ * dashboard if it is ever abused.
+ *
+ * Two consequences worth knowing rather than discovering:
+ *
+ *   1. Because it is inlined at build time, changing the key in Vercel does
+ *      nothing until the next build. Redeploy after changing it.
+ *   2. The spam checks below now run in the browser, where a determined script
+ *      can skip them. They still stop the naive ones, and Web3Forms applies its
+ *      own filtering on top — `botcheck` is their honeypot field name, so it is
+ *      caught on their side as well as ours.
+ */
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+
+/*
+  Referenced statically and at module scope, which is what makes Next inline it.
+  `process.env[someVariable]` or destructuring `process.env` both silently
+  produce `undefined` in the browser — the form would render as "not connected"
+  on a correctly configured site and nothing would explain why.
+*/
+const ACCESS_KEY = process.env.NEXT_PUBLIC_UNSIGNED_ACCESS_KEY;
+
+/**
+ * A form filled faster than this was not filled by a person. Was enforced on
+ * the server; now enforced here, before the request is made.
+ */
+const MIN_ELAPSED_MS = 2_500;
+
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
 /**
@@ -118,24 +168,22 @@ const FIELD_LABEL =
 const FIELD_CONTROL =
   'mt-3 w-full resize-none bg-transparent p-0 font-reading text-fluid-read text-ink outline-none placeholder:text-graphite/55 focus:outline-none focus:ring-0';
 
-export default function Unsigned({
-  /**
-   * Whether the delivery endpoint is configured. Decided on the server (see
-   * app/contact/page.tsx) so the check never ships to the browser.
-   *
-   * When false the section still renders in full — heading, promise, the
-   * whole argument for why this door exists — and only the controls are
-   * replaced, by a line saying it is not connected yet and the email address
-   * that is. Showing a working-looking Send button that could only fail would
-   * be the one genuinely cruel state for a form people use to say difficult
-   * things.
-   */
-  configured = true,
-}: {
-  configured?: boolean;
-}) {
+export default function Unsigned() {
   const prefersReducedMotion = useReducedMotionSafe();
   const copy = contactContent.unsigned;
+
+  /*
+    Whether delivery is possible at all. Decided here rather than passed down
+    from the server page, because the key now lives in the browser bundle and
+    the component is the only thing that needs to know.
+
+    When false the section still renders in full — heading, promise, the whole
+    argument for why this door exists — and only the controls are replaced, by
+    a line saying it is not connected yet and the email address that is.
+    Showing a working-looking Send button that could only fail is the one
+    genuinely cruel state for a form people use to say difficult things.
+  */
+  const configured = Boolean(ACCESS_KEY);
 
   const [message, setMessage] = useState('');
   const [reply, setReply] = useState('');
@@ -172,25 +220,65 @@ export default function Unsigned({
     setStatus('sending');
     setError(null);
 
+    /*
+      The two spam checks, applied before the request rather than after it.
+
+      Both report success and send nothing. Telling a script which check caught
+      it is telling it how to pass next time, and a person can never reach
+      either branch: the honeypot is off-screen and out of tab order, and
+      nobody composes a message in under two and a half seconds.
+    */
+    if (company.trim() !== "" || Date.now() - openedAt.current < MIN_ELAPSED_MS) {
+      setMessage('');
+      setReply('');
+      setStatus('sent');
+      return;
+    }
+
     try {
-      const response = await fetch('/api/unsigned', {
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
         body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          subject: reply
+            ? 'Unsigned note (a reply address was left)'
+            : 'Unsigned note',
+          from_name: 'sahilarora.vercel.app',
           message,
-          reply,
-          company,
-          elapsed: Date.now() - openedAt.current,
+          // `botcheck` is Web3Forms' own honeypot field name, so an empty value
+          // is expected on their side too. Always sent, always empty for a
+          // person — a script that fills it is discarded above and never
+          // reaches here.
+          botcheck: '',
+          // Only ever sent when the reader typed one. There is no fallback
+          // quietly substituting something identifying.
+          ...(reply ? { reply_to: reply, email: reply } : {}),
         }),
       });
 
+      /*
+        Web3Forms answers 200 with {"success": true}, and reports its own
+        refusals — an unverified key, a rate limit — as {"success": false} with
+        a message, sometimes still on a 2xx. Checking `response.ok` alone would
+        show the reader a success screen for a message that was thrown away.
+      */
       const result = (await response.json().catch(() => null)) as {
-        ok?: boolean;
-        error?: string;
+        success?: boolean;
+        message?: string;
       } | null;
 
-      if (!response.ok || !result?.ok) {
-        setError(result?.error ?? copy.failure);
+      if (!response.ok || !result?.success) {
+        // Their message is a developer diagnostic ("Access key is invalid"),
+        // not something to put in front of a visitor — it goes to the console
+        // for whoever is debugging, and the reader gets the site's own words.
+        if (result?.message) {
+          console.error(`[unsigned] Web3Forms refused: ${result.message}`);
+        }
+        setError(copy.failure);
         setStatus('error');
         return;
       }
@@ -198,7 +286,9 @@ export default function Unsigned({
       setMessage('');
       setReply('');
       setStatus('sent');
-    } catch {
+    } catch (caught) {
+      const detail = caught instanceof Error ? caught.message : 'unknown';
+      console.error(`[unsigned] request failed: ${detail}`);
       setError(copy.failure);
       setStatus('error');
     }
