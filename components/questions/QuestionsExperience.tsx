@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import type { Question } from "@/data/questions-content";
 import { useReducedMotionSafe } from "@/hooks/use-reduced-motion-safe";
+import { questionsChapterHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 type Props = {
   questions: Question[];
@@ -11,6 +13,11 @@ type Props = {
 };
 
 export default function QuestionsExperience({ questions, intro, closing }: Props) {
+  const chapter = useVariant(
+    { label: 'Questions', asked: 'asked', answered: 'answered', pending: 'Answer coming soon — updating this page as I go.', hello: 'Say hello →' },
+    questionsChapterHi,
+  );
+
   const reduceMotion = useReducedMotionSafe();
 
   // One shared reveal used everywhere on the page — deliberately the only
@@ -67,15 +74,15 @@ export default function QuestionsExperience({ questions, intro, closing }: Props
       >
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
           <h1 className="font-mono text-apparatus uppercase text-ink">
-            Questions
+            {chapter.label}
           </h1>
           <p className="font-mono text-apparatus-xs uppercase text-graphite">
-            {spell(questions.length)} asked
+            {spell(questions.length)} {chapter.asked}
             <span aria-hidden="true" className="mx-2 text-hairline">
               /
             </span>
             <span className="text-through-line">
-              {spell(answered).toLowerCase()} answered
+              {spell(answered).toLowerCase()} {chapter.answered}
             </span>
           </p>
         </div>
@@ -120,7 +127,7 @@ export default function QuestionsExperience({ questions, intro, closing }: Props
                     // matched to the dimmed heading above it, reads instead
                     // like a bookplate: held, not broken.
                     <p className="font-mono text-apparatus uppercase text-graphite">
-                      Answer coming soon — updating this page as I go.
+                      {chapter.pending}
                     </p>
                   )}
                 </div>
@@ -155,7 +162,7 @@ export default function QuestionsExperience({ questions, intro, closing }: Props
           href="/contact"
           className="mt-6 inline-block font-mono text-apparatus uppercase text-graphite transition-colors duration-300 ease-editorial hover:text-through-line"
         >
-          Say hello →
+          {chapter.hello}
         </a>
       </motion.div>
     </div>

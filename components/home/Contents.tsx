@@ -9,6 +9,8 @@ import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 import Column from './Column';
 import { PageMark } from './PageMark';
 import { full, measure, sectionY } from './rhythm';
+import { chromeHi, homeContentHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * Contents — the through-line, stationed.
@@ -44,6 +46,12 @@ import { full, measure, sectionY } from './rhythm';
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function Contents() {
+  const invitations = useVariant(
+    homeContent.invitations,
+    homeContentHi.invitations,
+  );
+  const contentsLabel = useVariant('Contents', chromeHi.contents);
+
   const prefersReducedMotion = useReducedMotionSafe();
 
   return (
@@ -53,12 +61,12 @@ export default function Contents() {
           id="contents-heading"
           className="font-mono text-apparatus uppercase text-graphite"
         >
-          Contents
+          {contentsLabel}
         </h2>
 
         <ul className={`${full} mt-7`}>
           {destinations.map((destination, i) => {
-            const invitation = homeContent.invitations[destination.href];
+            const invitation = invitations[destination.href];
 
             return (
               <motion.li
@@ -93,8 +101,16 @@ export default function Contents() {
                       {/* The folio. A contents list without page numbers is a
                           menu; with them it is a contents list. The number is
                           the row's position in the canonical order, so it can
-                          never disagree with the navbar or the colophon. */}
-                      <span className="font-mono text-apparatus-xs text-hairline transition-colors duration-200 group-hover:text-through-line">
+                          never disagree with the navbar or the colophon.
+
+                          It was set in `text-hairline`, which measures 1.40:1
+                          against Paper and 1.47:1 against Ink — a number
+                          nobody could actually read, on the one list that has
+                          to be readable. `text-graphite/70` is the quietest
+                          tone here that still passes as text (5.09:1); the
+                          same swap was made in the colophon, the page turn,
+                          the fore-edge rail, /writing and the 404. */}
+                      <span className="font-mono text-apparatus-xs text-graphite/70 transition-colors duration-200 group-hover:text-through-line">
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       {destination.label}

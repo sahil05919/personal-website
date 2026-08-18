@@ -1,5 +1,9 @@
+'use client';
+
 import { mediaMoments } from "@/data/mediaData";
 import { MediaMoment } from "./MediaMoment";
+import { mediaChapterHi, mediaMomentsHi } from "@/data/hinglish";
+import { useVariant } from "@/hooks/use-reading-mode";
 
 /**
  * Chapter — Media.
@@ -48,7 +52,12 @@ function spellCount(n: number): string {
 }
 
 export function MediaChapter() {
-  const count = mediaMoments.length;
+  const moments = useVariant(mediaMoments, mediaMomentsHi);
+  const chapter = useVariant(
+    { label: "Media", count: `${spellCount(mediaMoments.length)} ${mediaMoments.length === 1 ? "moment" : "moments"}`, standfirst: "None of this was meant to be a record. It became one anyway.", thesis: "Proof of presence, not a portfolio." },
+    mediaChapterHi,
+  );
+  const count = moments.length;
 
   return (
     <section
@@ -61,26 +70,26 @@ export function MediaChapter() {
             id="media-title"
             className="font-mono text-[12px] font-medium tracking-[0.16em] text-ink"
           >
-            Media
+            {chapter.label}
           </h1>
           <span className="font-mono text-[11px] tracking-[0.12em] text-graphite">
-            {spellCount(count)} {count === 1 ? "moment" : "moments"}
+            {chapter.count}
           </span>
         </div>
 
         <p className="max-w-[34ch] text-balance font-serif-display text-[28px] font-medium leading-[1.15] text-ink sm:text-4xl">
-          None of this was meant to be a record. It became one anyway.
+          {chapter.standfirst}
         </p>
 
         {/* Set apart rather than appended — the line is the chapter's thesis,
             not the standfirst's third sentence. Exclusive to this page. */}
         <p className="mt-6 font-reading text-[15px] italic text-graphite">
-          Proof of presence, not a portfolio.
+          {chapter.thesis}
         </p>
       </header>
 
       <div className="mt-16 space-y-28 sm:space-y-32">
-        {mediaMoments.map((moment, index) => (
+        {moments.map((moment, index) => (
           <MediaMoment
             key={moment.id}
             moment={moment}

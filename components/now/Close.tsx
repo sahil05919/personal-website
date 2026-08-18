@@ -1,8 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 
 import { archive, close } from '@/app/now/now-content';
 
 import { Leaf, LeafRow, MarginNote } from './Leaf';
+import { archiveHi, closeHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * THE CLOSE AND THE ARCHIVE.
@@ -22,28 +26,31 @@ import { Leaf, LeafRow, MarginNote } from './Leaf';
  * that gains value by being wrong, provided the wrong version is kept.
  */
 export function Close() {
+  const copy = useVariant(close, closeHi);
+  const arch = useVariant(archive, archiveHi);
+
   return (
     <Leaf className="px-6 pb-28 pt-20 md:px-10 md:pb-36 md:pt-28">
       <div className="mx-auto w-full max-w-[62rem]">
-        <LeafRow note={<MarginNote>{close.date}</MarginNote>}>
+        <LeafRow note={<MarginNote>{copy.date}</MarginNote>}>
           <div>
             <p className="max-w-[46rem] font-serif-display text-[2rem] font-normal leading-[1.1] tracking-[-0.03em] text-ink md:text-[3rem] lg:text-[3.5rem]">
-              {close.line}
+              {copy.line}
             </p>
             <p className="mt-8 max-w-[34rem] font-reading text-[1rem] leading-[1.8] text-graphite">
-              {close.cadence}
+              {copy.cadence}
             </p>
           </div>
         </LeafRow>
 
-        <LeafRow className="mt-20 md:mt-28" note={<MarginNote>{archive.note}</MarginNote>}>
+        <LeafRow className="mt-20 md:mt-28" note={<MarginNote>{arch.note}</MarginNote>}>
           <div className="max-w-[36rem]">
             <p className="font-reading text-[1rem] leading-[1.8] text-graphite">
-              {archive.promise}
+              {arch.promise}
             </p>
 
             <ul className="m-0 mt-8 flex list-none flex-wrap gap-3 p-0">
-              {archive.stamps.map((stamp) => {
+              {arch.stamps.map((stamp) => {
                 const label = (
                   <>
                     <span className="block font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-ink">

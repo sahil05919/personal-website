@@ -63,8 +63,11 @@ export const full = 'w-full';
  */
 export const sectionY = 'py-[clamp(2.25rem,5vh,4rem)]';
 
-/** The first interval, below the fixed 72px navbar. */
-export const openingY = 'pt-[clamp(2rem,5vh,3.5rem)] pb-[clamp(3rem,7vh,5.5rem)]';
-
-/** The last interval. */
-export const closingY = 'pt-[clamp(3rem,7vh,5.5rem)] pb-[clamp(4rem,9vh,7rem)]';
+/* `openingY` and `closingY` were declared here — a first and a last interval,
+   differing from `sectionY` above — and neither was ever imported by anything.
+   Home's sections all use `sectionY`, and the asymmetry those two described is
+   handled by the padding on the sections themselves. Removed in the August 2026
+   pass: an exported constant with no consumer is a design decision that was
+   reversed and left lying about, and the next person to read this file would
+   reasonably assume the rhythm has three intervals when it has one.
+*/

@@ -1,8 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 
 import { exploring } from '@/app/now/now-content';
 
 import { Leaf, LeafRow, LeafHeading, MarginNote } from './Leaf';
+import { exploringHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * EXPLORING.
@@ -31,16 +35,18 @@ import { Leaf, LeafRow, LeafHeading, MarginNote } from './Leaf';
  * to an animation.
  */
 export function Exploring() {
+  const copy = useVariant(exploring, exploringHi);
+
   return (
     <Leaf className="px-6 py-20 md:px-10 md:py-28">
       <div className="mx-auto w-full max-w-[62rem]">
-        <LeafRow note={<LeafHeading>{exploring.heading}</LeafHeading>}>
+        <LeafRow note={<LeafHeading>{copy.heading}</LeafHeading>}>
           <div>
             <p className="font-mono text-[0.625rem] uppercase tracking-[0.24em] text-graphite">
               Next up
             </p>
             <p className="mt-5 max-w-[46rem] font-serif-display text-[2.5rem] font-normal leading-[1.05] tracking-[-0.03em] text-ink md:text-[3.75rem] lg:text-[4.5rem]">
-              {exploring.nextUp.join('. ')}.
+              {copy.nextUp.join('. ')}.
             </p>
           </div>
         </LeafRow>
@@ -50,7 +56,7 @@ export function Exploring() {
           note={<MarginNote>recently</MarginNote>}
         >
           <ul className="m-0 flex max-w-[36rem] list-none flex-wrap p-0 font-mono text-[0.75rem] leading-[2] text-graphite">
-            {exploring.index.map((place) => (
+            {copy.index.map((place) => (
               <li
                 key={place.name}
                 className="before:mx-2 before:text-hairline before:content-['·'] first:before:hidden"
@@ -74,10 +80,10 @@ export function Exploring() {
 
         <LeafRow
           className="mt-16 md:mt-20"
-          note={<MarginNote>{exploring.counter.label}</MarginNote>}
+          note={<MarginNote>{copy.counter.label}</MarginNote>}
         >
           <p className="font-serif-display text-[1.25rem] font-normal leading-snug text-ink md:text-[1.5rem]">
-            {exploring.counter.value}
+            {copy.counter.value}
           </p>
         </LeafRow>
 
@@ -85,8 +91,8 @@ export function Exploring() {
           <figure className="max-w-[46rem]">
             <div className="relative aspect-[3/2] overflow-hidden">
               <Image
-                src={exploring.featured.src}
-                alt={exploring.featured.alt}
+                src={copy.featured.src}
+                alt={copy.featured.alt}
                 fill
                 sizes="(max-width: 768px) 100vw, 46rem"
                 className="object-cover"
@@ -94,10 +100,10 @@ export function Exploring() {
             </div>
             <figcaption className="mt-6 max-w-[36rem]">
               <p className="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-graphite">
-                {exploring.featured.name}
+                {copy.featured.name}
               </p>
               <p className="mt-4 font-reading text-[1.0625rem] leading-[1.75] text-ink">
-                {exploring.featured.paragraph}
+                {copy.featured.paragraph}
               </p>
             </figcaption>
           </figure>

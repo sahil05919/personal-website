@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
 import {
   Answering,
@@ -14,14 +15,16 @@ import {
   Workbench,
 } from '@/components/now';
 import { opening } from './now-content';
+import { openingHi } from '@/data/hinglish';
 
 // Bare title only. The root layout applies the "%s | Sahil Kumar" template, so
 // anything more here double-suffixes the tab.
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/now',
   title: 'Now',
   description:
     'One season, written in the present tense and kept with its crossings-out showing. Summer 2026.',
-};
+});
 
 /**
  * NOW — the leaf.
@@ -59,7 +62,7 @@ export default function NowPage() {
       <Leaf className="px-6 pb-4 md:px-10">
         <div className="mx-auto w-full max-w-[62rem]">
           <LeafRow note={<MarginNote tone="change">what changed</MarginNote>}>
-            <SeasonProse paragraphs={opening} />
+            <SeasonProse paragraphs={opening} paragraphsHi={openingHi} />
           </LeafRow>
         </div>
       </Leaf>

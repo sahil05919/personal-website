@@ -9,6 +9,8 @@ import {
   type MarkName,
 } from '@/data/contactData';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
+import { contactContentHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * Imprint — the doors.
@@ -55,12 +57,9 @@ const BRAND_HOVER: Record<MarkName, string> = {
   github: 'group-hover:text-ink group-focus-visible:text-ink',
 };
 
-/** +447562267371 -> +44 7562 267371. Printed matter spaces its numbers. */
-function formatPhone(raw: string): string {
-  const digits = raw.replace(/[^\d+]/g, '');
-  const uk = digits.match(/^\+44(\d{4})(\d{6})$/);
-  return uk ? `+44 ${uk[1]} ${uk[2]}` : raw;
-}
+/* `formatPhone` lived here — +447562267371 rendered as +44 7562 267371, because
+   printed matter spaces its numbers. Both it and the number are gone: see the
+   note above `contactInfo` in data/contactData.ts. */
 
 const SWEEP =
   'transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none';
@@ -134,7 +133,7 @@ function ChannelRow({
 
 export default function Imprint() {
   const prefersReducedMotion = useReducedMotionSafe();
-  const { groups, apparatus, walk } = contactContent;
+  const { groups, apparatus, walk } = useVariant(contactContent, contactContentHi);
 
   const group: Variants = {
     hidden: {},
@@ -188,39 +187,69 @@ export default function Imprint() {
           </motion.div>
         ))}
 
-        {/* Apparatus. Quiet by design: the telephone is a figure and the CV is
-            a document, and neither is a door in the sense the rows above are. */}
-        <motion.p
+        {/* The document.
+            This was a single 11px mono line carrying a telephone number and,
+            after a slash, the CV — the one thing on the page most likely to be
+            what a reader came for, set at the smallest size on the site and
+            given equal billing with a phone number. The number has gone
+            (data/contactData.ts) and the CV now gets the page's own vocabulary:
+            a ruled row like the channels above it, in the reading face, with
+            what the file actually is stated underneath.
+
+            It is still not a "door" in the sense the rows above are — nobody is
+            at the other end of it — so it sits after them, on its own rule,
+            rather than being folded into the "For work" group. */}
+        <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 0.7, ease: REVEAL_EASE }}
-          className="mt-10 font-mono text-[11px] leading-[1.9] tracking-[0.04em] text-graphite"
+          className="mt-12"
         >
-          {apparatus.telephoneLabel}{' '}
-          <a
-            href={`tel:${contactInfo.phone.replace(/[^\d+]/g, '')}`}
-            className="link-rule"
-          >
-            {formatPhone(contactInfo.phone)}
-          </a>
-          <span aria-hidden="true" className="mx-3 text-hairline">
-            /
-          </span>
           <a
             href={`/documents/${contactInfo.resume.fileName}`}
             download
-            className="link-rule group"
+            className="group relative block py-6 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-through-line md:py-7"
           >
-            {apparatus.cvLabel}
             <span
               aria-hidden="true"
-              className={`ml-2 inline-block group-hover:translate-x-[3px] ${SWEEP}`}
-            >
-              &rarr;
-            </span>
+              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-hairline"
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-0 top-0 h-px w-7 bg-ink"
+            />
+            <span
+              aria-hidden="true"
+              className={`pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-ink group-hover:scale-x-100 group-focus-visible:scale-x-100 ${SWEEP}`}
+            />
+
+            <div className="flex items-center justify-between gap-5 md:gap-8">
+              <div
+                className={`min-w-0 group-hover:translate-x-[3px] group-focus-visible:translate-x-[3px] ${SWEEP}`}
+              >
+                <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-graphite transition-colors duration-500 group-hover:text-ink group-focus-visible:text-ink motion-reduce:transition-none">
+                  Curriculum vitae
+                </p>
+                <p className="mt-2 font-serif-display text-[1.25rem] leading-[1.25] tracking-[-0.01em] text-ink md:text-[1.625rem]">
+                  {apparatus.cvLabel}
+                </p>
+                <p className="mt-2 font-mono text-[11px] leading-[1.7] tracking-[0.04em] text-graphite">
+                  {apparatus.cvNote}
+                </p>
+              </div>
+
+              <span
+                aria-hidden="true"
+                className={`shrink-0 text-graphite transition-colors duration-500 group-hover:text-ink ${SWEEP}`}
+              >
+                &darr;
+              </span>
+            </div>
           </a>
-        </motion.p>
+
+          <div aria-hidden="true" className="h-px w-full bg-hairline" />
+        </motion.div>
 
         {/* The invitation. Display register, because it is the one thing on
             this page offered rather than listed. */}

@@ -1,6 +1,10 @@
+'use client';
+
 import { quiet } from '@/app/now/now-content';
 
 import { Leaf } from './Leaf';
+import { quietHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * THE QUIET CENTRE.
@@ -27,18 +31,20 @@ import { Leaf } from './Leaf';
  * the one place where a narrow viewport should feel more empty, not less.
  */
 export function QuietCentre() {
+  const copy = useVariant(quiet, quietHi);
+
   return (
     <Leaf ruled={false} className="px-6 py-40 md:px-10 md:py-48 lg:py-56">
       <div className="mx-auto w-full max-w-[62rem]">
         <div className="lg:pl-[12.5rem]">
           <p className="max-w-[46rem] font-serif-display text-[2.25rem] font-normal leading-[1.05] tracking-[-0.03em] text-ink md:text-[3.5rem] lg:text-[4.25rem]">
-            {quiet.line}
+            {copy.line}
           </p>
           <p className="mt-10 max-w-[30rem] font-reading text-[1.0625rem] leading-[1.75] text-graphite md:text-[1.1875rem]">
-            {quiet.under}
+            {copy.under}
           </p>
           <p className="mt-10 font-mono text-[0.625rem] uppercase tracking-[0.24em] text-graphite">
-            {quiet.attribution}
+            {copy.attribution}
           </p>
         </div>
       </div>

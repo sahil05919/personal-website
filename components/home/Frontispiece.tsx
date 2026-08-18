@@ -6,6 +6,8 @@ import { homeContent } from '@/data/homeContent';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 import ResolveFigure, { FIGURE_TALL, FIGURE_WIDE } from './ResolveFigure';
 import { gutter, shell } from './rhythm';
+import { homeContentHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * Frontispiece — the title page.
@@ -63,6 +65,13 @@ const arrivalItem: Variants = {
 };
 
 export default function Frontispiece() {
+  const eyebrow = useVariant(homeContent.eyebrow, homeContentHi.eyebrow);
+  const title = useVariant(homeContent.title, homeContentHi.title);
+  const figureCaption = useVariant(
+    homeContent.figureCaption,
+    homeContentHi.figureCaption,
+  );
+
   const prefersReducedMotion = useReducedMotionSafe();
 
   return (
@@ -85,7 +94,7 @@ export default function Frontispiece() {
             transition={{ duration: 0.6, ease: EASE }}
             className="apparatus"
           >
-            {homeContent.eyebrow}
+            {eyebrow}
           </motion.p>
 
           <motion.div
@@ -98,7 +107,7 @@ export default function Frontispiece() {
               variants={arrivalItem}
               className="hang max-w-[16ch] text-balance font-serif-display text-fluid-mega font-normal"
             >
-              {homeContent.title}
+              {title}
             </motion.h1>
           </motion.div>
         </div>
@@ -138,7 +147,7 @@ export default function Frontispiece() {
           </span>
 
           <p className="pt-3 apparatus normal-case tracking-[0.06em]">
-            {homeContent.figureCaption}
+            {figureCaption}
           </p>
         </div>
       </div>

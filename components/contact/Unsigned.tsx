@@ -5,6 +5,8 @@ import { motion, type Variants } from 'framer-motion';
 
 import { contactContent, contactInfo } from '@/data/contactData';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
+import { contactContentHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * Unsigned — the door with no name on it.
@@ -170,7 +172,10 @@ const FIELD_CONTROL =
 
 export default function Unsigned() {
   const prefersReducedMotion = useReducedMotionSafe();
-  const copy = contactContent.unsigned;
+  const copy = useVariant(
+    contactContent.unsigned,
+    contactContentHi.unsigned,
+  );
 
   /*
     Whether delivery is possible at all. Decided here rather than passed down
@@ -472,15 +477,30 @@ export default function Unsigned() {
             </div>
 
             <div className="mt-10 flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
+              {/*
+                THE SEND CONTROL.
+
+                It was an 11px underlined mono word — the smallest type on the
+                site — carrying the only irreversible action on the site. Every
+                other row on /contact is a full-width rule with a 26px mark and a
+                display-scale line; the one control that actually does something
+                was quieter than all of them, and on a phone it was also a
+                sub-44px target.
+
+                It is now a real button in the site's existing vocabulary: a
+                hairline box in mono apparatus, inverting to solid ink on hover
+                and focus — the same gesture About's closing panel uses. Nothing
+                new was invented for it, and it is still not a coloured pill.
+              */}
               <button
                 type="submit"
                 disabled={!canSend}
-                className="link-rule group font-mono text-[11px] uppercase tracking-[0.08em] text-ink disabled:cursor-not-allowed disabled:text-graphite/50"
+                className="group inline-flex min-h-11 items-center gap-3 border border-ink px-6 py-3 font-mono text-apparatus uppercase tracking-[0.08em] text-ink transition-colors duration-300 ease-editorial hover:bg-ink hover:text-paper focus-visible:bg-ink focus-visible:text-paper focus-visible:outline-none disabled:cursor-not-allowed disabled:border-hairline disabled:bg-transparent disabled:text-graphite/60 motion-reduce:transition-none"
               >
                 {status === 'sending' ? copy.sending : copy.action}
                 <span
                   aria-hidden="true"
-                  className={`ml-2 inline-block ${
+                  className={`inline-block ${
                     status === 'sending'
                       ? 'pulse-soft'
                       : `group-hover:translate-x-[3px] ${SWEEP}`

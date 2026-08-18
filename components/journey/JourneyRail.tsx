@@ -7,6 +7,11 @@ import {
   chapterToSnapshotIndex,
   snapshotToChapterId,
 } from '@/data/journeyData';
+import { journeySnapshotHi } from '@/data/hinglish';
+/* Only the glance list is translated here. `useActiveChapter` below reads the
+   chapter ids straight from the English array on purpose: the ids are identical
+   in both readings, and scroll tracking must not depend on the language. */
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * Scroll-spy for the desktop rail. Self-contained: reads the chapter
@@ -62,13 +67,15 @@ function useActiveChapter(): string | null {
  * sidebar.
  */
 export default function JourneyRail() {
+  const snapshot = useVariant(journeySnapshot, journeySnapshotHi);
+
   const activeChapterId = useActiveChapter();
   const activeIndex = activeChapterId ? chapterToSnapshotIndex[activeChapterId] : undefined;
 
   return (
     <nav aria-label="Journey at a glance">
       <p className="font-mono text-[11px] tracking-[0.06em] uppercase text-graphite mb-5">
-        {journeySnapshot.heading}
+        {snapshot.heading}
       </p>
 
       <div className="relative">
@@ -92,7 +99,7 @@ export default function JourneyRail() {
           the label to ink so the affordance is visible before the click.
         */}
         <ol className="relative">
-          {journeySnapshot.points.map((point, i) => {
+          {snapshot.points.map((point, i) => {
             const isActive = i === activeIndex;
             const chapterId = snapshotToChapterId[i];
 
@@ -149,7 +156,7 @@ export default function JourneyRail() {
       </div>
 
       <p className="font-reading italic text-[12.5px] leading-relaxed text-graphite mt-6 max-w-[11rem]">
-        {journeySnapshot.summary}
+        {snapshot.summary}
       </p>
     </nav>
   );

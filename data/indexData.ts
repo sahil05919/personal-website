@@ -65,7 +65,7 @@ const NOW = { href: '/now', label: 'Now' };
 const PROJECTS = { href: '/projects', label: 'Projects' };
 const EXPERIENCE = { href: '/experience', label: 'Experience' };
 const MEDIA = { href: '/media', label: 'Media' };
-const QUESTIONS = { href: '/question', label: 'Questions' };
+const QUESTIONS = { href: '/questions', label: 'Questions' };
 const CONTACT = { href: '/contact', label: 'Contact' };
 const ERRATA = { href: '/errata', label: 'Errata' };
 

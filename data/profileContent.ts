@@ -188,7 +188,18 @@ export const aboutContent = {
         span: 12,
         scale: 'lg',
       },
-      { label: 'Reading', value: 'Books', start: 3, span: 4, scale: 'sm' },
+      /* Was 'Books', which is the one entry in this grid that said nothing —
+         beside "MS Dhoni & Lionel Messi", which says a great deal. Not replaced
+         with an invention: both of these are already named on /now, which is
+         where the current reading is kept. If /now's reading changes and this
+         stops being true, change it here too. */
+      {
+        label: 'Reading',
+        value: 'The Gita, and shayari I half understand',
+        start: 3,
+        span: 4,
+        scale: 'sm',
+      },
       {
         label: 'Currently obsessed with',
         value: 'Tinkering with technology',

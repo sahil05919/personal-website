@@ -1,4 +1,10 @@
-import { projectEntries, projectRecord } from "@/data/projectsChapter";
+'use client';
+
+import {
+  projectEntries,
+  projectRecord,
+  type ProjectEntry as ProjectEntryData,
+} from "@/data/projectsChapter";
 import {
   GlanceContents,
   type GlanceItem,
@@ -7,6 +13,8 @@ import { GlanceRail } from "@/components/global/GlanceRail";
 import { ProjectEntry } from "./ProjectEntry";
 import { ProjectMargin } from "./ProjectMargin";
 import { Seam } from "./Seam";
+import { projectEntriesHi, projectRecordHi, projectsChapterHi } from "@/data/hinglish";
+import { useVariant } from "@/hooks/use-reading-mode";
 
 /**
  * Shorten an attribution down to something a contents row can hold.
@@ -40,12 +48,14 @@ function shortAttribution(attribution: string): string {
  * myself" recurs on two of the five is exactly the signal worth showing
  * somebody deciding where to start.
  */
-const glanceItems: GlanceItem[] = projectEntries.map((entry, i) => ({
-  id: entry.id,
-  marker: `Case ${String(i + 1).padStart(2, "0")}`,
-  label: entry.title,
-  note: shortAttribution(entry.attribution),
-}));
+function buildGlance(list: readonly ProjectEntryData[]): GlanceItem[] {
+  return list.map((entry, i) => ({
+    id: entry.id,
+    marker: `Case ${String(i + 1).padStart(2, "0")}`,
+    label: entry.title,
+    note: shortAttribution(entry.attribution),
+  }));
+}
 
 /**
  * Chapter — Projects.
@@ -126,6 +136,22 @@ const glanceItems: GlanceItem[] = projectEntries.map((entry, i) => ({
  * so font-serif silently resolves to Georgia.
  */
 export function ProjectsChapter() {
+  /* Hinglish. Same ids and order in both files, so the anchors resolve either
+     way. The glance list is derived here rather than at module scope, so the
+     rail's five case titles change with the chapter beside them. */
+  const entries = useVariant(projectEntries, projectEntriesHi);
+  const record = useVariant(projectRecord, projectRecordHi);
+  const glanceItems = buildGlance(entries);
+  const chapter = useVariant(
+    {
+      label: "Projects",
+      standfirst: "Some refused to leave me alone until I built something.",
+      glanceHeading: "In this chapter",
+      glanceSummary: "The last one is the one I would read.",
+    },
+    projectsChapterHi,
+  );
+
   return (
     // overflow-x-clip contains full-bleed plates. `clip`, not `hidden`, so
     // this does not become a scroll container.
@@ -150,9 +176,9 @@ export function ProjectsChapter() {
           <aside className="hidden lg:block">
             <div className="sticky top-[112px] pt-[26vh]">
               <GlanceRail
-                heading="In this chapter"
+                heading={chapter.glanceHeading}
                 items={glanceItems}
-                summary="The last one is the one I would read."
+                summary={chapter.glanceSummary}
               />
             </div>
           </aside>
@@ -176,7 +202,7 @@ export function ProjectsChapter() {
               id="projects-title"
               className="font-mono text-[12px] font-medium tracking-[0.2em] text-graphite"
             >
-              Projects
+              {chapter.label}
             </h1>
 
             {/* /media puts a count in a second slot here ("Eight moments").
@@ -187,7 +213,7 @@ export function ProjectsChapter() {
                 chapter's thesis — the entries are examples of a behaviour
                 rather than evidence for a claim made above them. */}
             <p className="mt-10 max-w-[15ch] text-balance font-serif-display text-[clamp(3rem,9vw,5.25rem)] font-normal leading-[0.98] tracking-[-0.03em] text-ink">
-              Some refused to leave me alone until I built something.
+              {chapter.standfirst}
             </p>
 
             {/* Second-line positioning, the same device /media uses under its
@@ -238,7 +264,7 @@ export function ProjectsChapter() {
             on one screen. */}
         <div className="mx-auto w-full max-w-[64ch] pb-8 lg:hidden">
           <GlanceContents
-            heading="In this chapter"
+            heading={chapter.glanceHeading}
             note="Five, and the last one is the one I would read."
             items={glanceItems}
             // These titles run long enough that some rows fit their
@@ -255,7 +281,7 @@ export function ProjectsChapter() {
 
             Each entry sits in a `relative` wrapper so `ProjectMargin` can
             anchor to the entry's own right edge rather than the page's. */}
-        {projectEntries.map((entry, index) => (
+        {entries.map((entry, index) => (
           <div key={entry.id}>
             {index > 0 && (
               <Seam
@@ -303,7 +329,7 @@ export function ProjectsChapter() {
               The leader collapses on narrow viewports, where the row wraps to
               two lines and a rule between them would be nonsense. */}
           <ul className="mt-8">
-            {projectRecord.map((item) => {
+            {record.map((item) => {
               const row = (
                 <>
                   <span className="text-ink transition-colors duration-200 group-hover:text-through-line">

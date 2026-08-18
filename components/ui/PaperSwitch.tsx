@@ -214,7 +214,7 @@ export default function PaperSwitch({
           aria-label={`${paper.name} paper`}
           aria-pressed={current === paper.id}
           title={paper.name}
-          className="block transition-transform duration-300 ease-editorial hover:-translate-y-px"
+          className="tap-target block transition-transform duration-300 ease-editorial hover:-translate-y-px"
         >
           <Swatch paper={paper} active={current === paper.id} />
         </button>
@@ -232,7 +232,7 @@ export default function PaperSwitch({
         aria-haspopup="true"
         aria-label={open ? "Close paper choices" : "More papers"}
         title="More papers"
-        className="flex h-[26px] w-[26px] items-center justify-center border border-hairline transition-colors duration-300 ease-editorial hover:border-graphite"
+        className="tap-target flex h-[26px] w-[26px] items-center justify-center border border-hairline transition-colors duration-300 ease-editorial hover:border-graphite"
       >
         {!activeIsInline && activePaper ? (
           <Swatch paper={activePaper} active size={24} />

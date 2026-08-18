@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { journeyClose, journeyExit } from '@/data/journeyData';
+import { journeyCloseHi, journeyExitHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 // Ease unified to the site's signature settle curve — see JourneyHero.tsx.
 const fadeUp = {
@@ -16,6 +18,9 @@ const fadeIn = {
 };
 
 export default function JourneyClose() {
+  const close = useVariant(journeyClose, journeyCloseHi);
+  const exit = useVariant(journeyExit, journeyExitHi);
+
   return (
     <section aria-label="Closing" className="pb-24 md:pb-32">
       <div>
@@ -53,11 +58,11 @@ export default function JourneyClose() {
             className="text-center"
           >
             <p className="font-serif-display italic text-fluid-claim font-normal leading-[1.35] mx-auto mb-10 text-balance">
-              &ldquo;{journeyClose.quote}&rdquo;
+              &ldquo;{close.quote}&rdquo;
             </p>
 
             <div className="space-y-3 max-w-md mx-auto">
-              {journeyClose.body.map((paragraph, i) => (
+              {close.body.map((paragraph, i) => (
                 <p key={i} className="font-reading text-fluid-aside text-ink">
                   {paragraph}
                 </p>
@@ -77,13 +82,13 @@ export default function JourneyClose() {
             className="mt-16 pt-10 border-t border-hairline text-center"
           >
             <p className="font-mono text-[11px] tracking-[0.06em] uppercase text-graphite mb-3">
-              {journeyExit.eyebrow}
+              {exit.eyebrow}
             </p>
             <Link
-              href={journeyExit.href}
+              href={exit.href}
               className="rounded-sm font-reading italic text-[15px] md:text-base text-ink underline decoration-hairline underline-offset-4 transition-colors hover:decoration-through-line focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
             >
-              {journeyExit.line}
+              {exit.line}
             </Link>
           </motion.div>
         </div>

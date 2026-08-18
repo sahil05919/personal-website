@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
 import ContactHero from '@/components/contact/ContactHero';
 import Imprint from '@/components/contact/Imprint';
@@ -36,10 +37,11 @@ import { contactContent } from '@/data/contactData';
  * bg-paper (#FAFAFA) while the book is set on paper (#F7F6F3), and
  * without it an over-scroll shows the seam.
  */
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/contact',
   title: contactContent.meta.title,
   description: contactContent.meta.description,
-};
+});
 
 export default function ContactPage() {
   return (

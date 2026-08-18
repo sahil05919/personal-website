@@ -17,8 +17,10 @@
 // components/home/rhythm.ts.
 
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
 import { homeContent } from '@/data/homeContent';
+import { personSchema } from '@/lib/person-schema';
 import { lastUpdated, seasonLine } from './now/now-content';
 
 import Frontispiece from '@/components/home/Frontispiece';
@@ -27,17 +29,31 @@ import Contents from '@/components/home/Contents';
 import Currently from '@/components/home/Currently';
 import Colophon from '@/components/home/Colophon';
 
-export const metadata: Metadata = {
-  // `absolute` because meta.title already contains the name. Left to the
+export const metadata: Metadata = pageMetadata({
+  path: '/',
+  // `absoluteTitle` because meta.title already contains the name. Left to the
   // layout's "%s | Sahil Kumar" template it renders as
   // "Sahil Kumar — Things I don't want to forget. | Sahil Kumar".
-  title: { absolute: homeContent.meta.title },
+  title: homeContent.meta.title,
+  absoluteTitle: true,
   description: homeContent.meta.description,
-};
+  // The title page of the record, not one of its chapters.
+  type: 'website',
+});
 
 export default function HomePage() {
   return (
     <>
+      {/* Structured data. Invisible, unstyled, and outside the spacing
+          contract below because it renders nothing — see lib/person-schema.ts
+          for what it claims and where each claim is also written in prose. */}
+      <script
+        type="application/ld+json"
+        // The object is a local literal, not user input; JSON.stringify is the
+        // documented way to embed it.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+
       <Frontispiece />
       <Statement />
       <Contents />

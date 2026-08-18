@@ -45,6 +45,29 @@ import { publishedForNow } from '@/data/writingData';
  * date the old wording stopped being true — apparatus, so it must be a real
  * date, not a mood. Cobalt is reserved site-wide on this page for exactly this:
  * change. If something is blue here, it changed.
+ *
+ * ---------------------------------------------------------------------------
+ * THE ONE RULE THE SENTENCE AROUND IT MUST OBEY
+ *
+ * A reader sees `struck` with a line through it, so they read the sentence
+ * TWICE: once with the struck words and once without. Both readings have to be
+ * grammatical, and — this is the part that went wrong — both have to be TRUE.
+ *
+ * Every revision on this page used to sit in a frame built around the old
+ * wording, most of them after the verb "stopped":
+ *
+ *     'In April I stopped ' + struck + now
+ *
+ * Ignore the crossing-out, which is what the eye does, and that sentence says
+ * "In April I stopped processing invoices at Middlesex" — the exact opposite of
+ * what happened. Three of the four read as their own negation, and the fourth
+ * left the replacement standing as a sentence fragment with no verb.
+ *
+ * So the frame must be NEUTRAL: it names the slot, not the change. "Since April
+ * my working day has been …", "most of the work is …", "I am …". The verb
+ * belongs outside the revision and must fit both wordings. Read every new
+ * revision aloud with the struck text skipped before committing it.
+ * ---------------------------------------------------------------------------
  */
 export interface Revision {
   struck: string;
@@ -96,7 +119,7 @@ export const season = {
 export const opening: Paragraph[] = [
   // REAL — the employment hinge is verified.
   [
-    'This is my second summer of living in London without it feeling like an arrival. In April I stopped ',
+    'This is my second summer of living in London without it feeling like an arrival. Since April my working day has been ',
     {
       struck: 'taking notes for students at City St George’s',
       now: 'processing invoices at Middlesex',
@@ -105,10 +128,10 @@ export const opening: Paragraph[] = [
     ', which is a smaller change than it sounds and a larger one than it looks.',
   ],
   [
-    'Most of what follows will be wrong by the spring. That is the point of the page. ',
+    'Most of what follows will be wrong by the spring. That is the point of the page. This season’s version of it is ',
     {
-      struck: 'Learning what London might be like',
-      now: 'Working out what living here actually costs and returns',
+      struck: 'learning what London might be like',
+      now: 'working out what living here actually costs and returns',
       until: 'until 2025',
     },
     '.',
@@ -131,7 +154,7 @@ export const work = {
   paragraphs: [
     // REAL — role and employer verified. Register: Media, not Experience.
     [
-      'Accounts Payable is a queue. Invoices arrive, they are wrong in a small number of repeating ways, and somebody has to notice which way before the money leaves. Four months in, I have stopped ',
+      'Accounts Payable is a queue. Invoices arrive, they are wrong in a small number of repeating ways, and somebody has to notice which way before the money leaves. Four months in, most of the work is ',
       {
         struck: 'checking every field against the guidance',
         now: 'reading the shape of an invoice and knowing where it will fail',
@@ -143,7 +166,7 @@ export const work = {
     // what the work has actually been. The struck wording is what this page and
     // the CV both said until then.
     [
-      'The other thing that moved this season was quieter and took longer. I stopped ',
+      'The other thing that moved this season was quieter and took longer. I am ',
       {
         struck: 'calling myself a business and data analyst',
         now: 'aiming at people analytics',
@@ -178,7 +201,7 @@ export const work = {
       // so the line goes — this list is what is unfinished TODAY, and leaving a
       // completed item on it to show progress would make every other line
       // suspect.
-      'six questions on /question are unwritten',
+      'six questions on /questions are unwritten',
       // This list is about what is INCOMPLETE. What is actively wrong is a
       // different kind of admission and now has its own leaf, in the back
       // matter, linked from the imprint on every page.
@@ -285,9 +308,22 @@ export interface AskedQuestion {
 /** One leaf in the pile. `body` is real unfinished writing, not a teaser. */
 export interface Fragment {
   id: string;
-  /** Shown on the closed leaf. The first line, exactly as written. */
+  /**
+   * The piece's first sentence. It is the label on the closed leaf AND the
+   * first line of the open one — components/now/Pile.tsx keeps the button
+   * visible when the leaf opens, set in the reading face and aligned to the
+   * body column, so it reads as the opening line rather than as a heading.
+   */
   opening: string;
   dated: string;
+  /**
+   * The CONTINUATION. It must not repeat `opening`.
+   *
+   * All three fragments used to begin with their own opening sentence again,
+   * so opening a leaf printed that sentence twice, one line apart — the
+   * clearest reading bug on the page. The sentence lives in `opening` and
+   * nowhere else; `body` picks up from the word after it.
+   */
   body: string[];
   /** Set only when the fragment actually became something published. */
   became?: { label: string; href: string };
@@ -319,7 +355,7 @@ export const answering = {
       opening: 'Nobody warns you that the first winter is not about the cold.',
       dated: '19 Jul',
       body: [
-        'Nobody warns you that the first winter is not about the cold. It is about four o’clock. The light goes while you are still at your desk and the evening arrives before you have earned it, and for a few weeks you keep checking the time expecting it to be later than it is.',
+        'It is about four o’clock. The light goes while you are still at your desk and the evening arrives before you have earned it, and for a few weeks you keep checking the time expecting it to be later than it is.',
         'What I have not worked out is whether I adjusted or simply stopped noticing. Those are different things and I think the difference matters, because one of them is',
       ],
     },
@@ -328,7 +364,7 @@ export const answering = {
       opening: 'The honest answer to “was it worth it” is that I cannot run the other version.',
       dated: '26 Jul',
       body: [
-        'The honest answer to “was it worth it” is that I cannot run the other version. There is no control group for a life. So when someone asks whether the Master’s was worth it, what they are really asking is whether I would do it again knowing what I know, which is a different and much easier question.',
+        'There is no control group for a life. So when someone asks whether the Master’s was worth it, what they are really asking is whether I would do it again knowing what I know, which is a different and much easier question.',
         'I would. But not for the reasons I gave anyone at the time.',
       ],
     },
@@ -337,7 +373,7 @@ export const answering = {
       opening: 'A question people ask me a lot, phrased six different ways.',
       dated: '2 Aug',
       body: [
-        'A question people ask me a lot, phrased six different ways: how do you make a decision when you do not have enough information? You do not. You work out which piece of missing information would actually change your answer, and you go and get that one.',
+        'How do you make a decision when you do not have enough information? You do not. You work out which piece of missing information would actually change your answer, and you go and get that one.',
         'Most of the time it turns out nothing would have changed the answer, and the delay was about something else.',
       ],
     },

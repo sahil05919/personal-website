@@ -38,8 +38,31 @@ import { destinations, isActiveRoute } from '@/data/navigation';
  * arriving at a title page or a page's opening never has navigation stapled to
  * its edge.
  *
- * `xl` and up only. Below 1280px the widened column does not leave the ~120px
- * of clear margin the labels need, and the navbar carries navigation as usual.
+ * WHERE IT IS ALLOWED TO APPEAR, AND WHY THE BREAKPOINT MOVED
+ *
+ * It was `xl:block` — 1280px and up — on the stated reasoning that anything
+ * narrower does not leave the ~120px of clear margin the labels need. The
+ * reasoning was right and the number was wrong, and the result was the worst
+ * layout bug on the site: on /experience at around 1300–1500px the rail sat on
+ * top of the prose. "CONTACT 08" printed across paragraphs for most of the
+ * page's length.
+ *
+ * The arithmetic, taking /experience as the widest case. Its shell is
+ * `mx-auto max-w-[76rem]` (1216px) with `lg:px-10`, and inside it a
+ * `13rem` + `4rem` gutter before a `max-w-[880px]` column, so for a viewport V
+ * the prose ends at about V/2 + 568. This rail is ~171px wide and sits 32px
+ * from the right edge, so it begins at V − 203. Clearance therefore needs
+ * V − 203 > V/2 + 568, i.e. V > 1542 — some 260px wider than the breakpoint it
+ * was using. At 1280px it was overlapping the text by nearly 100px.
+ *
+ * So: `min-[1600px]`, which leaves ~30px of true clearance rather than
+ * arithmetic that happens to work at one window size. Below that the navbar
+ * carries navigation, names the current chapter and draws the progress rule,
+ * which is what it is for.
+ *
+ * The alternative — keeping 1280px and reserving right padding on every page —
+ * was rejected: it would move the reading column off-centre on the exact
+ * screens most people read on, to make room for a rail that repeats the navbar.
  */
 
 const REVEAL_AFTER = 320;
@@ -75,7 +98,7 @@ export default function Wayfinder() {
       // `inert` is deliberately not used: the links stay reachable by keyboard
       // even while the rail is faded, and focus reveals it. Removing a link
       // from the tab order because of a scroll position would be a trap.
-      className={`fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 transition-opacity duration-700 ease-editorial focus-within:opacity-100 xl:block 2xl:right-8 ${
+      className={`fixed right-8 top-1/2 z-40 hidden -translate-y-1/2 transition-opacity duration-700 ease-editorial focus-within:opacity-100 min-[1600px]:block ${
         visible ? 'opacity-100' : 'opacity-0'
       }`}
     >
@@ -104,7 +127,11 @@ export default function Wayfinder() {
                   className={`w-[1.4rem] shrink-0 text-right font-mono text-apparatus-xs tabular-nums transition-colors duration-300 ease-editorial ${
                     active
                       ? 'text-through-line'
-                      : 'text-hairline group-hover:text-graphite'
+                      // Was `text-hairline`: 1.40:1 against Paper and 1.47:1
+                      // against Ink, i.e. a number nobody could read in either
+                      // theme. Matched to the label's tone (5.09:1), which is
+                      // the quietest value on the site that is still text.
+                      : 'text-graphite/70 group-hover:text-ink'
                   }`}
                 >
                   {String(i + 1).padStart(2, '0')}

@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { journeyIntro } from '@/data/journeyData';
+import { journeyIntroHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 // Ease unified to the site's signature settle curve (was 'easeOut') as part
 // of the sitewide motion pass — Journey was the one page still on Framer's
@@ -12,6 +14,12 @@ const fadeUp = {
 };
 
 export default function JourneyHero() {
+  /* Hinglish: `useVariant` returns the English object unless the reader has
+     chosen the second reading AND a Hinglish version exists. Nothing else in this
+     component changes — the ids, eras and moment positions are identical in both
+     files, so layout, anchors and the rail are language-blind. */
+  const copy = useVariant(journeyIntro, journeyIntroHi);
+
   return (
     <section
       aria-labelledby="journey-title"
@@ -32,7 +40,7 @@ export default function JourneyHero() {
         variants={fadeUp}
       >
         <p className="apparatus normal-case tracking-[0.08em] mb-7">
-          {journeyIntro.eyebrow}
+          {copy.eyebrow}
         </p>
 
         {/* Display scale, on the site's own type ramp. This was set at a
@@ -44,15 +52,15 @@ export default function JourneyHero() {
           id="journey-title"
           className="hang font-serif-display font-normal text-fluid-display text-balance mb-8 max-w-wide"
         >
-          {journeyIntro.title}
+          {copy.title}
         </h1>
 
         <p className="font-serif-display italic text-fluid-claim font-normal leading-[1.3] text-graphite mb-10 max-w-wide text-balance">
-          {journeyIntro.subtitle}
+          {copy.subtitle}
         </p>
 
         <div className="space-y-5 max-w-measure font-reading text-fluid-read text-pretty">
-          {journeyIntro.body.map((paragraph, i) => (
+          {copy.body.map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
           ))}
         </div>

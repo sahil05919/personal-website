@@ -6,7 +6,11 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 
 import PaperSwitch from "@/components/ui/PaperSwitch";
+import ReadingSwitch from "@/components/global/ReadingSwitch";
+import { chromeHi } from "@/data/hinglish";
+import { useVariant } from "@/hooks/use-reading-mode";
 import Search from "@/components/global/Search";
+import { contactInfo } from "@/data/contactData";
 import { destinations, isActiveRoute, navigation } from "@/data/navigation";
 
 /**
@@ -48,6 +52,34 @@ import { destinations, isActiveRoute, navigation } from "@/data/navigation";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
+/**
+ * The CV, in the running head.
+ *
+ * It existed in exactly one place: an 11px mono line at the foot of /contact,
+ * beside a telephone number, on the ninth page of nine. That is the wrong place
+ * for the one document a visitor is most likely to have come for — reaching it
+ * required reading to the end of the record first.
+ *
+ * It is not a nav item and is deliberately not in the `navigation` array: it is
+ * a document, not a chapter, so it sits with the apparatus rather than in the
+ * contents, and it is marked PDF because a link that downloads a file should say
+ * so before it is clicked. `download` gives the file its own name rather than a
+ * hashed one.
+ *
+ * The route is still also on /contact. Two places is right for this one thing.
+ */
+const CV_HREF = `/documents/${contactInfo.resume.fileName}`;
+
+/** Back matter. Reachable, indexable, not part of the reading order — so it is
+ *  in the colophon and, since this pass, in the mobile index too. It was in the
+ *  colophon only, which meant a phone reader had to scroll a whole chapter to
+ *  find the Index page that exists to save them scrolling a whole chapter. */
+const BACK_MATTER = [
+  { href: "/a-z", label: "Index" },
+  { href: "/writing", label: "Writing" },
+  { href: "/errata", label: "Errata" },
+];
+
 /** Folio number for a route, from the canonical order. Home is unnumbered —
  *  a title page does not carry a folio. */
 function folio(href: string): string | null {
@@ -56,6 +88,15 @@ function folio(href: string): string | null {
 }
 
 export default function Navbar() {
+  const t = {
+    contents: useVariant("Contents", chromeHi.contents),
+    backMatter: useVariant("Back matter", chromeHi.backMatter),
+    reading: useVariant("Reading", chromeHi.reading),
+    paper: useVariant("Paper", chromeHi.paper),
+    index: useVariant("Index", chromeHi.index),
+    close: useVariant("Close", chromeHi.close),
+  };
+
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [condensed, setCondensed] = useState(false);
@@ -135,7 +176,13 @@ export default function Navbar() {
             className="group flex min-w-0 items-baseline gap-3"
           >
             <span
-              className={`font-serif-display leading-none text-ink transition-all duration-500 ease-editorial group-hover:text-through-line ${
+              /* `shrink-0 whitespace-nowrap`: with the reading switch and the CV
+                 added to the right-hand cluster, the flex row ran out of width
+                 at 1440px and the name itself broke over two lines. The name is
+                 the one thing in the running head that must never wrap; the
+                 folio beside it already truncates, which is the correct thing to
+                 sacrifice. */
+              className={`shrink-0 whitespace-nowrap font-serif-display leading-none text-ink transition-all duration-500 ease-editorial group-hover:text-through-line ${
                 condensed ? "text-[15px]" : "text-[18px]"
               }`}
             >
@@ -158,7 +205,20 @@ export default function Navbar() {
                     /
                   </span>
                   <span className="text-through-line">{hereFolio}</span>
-                  <span className="truncate">{here.label}</span>
+                  {/* The chapter's name, and the one thing in this row that has to give
+                      way when the row is full.
+
+                      It was `truncate`, which produced "05 EXPERI…" — a word
+                      broken mid-syllable, which reads as a rendering fault
+                      rather than as a decision. It is now shown or not shown:
+                      hidden exactly in the 1024–1279 band, where the nine-item
+                      nav has just appeared and there is genuinely no room for it,
+                      and present either side of that — below 1024 the nav has
+                      collapsed to the index button and there is room to spare,
+                      from 1280 the row is wide enough to carry both. The folio
+                      NUMBER stays at every width, so the reader's position is
+                      never unstated. */}
+                  <span className="lg:hidden xl:inline">{here.label}</span>
                 </motion.span>
               ) : null}
             </AnimatePresence>
@@ -177,13 +237,35 @@ export default function Navbar() {
             The search mark is useful at every size, so it lives here, once,
             and the clusters sit beside it.
           */}
-          <div className="flex items-center gap-4 lg:gap-8">
+          <div className="flex shrink-0 items-center gap-3 lg:gap-5">
             <Search />
 
           {/* ── Desktop contents ─────────────────────────────────────────── */}
-          <div className="hidden items-center gap-8 lg:flex">
+          <div
+            /* gap-5, flat, at every width the cluster is visible.
+               It was gap-8, and the cluster gained two members in the August
+               pass — the reading switch and the CV — so the generous gap stopped
+               fitting. Two measured failures, not guesses: at 1024px, where the
+               cluster first appears, gap-8 put 1026px of content into 1024px and
+               produced a horizontal scrollbar on every page; and at 1440px the
+               row came to exactly its 1264px content box, which is what was
+               eating the 16px the running head needed. Restoring the wider gap
+               above some breakpoint was tried and reverted — the row is full at
+               1600px too, because the shell stops growing at max-w-spread while
+               the gaps do not. */
+            className="hidden items-center gap-5 lg:flex"
+          >
             <nav aria-label="Primary">
-              <ul className="flex items-center gap-6">
+              <ul
+                /* gap-4 up to 1560px. Nine labels, and each gap is 4px of pure
+                   air: at 1440px the row was exactly full (211px of running head
+                   + 1053px of controls in a 1264px content box), so the running
+                   head was truncated to "05 EXPERI…" not because the window was
+                   small but because the gaps had eaten the 16px the word needed.
+                   Measured per element, after two wrong guesses made from the
+                   row's total width — which includes its padding. */
+                className="flex items-center gap-4 min-[1560px]:gap-5"
+              >
                 {navigation.map((link) => {
                   const active = isActive(link.href);
 
@@ -218,6 +300,22 @@ export default function Navbar() {
 
             <span aria-hidden="true" className="h-4 w-px bg-hairline" />
 
+            <ReadingSwitch />
+
+            <a
+              href={CV_HREF}
+              download
+              className="group flex items-center gap-2 py-2 font-mono text-apparatus-xs uppercase text-graphite transition-colors duration-300 ease-editorial hover:text-ink"
+            >
+              CV
+              <span
+                aria-hidden="true"
+                className="hidden text-[9px] leading-none text-graphite/70 transition-colors duration-300 group-hover:text-through-line min-[1700px]:inline"
+              >
+                PDF
+              </span>
+            </a>
+
             <PaperSwitch />
           </div>
 
@@ -234,7 +332,7 @@ export default function Navbar() {
               aria-label={isOpen ? "Close index" : "Open index"}
               className="flex h-11 min-w-[44px] items-center gap-2.5 px-1 font-mono text-apparatus uppercase text-ink"
             >
-              {isOpen ? "Close" : "Index"}
+              {isOpen ? t.close : t.index}
               <span
                 aria-hidden="true"
                 className="relative flex h-3 w-4 flex-col justify-between"
@@ -289,7 +387,7 @@ export default function Navbar() {
             className="fixed inset-x-0 bottom-0 top-[58px] z-[45] overflow-y-auto border-t border-hairline bg-paper lg:hidden"
           >
             <nav aria-label="Index" className="px-5 pb-16 pt-8 sm:px-8">
-              <p className="apparatus">Contents</p>
+              <p className="apparatus">{t.contents}</p>
 
               <ul className="mt-6">
                 {destinations.map((link, i) => {
@@ -333,8 +431,53 @@ export default function Navbar() {
                 })}
               </ul>
 
-              <div className="mt-10 flex items-center justify-between border-t border-hairline pt-6">
-                <span className="apparatus">Paper</span>
+              {/* Back matter and the CV. Both were reachable on a phone only
+                  from the colophon at the very bottom of whichever chapter the
+                  reader happened to be in. */}
+              <div className="mt-10 border-t border-hairline pt-6">
+                <p className="apparatus">{t.backMatter}</p>
+
+                <ul className="mt-4 flex flex-wrap items-baseline gap-x-6 gap-y-3">
+                  {BACK_MATTER.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={closeMenu}
+                        aria-current={isActive(link.href) ? "page" : undefined}
+                        className={`inline-flex min-h-11 items-center font-mono text-apparatus uppercase ${
+                          isActive(link.href) ? "text-through-line" : "text-ink"
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                  <li>
+                    <a
+                      href={CV_HREF}
+                      download
+                      onClick={closeMenu}
+                      className="inline-flex min-h-11 items-baseline gap-2 font-mono text-apparatus uppercase text-ink"
+                    >
+                      CV
+                      <span
+                        aria-hidden="true"
+                        className="text-[9px] leading-none text-graphite"
+                      >
+                        PDF
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="mt-8 flex items-center justify-between border-t border-hairline pt-6">
+                <span className="apparatus">{t.reading}</span>
+                <ReadingSwitch />
+              </div>
+
+              <div className="mt-6 flex items-center justify-between border-t border-hairline pt-6">
+                <span className="apparatus">{t.paper}</span>
                 <PaperSwitch />
               </div>
             </nav>

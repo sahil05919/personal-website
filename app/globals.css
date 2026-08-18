@@ -381,6 +381,46 @@
   .hang {
     margin-left: -0.045em;
   }
+
+  /* ------------------------------------------------------------------------
+     TAP TARGET — 44×44 of touchable area around a mark that stays small.
+
+     The running head carries four controls drawn at 26px: the search mark and
+     three paper swatches. 26px is the right SIZE — they are apparatus, and a
+     44px swatch in a 58px-tall header would be a button rather than a sample —
+     but 26px is not a usable TARGET on a phone, which is where the header is
+     the only navigation. WCAG 2.5.8 asks for 24px minimum and 2.5.5 for 44px
+     as the enhanced target; a thumb is closer to the latter.
+
+     So the target is grown and the mark is not. The pseudo-element is centred
+     on the control and takes no part in layout, so the header's geometry —
+     including the reserved-gap width PaperSwitch computes before hydration —
+     is untouched. Applied to the control itself rather than its container so
+     that two adjacent swatches each get their own patch.
+
+     It grows to the full 44px VERTICALLY, where there is room, and only into
+     the 6px gutter HORIZONTALLY. A full 44px square would have made each patch
+     overlap its neighbour's by 12px, so the right edge of the Paper swatch
+     would have selected Ink — trading an undersized target for a wrong one.
+     32×44 clears WCAG 2.5.8's 24px minimum in both axes and puts the whole
+     header row's height under the thumb.
+  ------------------------------------------------------------------------ */
+  .tap-target {
+    position: relative;
+  }
+
+  .tap-target::after {
+    content: '';
+    position: absolute;
+    /* Half the flex gutter on each side; the neighbour claims the other half. */
+    left: -3px;
+    right: -3px;
+    top: 50%;
+    height: 44px;
+    transform: translateY(-50%);
+    /* Decoration only: it exists to be pressed, never to be seen or read. */
+    background: transparent;
+  }
 }
 
 /* ===========================================================================

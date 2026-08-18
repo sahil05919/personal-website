@@ -6,6 +6,8 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { homeContent } from "@/data/homeContent";
 import { navigation } from "@/data/navigation";
+import { chromeHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * TURNING THE PAGE.
@@ -73,6 +75,14 @@ function isTyping(target: EventTarget | null): boolean {
 }
 
 export default function PageTurn() {
+  const nextLabel = useVariant('Next', chromeHi.next);
+  const turnsHint = useVariant('turns the page', chromeHi.turnsThePage);
+  /* A prefix, followed by the previous chapter's name. Not a whole phrase:
+     "Back to About" and "Wapas About" put the name in the same place, and a
+     complete sentence in each language would have to be assembled by string
+     surgery in one of them. */
+  const backTo = useVariant('Back to', chromeHi.backTo);
+
   const pathname = usePathname();
   const router = useRouter();
 
@@ -132,11 +142,11 @@ export default function PageTurn() {
       >
         {showNext && next ? (
           <Link href={next.href} className="group block">
-            <p className="apparatus">Next</p>
+            <p className="apparatus">{nextLabel}</p>
 
             <p className="mt-5 flex items-baseline gap-4 font-serif-display text-fluid-title text-ink">
               {folio(next.href) ? (
-                <span className="font-mono text-apparatus-xs text-hairline transition-colors duration-300 ease-editorial group-hover:text-through-line">
+                <span className="font-mono text-apparatus-xs text-graphite/70 transition-colors duration-300 ease-editorial group-hover:text-through-line">
                   {folio(next.href)}
                 </span>
               ) : null}
@@ -175,7 +185,7 @@ export default function PageTurn() {
               >
                 &larr;
               </span>
-              Back to {previous.label}
+              {backTo} {previous.label}
             </Link>
           ) : (
             <span />
@@ -189,7 +199,7 @@ export default function PageTurn() {
           */}
           <p className="hidden font-mono text-apparatus-xs uppercase text-graphite/70 [@media(hover:hover)]:block">
             <kbd className="font-mono">&larr;</kbd>{" "}
-            <kbd className="font-mono">&rarr;</kbd> turns the page
+            <kbd className="font-mono">&rarr;</kbd> {turnsHint}
           </p>
         </div>
       </div>

@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { journeySnapshot, snapshotToChapterId } from '@/data/journeyData';
+import { journeySnapshotHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * The mobile/tablet counterpart to JourneyRail. Below `lg` there's no room
@@ -20,8 +22,10 @@ const fadeUp = {
 };
 
 export default function JourneySnapshot() {
+  const snapshot = useVariant(journeySnapshot, journeySnapshotHi);
+
   return (
-    <section aria-label={journeySnapshot.heading} className="lg:hidden pb-14 md:pb-16">
+    <section aria-label={snapshot.heading} className="lg:hidden pb-14 md:pb-16">
       <motion.div
         initial="hidden"
         whileInView="show"
@@ -30,7 +34,7 @@ export default function JourneySnapshot() {
         className="max-w-measure"
       >
         <p className="font-mono text-[11px] tracking-[0.06em] uppercase text-graphite mb-5">
-          {journeySnapshot.heading}
+          {snapshot.heading}
         </p>
 
         {/* Each pair jumps to its chapter, exactly as the desktop rail does.
@@ -39,7 +43,7 @@ export default function JourneySnapshot() {
             the <dd> and the year moves into it, which keeps the markup legal
             and still gives a thumb the whole label to hit. */}
         <dl className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-1">
-          {journeySnapshot.points.map((point, i) => {
+          {snapshot.points.map((point, i) => {
             const chapterId = snapshotToChapterId[i];
 
             return (
@@ -75,7 +79,7 @@ export default function JourneySnapshot() {
         </dl>
 
         <p className="font-reading italic text-[13px] leading-relaxed text-graphite mt-6">
-          {journeySnapshot.summary}
+          {snapshot.summary}
         </p>
       </motion.div>
     </section>

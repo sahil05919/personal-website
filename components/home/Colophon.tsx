@@ -1,5 +1,9 @@
+'use client';
+
 import { homeContent } from '@/data/homeContent';
 import { gutter, shell, wide } from './rhythm';
+import { homeContentHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * Colophon — the last page, and where the through-line stops.
@@ -45,7 +49,10 @@ import { gutter, shell, wide } from './rhythm';
  * sentence it ends under.
  */
 export default function Close() {
-  const { close } = homeContent.colophon;
+  const close = useVariant(
+    homeContent.colophon.close,
+    homeContentHi.colophon.close,
+  );
 
   return (
     <section aria-label="Close" className="bg-paper text-ink">

@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { searchIndex, score, KIND_ORDER, type SearchRecord } from "@/data/searchIndex";
+import { chromeHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * SEARCH — the one piece of software chrome on a site made of paper.
@@ -41,6 +43,12 @@ import { searchIndex, score, KIND_ORDER, type SearchRecord } from "@/data/search
 const MAX_RESULTS = 8;
 
 export default function Search() {
+  const searchLabel = useVariant('Search this record', chromeHi.search);
+  const searchPlaceholder = useVariant(
+    'A place, a project, a year, a word',
+    chromeHi.searchPlaceholder,
+  );
+
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -149,9 +157,9 @@ export default function Search() {
         ref={trigger}
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Search this record"
+        aria-label={searchLabel}
         title="Search  /"
-        className="flex h-[26px] w-[26px] items-center justify-center text-graphite transition-colors duration-300 ease-editorial hover:text-ink"
+        className="tap-target flex h-[26px] w-[26px] items-center justify-center text-graphite transition-colors duration-300 ease-editorial hover:text-ink"
       >
         {/* Drawn, not imported. A 1.25px stroke on `currentColor` sits at the
             same weight as every hairline on the site; an icon-set magnifier
@@ -212,8 +220,8 @@ export default function Search() {
                   setCursor(0);
                 }}
                 onKeyDown={onFieldKeyDown}
-                placeholder="A place, a project, a year, a word"
-                aria-label="Search this record"
+                placeholder={searchPlaceholder}
+                aria-label={searchLabel}
                 aria-controls={listId}
                 aria-autocomplete="list"
                 autoComplete="off"

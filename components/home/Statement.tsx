@@ -1,6 +1,10 @@
+'use client';
+
 import { homeContent } from '@/data/homeContent';
 import Column from './Column';
 import { measure, sectionY, wide } from './rhythm';
+import { homeContentHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * Statement — what this site is, in the author's voice.
@@ -20,7 +24,10 @@ import { measure, sectionY, wide } from './rhythm';
  * rather than as the end of a paragraph.
  */
 export default function Statement() {
-  const { beats, claim, coda } = homeContent.statement;
+  const { beats, claim, coda } = useVariant(
+    homeContent.statement,
+    homeContentHi.statement,
+  );
 
   return (
     <section aria-label="What this is" className="bg-paper text-ink">

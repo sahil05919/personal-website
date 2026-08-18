@@ -1,5 +1,8 @@
+'use client';
+
 import { isRevision, type Paragraph } from '@/app/now/now-content';
 
+import { useVariant } from '@/hooks/use-reading-mode';
 import { Revised } from './Revised';
 
 /**
@@ -10,15 +13,24 @@ import { Revised } from './Revised';
  * is the point: the page is not displaying a changelog, it is a piece of
  * writing that has been edited in front of the reader.
  *
- * Server component. Only the revision itself ships JavaScript.
+ * It was a server component — only the revision itself shipped JavaScript. It is
+ * a client component now, because the reader's language choice is only knowable
+ * in the browser. `paragraphsHi` is a prop rather than an import so the page,
+ * which is a server component and owns the season's content, stays the one place
+ * that decides which season is being rendered.
  */
 export function SeasonProse({
-  paragraphs,
+  paragraphs: paragraphsEn,
+  paragraphsHi,
   className = '',
 }: {
   paragraphs: readonly Paragraph[];
+  /** The same runs in Hinglish. Identical revision count and positions. */
+  paragraphsHi?: readonly Paragraph[];
   className?: string;
 }) {
+  const paragraphs = useVariant(paragraphsEn, paragraphsHi);
+
   return (
     <div className={className}>
       {paragraphs.map((paragraph, pIndex) => (

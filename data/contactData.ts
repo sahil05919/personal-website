@@ -22,13 +22,22 @@
  *      conflict at all; it was a misreading of "time-to-hire from 30 days to
  *      20 days", which is one figure, not two.
  *
- *      What is still true is smaller and harder to fix in a comment: the PDF
- *      opens "Business and data analyst with an MSc in Business Analytics",
- *      leads its skills with SQL and Python, and selects Equinor and the USS
- *      pension tool as its two projects. That is the positioning this record
- *      has moved away from. Restore the line when the CV is the people
- *      analytics one — not before, because the sentence claims the two
- *      documents are the same record and they currently describe two people.
+ *      What was still true in that note is no longer true either. Re-checked
+ *      against the actual file on 17 August 2026: the PDF has been replaced
+ *      again and now opens "People Analytics Analyst — People Insights,
+ *      Workforce & HR Reporting", leads on headcount, attrition and
+ *      recruitment-funnel reporting, and selects Employee Attrition Analysis
+ *      and the Recruitment Analytics Dashboard as its two projects. The
+ *      condition the note set has been met, and the erratum that recorded the
+ *      old positioning is now closed (data/errataData.ts, `cv-description`).
+ *
+ *      The line is still not on the page, and that is now a choice rather than
+ *      a blocker. The two documents no longer describe two people, but they do
+ *      not describe the same thing either: the CV selects the professional
+ *      spine out of fifteen years, and /experience keeps the saree shop, the
+ *      note-taking and the thirty-five first days that the CV has no room for.
+ *      "The same record, compressed to one" would overclaim. Restore it only
+ *      with wording that is true of both.
  *
  *   3. "I believe ambition gives us direction..." Moved out, not lost. Two
  *      closing statements compete; the note under `lastNote` is now the thing
@@ -38,9 +47,22 @@
  * ---------------------------------------------------------------------------
  */
 
+/**
+ * NO PHONE NUMBER HERE, DELIBERATELY (17 August 2026)
+ *
+ * `phone: '+447562267371'` used to sit on this line and was printed in full on
+ * /contact with a `tel:` link on it. A mobile number set as plain text on a
+ * public page is scraped within days: it is the one detail on this site that
+ * costs something to publish and cannot be taken back once it has been
+ * collected. Email and LinkedIn are both reversible; a number is not.
+ *
+ * WhatsApp stays, because a message request is not a cold call and the reader
+ * chooses to open it. The number is inside that URL, which is the trade being
+ * made knowingly — it is not on the page as a callable string, and anyone who
+ * wants to speak can ask.
+ */
 export const contactInfo = {
   email: 'sahil05919@gmail.com',
-  phone: '+447562267371',
   whatsapp: 'https://wa.me/447562267371',
   location: 'London',
   linkedin: 'https://www.linkedin.com/in/reach-sahil/',
@@ -82,8 +104,15 @@ export interface ChannelGroup {
  * has their name on it, LinkedIn tells him who looked, WhatsApp is a phone
  * number. This one costs nothing, and the copy has to say so plainly without
  * turning into a privacy policy — the promise is one sentence, and it is a
- * promise the implementation actually keeps (app/api/unsigned/route.ts stores
- * nothing and logs no addresses).
+ * promise the implementation actually keeps.
+ *
+ * It used to say the promise was kept by `app/api/unsigned/route.ts`. That route
+ * does not exist and has not for some time: Web3Forms returns 403 to server-side
+ * calls, so the form posts straight from the browser
+ * (components/contact/Unsigned.tsx). The promise still holds — nothing on this
+ * site stores or logs the message — but it now holds because there is no server
+ * of ours in the path at all, which is a stronger version of the same claim and
+ * worth stating accurately.
  *
  * `reply` is optional and labelled optional twice, because a "way to reply"
  * field that looks required defeats the entire point of the section.
@@ -112,7 +141,7 @@ export interface ContactContent {
   meta: { title: string; description: string };
   hero: { eyebrow: string; headline: string; body: readonly string[] };
   groups: readonly ChannelGroup[];
-  apparatus: { telephoneLabel: string; cvLabel: string };
+  apparatus: { cvLabel: string; cvNote: string };
   unsigned: UnsignedContent;
   walk: { eyebrow: string; lines: readonly string[] };
   lastNote: {
@@ -193,8 +222,8 @@ export const contactContent: ContactContent = {
   ],
 
   apparatus: {
-    telephoneLabel: 'By telephone',
-    cvLabel: 'Download CV',
+    cvLabel: 'Download the CV',
+    cvNote: 'PDF · one page · the professional spine of this record',
   },
 
   unsigned: {

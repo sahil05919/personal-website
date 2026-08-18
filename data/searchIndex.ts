@@ -116,7 +116,7 @@ const questionRecords: SearchRecord[] = questions.map((q) => ({
   title: q.question,
   context: "Questions",
   kind: "Question",
-  href: "/question",
+  href: "/questions",
 }));
 
 const writingRecords: SearchRecord[] = writing.map((w) => ({

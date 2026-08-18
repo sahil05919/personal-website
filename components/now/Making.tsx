@@ -1,7 +1,11 @@
+'use client';
+
 import { work } from '@/app/now/now-content';
 
 import { Leaf, LeafRow, LeafHeading, MarginNote } from './Leaf';
 import { SeasonProse } from './SeasonProse';
+import { workHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * WORK + MAKING.
@@ -23,16 +27,18 @@ import { SeasonProse } from './SeasonProse';
  * which is exactly the argument for publishing it.
  */
 export function Making() {
+  const copy = useVariant(work, workHi);
+
   return (
     <Leaf className="px-6 py-20 md:px-10 md:py-28">
       <div className="mx-auto w-full max-w-[62rem]">
-        <LeafRow note={<LeafHeading>{work.heading}</LeafHeading>}>
-          <SeasonProse paragraphs={work.paragraphs} />
+        <LeafRow note={<LeafHeading>{copy.heading}</LeafHeading>}>
+          <SeasonProse paragraphs={copy.paragraphs} />
         </LeafRow>
 
         <LeafRow className="mt-14" note={<MarginNote>state</MarginNote>}>
           <dl className="max-w-[36rem] border-t border-hairline">
-            {work.making.map((item) => (
+            {copy.making.map((item) => (
               <div
                 key={item.name}
                 className="flex flex-col gap-1 border-b border-hairline py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8"
@@ -82,11 +88,11 @@ export function Making() {
               and the count follows. */}
           <div className="max-w-[34rem] border border-hairline bg-ink/[0.015]">
             <p className="border-b border-hairline px-5 py-3.5 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-graphite">
-              {work.unfinished.note}
+              {copy.unfinished.note}
             </p>
 
             <ol className="m-0 list-none p-0">
-              {work.unfinished.items.map((item, index) => (
+              {copy.unfinished.items.map((item, index) => (
                 <li
                   key={item}
                   className="flex gap-4 border-b border-hairline px-5 py-3.5 last:border-b-0"

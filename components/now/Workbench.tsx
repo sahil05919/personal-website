@@ -1,8 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 
 import { becoming, type BecomingItem } from '@/app/now/now-content';
 
 import { Leaf, LeafRow, LeafHeading, MarginNote } from './Leaf';
+import { becomingHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * BECOMING — the workbench.
@@ -147,16 +151,18 @@ const SPACING: Record<BecomingItem['kind'], string> = {
 };
 
 export function Workbench() {
+  const copy = useVariant(becoming, becomingHi);
+
   return (
     <Leaf className="px-6 pb-20 pt-14 md:px-10 md:pb-28 md:pt-16">
       <div className="mx-auto w-full max-w-[62rem]">
-        <LeafRow note={<LeafHeading>{becoming.heading}</LeafHeading>}>
+        <LeafRow note={<LeafHeading>{copy.heading}</LeafHeading>}>
           <p className="max-w-[36rem] font-reading text-[1.0625rem] leading-[1.75] text-ink md:text-[1.1875rem]">
-            {becoming.standfirst}
+            {copy.standfirst}
           </p>
         </LeafRow>
 
-        {becoming.items.map((item, index) => (
+        {copy.items.map((item, index) => (
           <LeafRow
             key={index}
             className={SPACING[item.kind]}

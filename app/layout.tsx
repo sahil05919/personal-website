@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { SOCIAL_CARD } from "@/lib/seo";
+
 /* ---------------------------------------------------------------------------
    TYPE — self-hosted, three faces, no third-party origin.
 
@@ -51,10 +53,30 @@ import ThemeProvider from "@/components/providers/ThemeProvider";
 
    `metadataBase` is required for the relative OpenGraph URLs below to resolve.
    Without it Next emits a build warning and social cards resolve nothing.
+
+   WHAT MOVED OUT OF HERE, AND WHY
+
+   This object used to carry `alternates: { canonical: "/" }`, plus an
+   `openGraph` block naming the home page's title, description and URL. Layout
+   metadata is INHERITED, not merged per field, so every one of the thirteen
+   routes was declaring Home as its canonical URL — an instruction to search
+   engines to treat nine chapters as duplicates of the title page — and every
+   shared link, whichever page it pointed at, previewed as Home.
+
+   Both now come from `pageMetadata()` in lib/seo.ts, which each page calls
+   with its own path. Nothing route-specific is declared here any more: what
+   stays is only what is true of the whole book — the base URL, the title
+   template, authorship, and the card format.
+
+   The card image is `SOCIAL_CARD` (public/og.png, declared in lib/seo.ts). It
+   is attached here as the sitewide default — /_not-found is the one route that
+   does not call `pageMetadata` — and again per page, because a page's own
+   `openGraph` block replaces an inherited one rather than merging into it. The
+   `summary_large_image` card below previously had no image at all, which is why
+   every shared link rendered as a blank plate.
 --------------------------------------------------------------------------- */
 const SITE = "https://sahilarora.vercel.app";
 
-const TITLE = "Sahil Kumar — Things I don't want to forget.";
 const DESCRIPTION =
   "A record kept by Sahil Kumar in London: the places, the reading, the questions still open, and the work behind them.";
 
@@ -65,21 +87,17 @@ export const metadata: Metadata = {
     template: "%s | Sahil Kumar",
   },
   description: DESCRIPTION,
-  authors: [{ name: "Sahil Kumar" }],
+  authors: [{ name: "Sahil Kumar", url: SITE }],
   creator: "Sahil Kumar",
-  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: "Sahil Kumar",
-    title: TITLE,
-    description: DESCRIPTION,
-    url: SITE,
     locale: "en_GB",
+    images: [SOCIAL_CARD],
   },
   twitter: {
     card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
+    images: [SOCIAL_CARD],
   },
 };
 

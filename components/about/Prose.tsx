@@ -4,6 +4,7 @@ import { ChapterOpening } from '@/components/type/ChapterOpening';
 import { motion } from 'framer-motion';
 
 import type { EssayMode, EssayParagraph } from '@/data/profileContent';
+import { useVariant } from '@/hooks/use-reading-mode';
 import { MARGIN_NOTE, SHELL } from './layout';
 
 /**
@@ -166,11 +167,23 @@ function Ledger({ lines, className }: { lines: string[]; className: string }) {
 }
 
 export function Prose({
-  paragraphs,
+  paragraphs: paragraphsEn,
+  paragraphsHi,
   dropCap = false,
   className = '',
 }: {
   paragraphs: EssayParagraph[];
+  /**
+   * The same block in Hinglish, or nothing.
+   *
+   * Passed in as a prop rather than imported here because /about's page is a
+   * server component and picks the block it wants; this component is the client
+   * boundary, so it is where the reader's choice can actually be read. Both
+   * lists carry identical `mode` and `note` sequences, which is what keeps the
+   * drop cap, the spine segments and the out-dented display lines in the same
+   * places in either language.
+   */
+  paragraphsHi?: EssayParagraph[];
   /**
    * Set a drop cap on this block's first quiet paragraph.
    *
@@ -186,6 +199,8 @@ export function Prose({
   dropCap?: boolean;
   className?: string;
 }) {
+  const paragraphs = useVariant(paragraphsEn, paragraphsHi);
+
   /** The cobalt cap belongs on the first segment that actually gets drawn,
    *  which is not necessarily the first paragraph — the coda opens on a stanza. */
   const firstSpine = paragraphs.findIndex(({ mode }) => !OUTDENT[mode]);

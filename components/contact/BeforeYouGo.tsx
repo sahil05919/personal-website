@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { contactContent } from '@/data/contactData';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
+import { contactContentHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * BeforeYouGo — the last thing on the record, behind one deliberate click.
@@ -38,7 +40,10 @@ const SWEEP =
 export default function BeforeYouGo() {
   const prefersReducedMotion = useReducedMotionSafe();
   const [open, setOpen] = useState(false);
-  const { eyebrow, prompt, action, lines } = contactContent.lastNote;
+  const { eyebrow, prompt, action, lines } = useVariant(
+    contactContent.lastNote,
+    contactContentHi.lastNote,
+  );
 
   const noteGroup: Variants = {
     hidden: {},

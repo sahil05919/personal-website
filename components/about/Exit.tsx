@@ -3,6 +3,8 @@
 import Link from 'next/link';
 
 import { aboutContent } from '@/data/profileContent';
+import { aboutExitHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 import { SHELL } from './layout';
 
 /**
@@ -18,7 +20,12 @@ import { SHELL } from './layout';
  * admission and the turn to Journey.
  */
 export function Exit() {
-  const { exit } = aboutContent;
+  /* `href` is not translated and must not be: it is a route. The Hinglish object
+     deliberately omits it, so its copy is spread OVER the English object rather
+     than replacing it — which also means a partially written Hinglish block
+     falls back field by field instead of all or nothing. */
+  const copy = useVariant<Partial<typeof aboutExitHi>>({}, aboutExitHi);
+  const exit = { ...aboutContent.exit, ...copy };
 
   return (
     <nav aria-label="Continue reading" className="border-t border-hairline">

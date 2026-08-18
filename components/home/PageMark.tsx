@@ -17,7 +17,7 @@
  * Not an icon *about* the page — a scale model of something the page
  * actually does. /experience's mark is its two-lane route with the crossing.
  * /projects' is the reconciliation chart's dumbbell. /contact's is Imprint's
- * ruled letterhead. /question's is one full rule and six short ones, which is
+ * ruled letterhead. /questions' is one full rule and six short ones, which is
  * literally the state of that page: one question answered, six not.
  *
  * The payoff is on arrival rather than here. You read eight distinct marks on
@@ -62,7 +62,7 @@ function Mark({ children }: { children: React.ReactNode }) {
 /**
  * Keyed by route, not by label — `data/navigation.ts` owns the labels and they
  * are allowed to change wording without silently dropping a mark. The route
- * is `/question` (singular) because that is the directory name in app/; see
+ * is `/questions`; see
  * the note in navigation.ts.
  */
 export function PageMark({ href }: { href: string }) {
@@ -148,7 +148,7 @@ export function PageMark({ href }: { href: string }) {
        currently holds one written answer and six questions still open, and
        the mark counts them. If that changes, this mark becomes false and
        should be redrawn — the same contract Fig. 01's caption carries. */
-    case '/question':
+    case '/questions':
       return (
         <Mark>
           <path {...STROKE} d="M2 3 H30" />

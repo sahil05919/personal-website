@@ -1,7 +1,11 @@
+'use client';
+
 import { answering } from '@/app/now/now-content';
 
 import { Leaf, LeafRow, LeafHeading, MarginNote } from './Leaf';
 import { Pile } from './Pile';
+import { answeringHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * ANSWERING — Community and Writing, merged.
@@ -27,17 +31,19 @@ import { Pile } from './Pile';
  * only one that carries any.
  */
 export function Answering() {
+  const copy = useVariant(answering, answeringHi);
+
   return (
     <Leaf className="px-6 py-20 md:px-10 md:py-28">
       <div className="mx-auto w-full max-w-[62rem]">
-        <LeafRow note={<LeafHeading>{answering.heading}</LeafHeading>}>
+        <LeafRow note={<LeafHeading>{copy.heading}</LeafHeading>}>
           <p className="max-w-[36rem] font-reading text-[1.0625rem] leading-[1.75] text-ink md:text-[1.1875rem]">
-            {answering.standfirst}
+            {copy.standfirst}
           </p>
         </LeafRow>
 
         <ul className="m-0 mt-16 list-none space-y-14 p-0 md:mt-24 md:space-y-20">
-          {answering.questions.map((question) => (
+          {copy.questions.map((question) => (
             <li key={question.text}>
               <LeafRow
                 note={<MarginNote>{question.attribution}</MarginNote>}
@@ -55,28 +61,28 @@ export function Answering() {
           note={<MarginNote>where this started</MarginNote>}
         >
           <p className="max-w-[36rem] font-reading text-[1rem] leading-[1.8] text-graphite">
-            {answering.context}
+            {copy.context}
           </p>
         </LeafRow>
 
         <LeafRow
           className="mt-20 md:mt-28"
-          note={<MarginNote>{answering.pileHeading}</MarginNote>}
+          note={<MarginNote>{copy.pileHeading}</MarginNote>}
         >
           <div>
             <p className="mb-8 max-w-[36rem] font-reading text-[1rem] leading-[1.8] text-graphite">
-              {answering.pileNote}
+              {copy.pileNote}
             </p>
-            <Pile fragments={answering.pile} />
+            <Pile fragments={copy.pile} />
           </div>
         </LeafRow>
 
         <LeafRow
           className="mt-16"
-          note={<MarginNote>{answering.publishedNote}</MarginNote>}
+          note={<MarginNote>{copy.publishedNote}</MarginNote>}
         >
           <ul className="m-0 max-w-[36rem] list-none space-y-3 p-0">
-            {answering.published.map((piece) => (
+            {copy.published.map((piece) => (
               <li key={piece.href} className="flex items-baseline gap-4">
                 <span className="w-[3.75rem] shrink-0 font-mono text-[0.5625rem] uppercase tracking-[0.14em] text-graphite">
                   {piece.source}

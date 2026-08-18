@@ -11,6 +11,20 @@ const nextConfig: NextConfig = {
     // payload is photographs.
     formats: ["image/avif", "image/webp"],
   },
+
+  /**
+   * The Questions chapter moved from `/question` to `/questions` so that the
+   * route and the label the page uses for itself finally agree.
+   *
+   * The old path has been live and linked from the navbar, from Home's
+   * contents, from the search index and from an errata entry, so it stays
+   * reachable permanently rather than becoming a 404. 308 (`permanent: true`)
+   * rather than 307: this is not a temporary alias, and a permanent redirect is
+   * what transfers the old URL's search history to the new one.
+   */
+  async redirects() {
+    return [{ source: "/question", destination: "/questions", permanent: true }];
+  },
 };
 
 export default nextConfig;

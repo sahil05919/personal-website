@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import {
   JourneyHero,
   JourneySnapshot,
@@ -7,11 +8,12 @@ import {
   JourneyRail,
 } from '@/components/journey';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: '/journey',
   title: 'Journey',
   description:
-    'The story of how a curious child from a small town in India found his way into business, analytics, and technology.',
-};
+    'Mahendragarh to London in eight chapters: the scholarships my father matched, the motorcycle, the years I did not choose, and what each one actually taught me.',
+});
 
 /**
  * VISUAL REFINEMENT (August 2026): previously every section here centred

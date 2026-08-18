@@ -10,9 +10,12 @@
  * If the order needs to change, change it here and it changes everywhere.
  * Do not re-declare a list of pages in a component.
  *
- * The route is `/question` (singular) because that is the directory name in
- * `app/`. The label is "Questions" because that is what the page calls itself.
- * The mismatch is deliberate and lives here so it lives nowhere else.
+ * The route and the label now agree: `/questions`, "Questions". They did not
+ * for a long time — the directory was `app/question` and the page called
+ * itself Questions, so every link, index entry and errata reference had to
+ * remember which one it was quoting. `/question` still resolves; it is a
+ * permanent redirect declared in next.config.ts, because a URL that has been
+ * on the internet does not stop existing when you rename the folder.
  */
 
 export interface Destination {
@@ -46,7 +49,7 @@ export const navigation: Destination[] = [
   { href: '/projects', label: 'Projects' },
   { href: '/experience', label: 'Experience' },
   { href: '/media', label: 'Media' },
-  { href: '/question', label: 'Questions' },
+  { href: '/questions', label: 'Questions' },
   { href: '/contact', label: 'Contact' },
 ];
 

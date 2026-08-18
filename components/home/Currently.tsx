@@ -1,7 +1,11 @@
+'use client';
+
 import Link from 'next/link';
 
 import Column from './Column';
 import { measure } from './rhythm';
+import { chromeHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * Currently — proof the record is alive.
@@ -42,11 +46,14 @@ interface CurrentlyProps {
 }
 
 export default function Currently({ line, updated }: CurrentlyProps) {
+  const currentlyLabel = useVariant('Currently', chromeHi.currently);
+  const updatedLabel = useVariant('Updated', chromeHi.updated);
+
   return (
     <section aria-label="Currently" className="bg-paper text-ink">
       <Column className="pt-[clamp(1.75rem,4vh,3rem)] pb-[clamp(1.5rem,3.5vh,2.5rem)]">
         <p className="font-mono text-apparatus uppercase text-graphite">
-          Currently
+          {currentlyLabel}
         </p>
 
         <p
@@ -65,7 +72,7 @@ export default function Currently({ line, updated }: CurrentlyProps) {
           <span className="mx-2 text-hairline" aria-hidden="true">
             /
           </span>
-          Updated {updated}
+          {updatedLabel} {updated}
         </p>
       </Column>
     </section>

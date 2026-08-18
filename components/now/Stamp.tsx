@@ -1,4 +1,8 @@
+'use client';
+
 import { season, revisionCount } from '@/app/now/now-content';
+import { seasonHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * THE STAMP.
@@ -21,6 +25,8 @@ import { season, revisionCount } from '@/app/now/now-content';
  * run at all under prefers-reduced-motion.
  */
 export function Stamp() {
+  const copy = useVariant(season, seasonHi);
+
   return (
     <header className="px-6 pb-16 pt-14 md:px-10 md:pb-24 md:pt-20">
       <div className="mx-auto w-full max-w-[62rem]">
@@ -30,18 +36,18 @@ export function Stamp() {
               Now
             </span>
             <span className="mt-2 block font-mono text-[0.625rem] uppercase tracking-[0.18em] text-graphite">
-              {season.entryNo}
+              {copy.entryNo}
             </span>
           </div>
 
           <div>
             <h1 className="max-w-[46rem] font-serif-display text-[3rem] font-normal leading-[0.95] tracking-[-0.03em] text-ink md:text-[4.5rem] lg:text-[5.5rem]">
-              {season.name}
+              {copy.name}
             </h1>
 
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
               <p className="now-stamp inline-block border-y border-through-line/40 px-3 py-1.5 font-mono text-[0.625rem] uppercase tracking-[0.22em] text-through-line">
-                {season.stamp}
+                {copy.stamp}
               </p>
               <p className="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-graphite">
                 {revisionCount} crossings-out kept

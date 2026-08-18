@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
 import { contactContent } from '@/data/contactData';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
+import { contactContentHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * ClosingSignature — the mark, the place, the closure, and the way back.
@@ -106,7 +108,10 @@ function Closure({ reduced }: { reduced: boolean }) {
 
 export default function ClosingSignature() {
   const prefersReducedMotion = useReducedMotionSafe();
-  const { signature, place, returnLabel } = contactContent.close;
+  const { signature, place, returnLabel } = useVariant(
+    contactContent.close,
+    contactContentHi.close,
+  );
 
   const settle: Variants = {
     hidden: { opacity: 0, y: -10 },

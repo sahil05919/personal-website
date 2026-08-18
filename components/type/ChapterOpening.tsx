@@ -126,6 +126,14 @@ export function ChapterOpening({
         aria-hidden with the letter restored in a visually-hidden span: without
         that, a screen reader announces the capital as its own sentence, so the
         chapter opens "M. AHENDRAGARH IS…".
+
+        The visually-hidden copy is `select-none`. It is clipped, not removed
+        from the document, so it was inside every selection that crossed the
+        opening line and came out in the clipboard: copying the first paragraph
+        of a Journey chapter produced "I I WAS BORN IN May 1998", and every one
+        of the twenty-six drop caps on the site had the same defect. Excluding
+        it from selection keeps the screen-reader fix and gives a reader who
+        quotes a paragraph the sentence that is actually on the page.
       */}
       <span
         aria-hidden="true"
@@ -140,7 +148,19 @@ export function ChapterOpening({
       >
         {first}
       </span>
-      <span className="sr-only">{first}</span>
+      <span className="sr-only select-none">{first}</span>
+      {/* A selectable space, and the only reason it exists is the clipboard.
+          The lead run below begins with one (" was born in"), but it sits at the
+          start of a line box that opens with a float, and CSS collapses leading
+          whitespace there — so a copied paragraph came out as "Iwas born in".
+          It is a no-break space: an ordinary one inside a clipped, effectively
+          empty box collapses to nothing and never reaches the clipboard, which
+          was the first attempt. This one is out of the line box and
+          non-collapsible, and a
+          screen reader hearing an extra space between a letter and a word hears
+          the sentence as written. Verified through the real clipboard, not
+          through Selection.toString(), which reports a different string. */}
+      <span className="sr-only">{'\u00A0'}</span>
 
       <span className="text-[0.82em] uppercase tracking-[0.07em] text-ink">
         {lead}

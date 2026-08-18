@@ -11,6 +11,8 @@ import {
   type MarkMoment as MarkMomentData,
   type MilestoneMoment as MilestoneMomentData,
 } from '@/data/journeyData';
+import { journeyChaptersHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 
 // Ease unified to the site's signature settle curve (was Framer's named
@@ -389,9 +391,13 @@ function ChapterMargin({ era, id }: { era: string; id: string }) {
 }
 
 export default function JourneyChapters() {
+  /* Hinglish. Both files carry the same ids, eras and moment positions, so
+     anchors, the rail's scroll tracking and the search index are unaffected. */
+  const chapters = useVariant(journeyChapters, journeyChaptersHi);
+
   return (
     <div>
-      {journeyChapters.map((chapter, i) => {
+      {chapters.map((chapter, i) => {
         const hasMargin = CHAPTERS_WITH_ARTIFACT.has(chapter.id);
 
         return (
@@ -480,14 +486,14 @@ export default function JourneyChapters() {
               {hasMargin && <ChapterMargin era={chapter.era} id={chapter.id} />}
             </motion.article>
 
-            {i < journeyChapters.length - 1 && (
+            {i < chapters.length - 1 && (
               <Connector
                 tone={chapter.tone}
                 pause={chapter.pause}
                 branch={Boolean(
-                  journeyChapters[i + 1].resultMoment ||
-                    journeyChapters[i + 1].markMoment ||
-                    journeyChapters[i + 1].milestone
+                  chapters[i + 1].resultMoment ||
+                    chapters[i + 1].markMoment ||
+                    chapters[i + 1].milestone
                 )}
               />
             )}

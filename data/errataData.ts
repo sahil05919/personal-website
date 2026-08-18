@@ -88,16 +88,6 @@ export const errataIntro = {
 export const errata: Erratum[] = [
   /* ── Open ───────────────────────────────────────────────────────────── */
   {
-    id: 'cv-description',
-    where: '/contact',
-    kind: 'A document',
-    struck: 'Business and data analyst with an MSc in Business Analytics…',
-    now: null,
-    note: "The CV you can download from the Contact page opens on a description of me that the rest of this site has stopped using. It is not false — it is simply a year behind the person who wrote the other nine pages. Replacing a PDF is a slower job than editing a line, so it is listed here rather than quietly left.",
-    noticed: '16 August 2026',
-    corrected: null,
-  },
-  {
     id: 'hr-dashboard-context',
     where: '/projects',
     kind: 'An attribution',
@@ -109,7 +99,7 @@ export const errata: Erratum[] = [
   },
   {
     id: 'unwritten-questions',
-    where: '/question',
+    where: '/questions',
     kind: 'An omission',
     struck: null,
     now: null,
@@ -119,6 +109,26 @@ export const errata: Erratum[] = [
   },
 
   /* ── Corrected ──────────────────────────────────────────────────────── */
+  {
+    id: 'cv-description',
+    where: '/contact',
+    kind: 'A document',
+    struck: 'Business and data analyst with an MSc in Business Analytics…',
+    now: 'People Analytics Analyst — People Insights, Workforce & HR Reporting',
+    note: 'The CV you could download from the Contact page opened on a description of me the rest of this site had stopped using. It was never false, only a year behind the person who wrote the other nine pages. The PDF has been replaced and now leads on the same direction the record does; this entry stays because the old one was downloadable for a while.',
+    noticed: '16 August 2026',
+    corrected: '17 August 2026',
+  },
+  {
+    id: 'canonical-url',
+    where: 'Every page',
+    kind: 'An instruction',
+    struck: '<link rel="canonical" href="https://sahilarora.vercel.app/">',
+    now: 'One canonical URL per page, naming that page.',
+    note: 'Not a sentence a reader could see, but a claim the site made about itself to every search engine: each of the thirteen routes named the home page as its canonical address, which is a request to treat nine chapters as duplicates of the title page and drop them. A shared link to any page also unfurled as Home. Both were true for as long as the pages have existed.',
+    noticed: '17 August 2026',
+    corrected: '17 August 2026',
+  },
   {
     id: 'permanent-job',
     where: '/experience',

@@ -89,8 +89,8 @@ export const homeContent = {
     // data/profileContent.ts → the About standfirst
     '/about': 'The patterns, not the events.',
 
-    // app/question/page.tsx → the chapter standfirst
-    '/question': 'If we had another hour together.',
+    // app/questions/page.tsx → the chapter standfirst
+    '/questions': 'If we had another hour together.',
 
     // Deliberately empty. Now's opening line IS the season line, and the
     // Currently strip four rows below already carries it verbatim. Printing it

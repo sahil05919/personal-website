@@ -1,8 +1,12 @@
+'use client';
+
 import Link from "next/link";
 
 import TwoClocks from "@/components/global/TwoClocks";
 import { homeContent } from "@/data/homeContent";
 import { destinations } from "@/data/navigation";
+import { chromeHi } from "@/data/hinglish";
+import { useVariant } from "@/hooks/use-reading-mode";
 
 /**
  * The imprint — the last leaf of every copy.
@@ -27,6 +31,12 @@ import { destinations } from "@/data/navigation";
  * Server component. No motion — the reader has finished reading.
  */
 export default function Colophon() {
+  const contentsLabel = useVariant("Contents", chromeHi.contents);
+  const imprintLine = useVariant(
+    "A record kept in London. Revised when it stops being true.",
+    chromeHi.imprint,
+  );
+
   const year = new Date().getFullYear();
   const { links } = homeContent.colophon;
 
@@ -46,10 +56,17 @@ export default function Colophon() {
             </p>
 
             <p className="mt-2 max-w-measure font-reading text-fluid-aside text-graphite">
-              A record kept in London. Revised when it stops being true.
+              {imprintLine}
             </p>
 
-            <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-apparatus-xs uppercase text-graphite">
+            {/* The imprint row is the site's only route to the back matter and
+                to GitHub and LinkedIn, and every link in it was a 13px-tall
+                target — fine with a cursor, fiddly with a thumb, and this is the
+                one row on a phone where the reader is deliberately reaching for
+                a small thing. Each anchor is an `inline-flex min-h-11`: the type
+                does not change size and the row grows by a few pixels. `gap-y-2`
+                keeps two rows apart when it wraps. */}
+            <ul className="mt-6 flex flex-wrap items-center gap-x-5 font-mono text-apparatus-xs uppercase text-graphite">
               <li>&copy; {year}</li>
               {/* Back matter, and the reason it sits here rather than in the
                   running head: an index and an errata leaf belong after the
@@ -60,7 +77,7 @@ export default function Colophon() {
                     the page silently served Home. See app/a-z/page.tsx. */}
                 <Link
                   href="/a-z"
-                  className="transition-colors duration-300 ease-editorial hover:text-through-line"
+                  className="inline-flex min-h-11 items-center transition-colors duration-300 ease-editorial hover:text-through-line"
                 >
                   Index
                 </Link>
@@ -68,7 +85,7 @@ export default function Colophon() {
               <li>
                 <Link
                   href="/writing"
-                  className="transition-colors duration-300 ease-editorial hover:text-through-line"
+                  className="inline-flex min-h-11 items-center transition-colors duration-300 ease-editorial hover:text-through-line"
                 >
                   Writing
                 </Link>
@@ -76,7 +93,7 @@ export default function Colophon() {
               <li>
                 <Link
                   href="/errata"
-                  className="transition-colors duration-300 ease-editorial hover:text-through-line"
+                  className="inline-flex min-h-11 items-center transition-colors duration-300 ease-editorial hover:text-through-line"
                 >
                   Errata
                 </Link>
@@ -88,14 +105,14 @@ export default function Colophon() {
                       href={link.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="transition-colors duration-300 ease-editorial hover:text-through-line"
+                      className="inline-flex min-h-11 items-center transition-colors duration-300 ease-editorial hover:text-through-line"
                     >
                       {link.label}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="transition-colors duration-300 ease-editorial hover:text-through-line"
+                      className="inline-flex min-h-11 items-center transition-colors duration-300 ease-editorial hover:text-through-line"
                     >
                       {link.label}
                     </Link>
@@ -107,7 +124,7 @@ export default function Colophon() {
 
           {/* ── The contents, as an index ────────────────────────────── */}
           <nav aria-label="Colophon" className="md:min-w-[15rem]">
-            <p className="apparatus">Contents</p>
+            <p className="apparatus">{contentsLabel}</p>
 
             <ul className="mt-5 grid grid-cols-2 gap-x-8 gap-y-1 md:grid-cols-1 md:gap-y-0.5">
               {destinations.map((destination, i) => (
@@ -116,7 +133,7 @@ export default function Colophon() {
                     href={destination.href}
                     className="group flex items-baseline gap-3 py-1 font-reading text-fluid-aside text-graphite transition-colors duration-300 ease-editorial hover:text-ink"
                   >
-                    <span className="font-mono text-apparatus-xs text-hairline transition-colors duration-300 ease-editorial group-hover:text-through-line">
+                    <span className="font-mono text-apparatus-xs text-graphite/70 transition-colors duration-300 ease-editorial group-hover:text-through-line">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {destination.label}

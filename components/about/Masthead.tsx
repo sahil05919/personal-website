@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 import { aboutContent } from '@/data/profileContent';
+import { aboutRevisionHi, aboutTitleHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 import { GRID, MARGIN_NOTE, SHELL } from './layout';
 
 /**
@@ -33,7 +35,11 @@ const rise = {
 };
 
 export function Masthead() {
-  const { name, title, portrait, revision } = aboutContent;
+  const { name, portrait } = aboutContent;
+  /* The name is a name in both readings. The standfirst and the revision promise
+     are prose, so they follow the reader's choice. */
+  const title = useVariant(aboutContent.title, aboutTitleHi);
+  const revision = useVariant(aboutContent.revision, aboutRevisionHi);
   const hasPortrait = portrait.src.length > 0;
 
   return (

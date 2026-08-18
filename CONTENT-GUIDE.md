@@ -191,9 +191,9 @@ This page doesn't have its own `components/experience/` folder with separate fil
 | `components/projects/ProjectMargin.tsx` | The right-margin decoration on wide screens — case numbers and small abstract motifs per project. Purely visual. |
 | `components/projects/Seam.tsx` | The animated divider line between essays. |
 
-### Questions (`/question`)
+### Questions (`/questions`)
 **Content file:** `data/questions-content.ts` — each entry has a `question` and a `paragraphs` field (or `null` if unanswered).
-**Page structure file:** `app/question/page.tsx` — passes every question (answered or not) to the component below.
+**Page structure file:** `app/questions/page.tsx` — passes every question (answered or not) to the component below.
 
 | Component | What it does |
 |---|---|

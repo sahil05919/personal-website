@@ -3,6 +3,8 @@
 import { motion, type Variants } from 'framer-motion';
 import { contactContent } from '@/data/contactData';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
+import { contactContentHi } from '@/data/hinglish';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * ContactHero — the endpaper's opening.
@@ -34,7 +36,10 @@ const SETTLE_EASE = [0.22, 1, 0.36, 1] as const;
 
 export default function ContactHero() {
   const prefersReducedMotion = useReducedMotionSafe();
-  const { eyebrow, headline, body } = contactContent.hero;
+  const { eyebrow, headline, body } = useVariant(
+    contactContent.hero,
+    contactContentHi.hero,
+  );
 
   const words = headline.split(' ');
 
