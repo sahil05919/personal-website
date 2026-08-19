@@ -76,4 +76,14 @@ export const chromeHi = {
   /** Search. */
   search: 'Is record mein dhoondhiye',
   searchPlaceholder: 'Ek jagah, ek project, ek saal, ek shabd',
+  /**
+   * The dog-ear. `dogEarTurned` is what the corner says once you are standing at
+   * the fold again; the other three are the control's own labels.
+   */
+  dogEarFold: 'Is kone ko mod dijiye',
+  dogEarFlatten: 'Kona seedha kar dijiye',
+  dogEarTurned: 'Kona muda hua hai',
+  dogEarReturn: 'Jahan chhoda tha, wahan wapas',
+  /** Appended in the fore-edge index and the colophon to a folded chapter. */
+  turnedDown: 'kona muda hua',
 };

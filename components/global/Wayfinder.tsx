@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { destinations, isActiveRoute } from '@/data/navigation';
+import { chromeHi } from '@/data/hinglish';
+import { DOG_EAR_GLYPH, useDogEars } from '@/hooks/use-dog-ears';
+import { useVariant } from '@/hooks/use-reading-mode';
 
 /**
  * Wayfinder — the fore-edge index.
@@ -63,6 +66,17 @@ import { destinations, isActiveRoute } from '@/data/navigation';
  * The alternative — keeping 1280px and reserving right padding on every page —
  * was rejected: it would move the reading column off-centre on the exact
  * screens most people read on, to make room for a rail that repeats the navbar.
+ *
+ * ---------------------------------------------------------------------------
+ * THE THUMBED CHAPTERS (August 2026)
+ *
+ * A thumb index in a reference book that has been used is darker where it has
+ * been used. This rail now carries a small folded corner beside any chapter the
+ * reader has turned down (see components/global/DogEar.tsx), which makes the
+ * fore-edge do the second thing a fore-edge does: not only tell you where you
+ * are, but show you where you have been. It is the reader's own mark, so it
+ * takes the accent, and it is the only thing on this rail that differs from one
+ * copy to the next.
  */
 
 const REVEAL_AFTER = 320;
@@ -70,6 +84,8 @@ const REVEAL_AFTER = 320;
 export default function Wayfinder() {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
+  const { ears } = useDogEars();
+  const turnedDownLabel = useVariant('turned down', chromeHi.turnedDown);
 
   useEffect(() => {
     let frame = 0;
@@ -111,7 +127,7 @@ export default function Wayfinder() {
               <Link
                 href={destination.href}
                 aria-current={active ? 'page' : undefined}
-                className="group flex items-center justify-end gap-3 py-[5px] pl-6"
+                className="group relative flex items-center justify-end gap-3 py-[5px] pl-6"
               >
                 <span
                   className={`font-mono text-apparatus-xs uppercase transition-colors duration-300 ease-editorial ${
@@ -148,6 +164,20 @@ export default function Wayfinder() {
                       : 'w-3 bg-hairline group-hover:w-5 group-hover:bg-graphite'
                   }`}
                 />
+
+                {/* The reader's own mark. Absolutely placed so it cannot shift
+                    a row and make the whole rail jump the first time a corner
+                    is folded — the numerals are tabular for the same reason. */}
+                {ears[destination.href] ? (
+                  <>
+                    <span
+                      aria-hidden="true"
+                      className="absolute -right-[11px] h-[6px] w-[6px] bg-through-line/75"
+                      style={{ clipPath: DOG_EAR_GLYPH }}
+                    />
+                    <span className="sr-only">, {turnedDownLabel}</span>
+                  </>
+                ) : null}
               </Link>
             </li>
           );

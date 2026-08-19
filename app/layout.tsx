@@ -29,6 +29,8 @@ import "./globals.css";
 
 import Navbar from "@/components/global/Navbar";
 import { Grain } from "@/components/global/Grain";
+import SewnSpine from "@/components/global/SewnSpine";
+import DogEar from "@/components/global/DogEar";
 import { PageTransition } from "@/components/global/PageTransition";
 import Colophon from "@/components/global/Colophon";
 import PageTurn from "@/components/global/PageTurn";
@@ -118,6 +120,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </a>
 
           <Grain />
+
+          {/* The binding. A layer of the sheet rather than a piece of chrome,
+              so it mounts beside the paper texture and above nothing. */}
+          <SewnSpine />
+
           <Navbar />
           <Wayfinder />
 
@@ -135,6 +142,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               way back and no mark of authorship. A book has one colophon and
               it is at the end of every copy. */}
           <Colophon />
+
+          {/* The corner. Last in the body, because a fold is the last thing that
+              happens to a page and because it must sit above the colophon it
+              overlaps at the foot of every chapter. */}
+          <DogEar />
         </ThemeProvider>
       </body>
     </html>

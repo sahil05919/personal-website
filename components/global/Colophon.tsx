@@ -4,7 +4,8 @@ import Link from "next/link";
 
 import TwoClocks from "@/components/global/TwoClocks";
 import { homeContent } from "@/data/homeContent";
-import { destinations } from "@/data/navigation";
+import { destinations, folio } from "@/data/navigation";
+import { DOG_EAR_GLYPH, useDogEars } from "@/hooks/use-dog-ears";
 import { chromeHi } from "@/data/hinglish";
 import { useVariant } from "@/hooks/use-reading-mode";
 
@@ -36,6 +37,12 @@ export default function Colophon() {
     "A record kept in London. Revised when it stops being true.",
     chromeHi.imprint,
   );
+
+  /* The colophon's index is the one place every reader on every device sees the
+     whole book at once, so it is where the folded corners have to show. The
+     fore-edge rail carries the same marks, but only above 1600px. */
+  const { ears } = useDogEars();
+  const turnedDownLabel = useVariant("turned down", chromeHi.turnedDown);
 
   const year = new Date().getFullYear();
   const { links } = homeContent.colophon;
@@ -127,16 +134,31 @@ export default function Colophon() {
             <p className="apparatus">{contentsLabel}</p>
 
             <ul className="mt-5 grid grid-cols-2 gap-x-8 gap-y-1 md:grid-cols-1 md:gap-y-0.5">
-              {destinations.map((destination, i) => (
+              {destinations.map((destination) => (
                 <li key={destination.href}>
                   <Link
                     href={destination.href}
                     className="group flex items-baseline gap-3 py-1 font-reading text-fluid-aside text-graphite transition-colors duration-300 ease-editorial hover:text-ink"
                   >
                     <span className="font-mono text-apparatus-xs text-graphite/70 transition-colors duration-300 ease-editorial group-hover:text-through-line">
-                      {String(i + 1).padStart(2, "0")}
+                      {folio(destination.href)}
                     </span>
                     {destination.label}
+
+                    {/* Turned down. Reserved space either way, so a reader who
+                        folds a corner does not watch this list reflow. */}
+                    <span
+                      aria-hidden="true"
+                      className={`mb-[3px] h-[6px] w-[6px] shrink-0 self-center transition-opacity duration-500 ease-editorial ${
+                        ears[destination.href]
+                          ? "bg-through-line/75 opacity-100"
+                          : "opacity-0"
+                      }`}
+                      style={{ clipPath: DOG_EAR_GLYPH }}
+                    />
+                    {ears[destination.href] ? (
+                      <span className="sr-only">, {turnedDownLabel}</span>
+                    ) : null}
                   </Link>
                 </li>
               ))}

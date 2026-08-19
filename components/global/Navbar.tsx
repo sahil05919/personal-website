@@ -11,7 +11,7 @@ import { chromeHi } from "@/data/hinglish";
 import { useVariant } from "@/hooks/use-reading-mode";
 import Search from "@/components/global/Search";
 import { contactInfo } from "@/data/contactData";
-import { destinations, isActiveRoute, navigation } from "@/data/navigation";
+import { destinations, folio, isActiveRoute, navigation } from "@/data/navigation";
 
 /**
  * The running head.
@@ -79,13 +79,6 @@ const BACK_MATTER = [
   { href: "/writing", label: "Writing" },
   { href: "/errata", label: "Errata" },
 ];
-
-/** Folio number for a route, from the canonical order. Home is unnumbered —
- *  a title page does not carry a folio. */
-function folio(href: string): string | null {
-  const index = destinations.findIndex((d) => d.href === href);
-  return index === -1 ? null : String(index + 1).padStart(2, "0");
-}
 
 export default function Navbar() {
   const t = {

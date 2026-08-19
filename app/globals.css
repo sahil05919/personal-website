@@ -507,6 +507,44 @@ html.about-frontispiece header a[href="/"]:focus-visible {
 }
 
 /* ===========================================================================
+   THE SPINE — the binding arrives.
+
+   components/global/SewnSpine.tsx is gated at the mount by a media query, so
+   it cannot be server-rendered and necessarily appears one frame after
+   hydration. A 1px thread snapping into an empty margin reads as a rendering
+   fault; the same thread fading up over three quarters of a second reads as a
+   layer of the page that was always there.
+
+   Opacity only, on a fixed pointer-events-none layer, so it cannot shift
+   anything or intercept anything. Under reduced motion the spine is simply
+   present.
+=========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  .spine-in {
+    animation: spine-in 800ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes spine-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* The stitch. The needle can only sit at a pierced station, so its position
+     is quantised to the 188px pitch and it would otherwise jump. The transition
+     is what turns that jump into the thread being drawn through — one stitch,
+     made, rather than a marker teleporting down a line. */
+  .spine-needle {
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+/* ===========================================================================
    THE SENDING INDICATOR — three dots, breathing.
 
    Was `.clock-separator`, a blink for the digital clock's colon. That clock is

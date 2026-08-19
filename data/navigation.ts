@@ -62,6 +62,22 @@ export const destinations: Destination[] = navigation.filter(
 );
 
 /**
+ * Folio number for a route, from the canonical order. Home is unnumbered — a
+ * title page does not carry a folio, and `null` is the honest answer for it.
+ *
+ * This lived as a private helper inside components/global/Navbar.tsx while the
+ * Wayfinder, the colophon's index and the mobile panel each recomputed
+ * `index + 1` inline. Four copies of one arithmetic is how a folio ends up
+ * disagreeing with the contents list, which is the exact class of bug this file
+ * exists to prevent. It is exported from here now, beside the order it is
+ * derived from.
+ */
+export function folio(href: string): string | null {
+  const index = destinations.findIndex((d) => d.href === href);
+  return index === -1 ? null : String(index + 1).padStart(2, '0');
+}
+
+/**
  * Active-route test, shared so the navbar and the Wayfinder cannot disagree
  * about which station is lit.
  */
