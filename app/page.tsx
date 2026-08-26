@@ -28,6 +28,7 @@ import Statement from '@/components/home/Statement';
 import Contents from '@/components/home/Contents';
 import Currently from '@/components/home/Currently';
 import Colophon from '@/components/home/Colophon';
+import ClarityEngine from "@/components/interactive/ClarityEngine";
 
 export const metadata: Metadata = pageMetadata({
   path: '/',
@@ -56,6 +57,7 @@ export default function HomePage() {
 
       <Frontispiece />
       <Statement />
+      <ClarityEngine />
       <Contents />
       <Currently line={seasonLine} updated={lastUpdated} />
       <Colophon />

@@ -1,149 +1,116 @@
-'use client';
+"use client";
 
-/*
-  Extracted from app/writing/page.tsx so it can read the reader's language choice.
-
-  The page file has to stay a server component — it exports `metadata` —
-  and a server component cannot call a hook, so the whole render moved
-  here and the page became four lines. Nothing about the markup changed;
-  only the file it lives in, and the `useVariant` calls that pick between
-  the English content and its Hinglish twin.
-*/
-
-import Link from 'next/link';
-import { writing, writingIntro } from '@/data/writingData';
-import { writingIntroHi } from '@/data/hinglish';
-import { useVariant } from '@/hooks/use-reading-mode';
-/**
- * Writing — back matter, beside the index and the errata leaf.
- *
- * The Now page's own list of what is unfinished on this site had "/writing does
- * not exist yet" on it since 10 August. It exists now, and that line has been
- * struck from the list rather than quietly deleted.
- *
- * ---------------------------------------------------------------------------
- * IT IS A LIST, AND THAT IS THE WHOLE DESIGN
- *
- * Five pieces. No cards, no excerpts, no cover images, no reading times, no
- * tags. Every one of those exists to make a short list look like a substantial
- * one, and five is a perfectly respectable number that needs no help.
- *
- * Titles at display scale, because these titles are the argument — three of the
- * five are questions, and a question set at 14px is a link, while a question set
- * at 26px is a question. The apparatus line underneath carries the publication
- * and, where it is genuinely known, the year.
- *
- * Every link leaves the site, which is stated once at the top rather than
- * five times in five little icons.
- *
- * NOT IN THE NAVIGATION, for the same reason /a-z and /errata are not: the book
- * is nine chapters and this is back matter. It sits in the imprint at the foot
- * of every page, with the other two.
- *
- * Server component. No motion, no reveal-on-scroll — the page is five links and
- * it should be usable the instant it paints.
- */
-
+import Link from "next/link";
+import { writing, writingIntro } from "@/data/writingData";
+import { GhostDraft, MarginAnnotation } from "@/components/global/RevisionLayer";
+import { ChronoInk } from "@/components/global/ChronoInk";
+import { Sidenote } from "@/components/global/Sidenote";
 
 export default function WritingChapter() {
-  const copy = useVariant(writingIntro, writingIntroHi);
-
   return (
-    <article className="min-h-screen bg-paper text-ink">
-      <div className="mx-auto max-w-shell px-5 pb-24 pt-[88px] sm:px-8 md:pt-[112px] lg:px-10">
-        <p className="apparatus normal-case tracking-[0.08em]">
-          {copy.eyebrow}
-        </p>
+    <article className="mx-auto max-w-2xl px-6 py-20 sm:py-28">
+      {/* Chapter Eyebrow & Title */}
+      <header className="space-y-4">
+        <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-neutral-400 dark:text-neutral-500">
+          {writingIntro.eyebrow}
+        </div>
 
-        <h1 className="hang mt-7 font-serif-display text-fluid-display font-normal md:mt-9">
-          {copy.title}
+        <h1 className="font-serif text-4xl sm:text-5xl font-normal tracking-tight text-neutral-900 dark:text-neutral-100">
+          <ChronoInk year="2026">{writingIntro.title}</ChronoInk>
         </h1>
 
-        <p className="mt-6 max-w-wide font-serif-display text-fluid-claim text-graphite text-balance">
-          {copy.standfirst}
+        <p className="font-serif italic text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed pt-1">
+          <GhostDraft
+            original="Essays, working notes, and published thoughts."
+            revised={writingIntro.standfirst}
+          />
         </p>
 
-        <div className="mt-10 max-w-measure space-y-6 font-reading text-fluid-read text-pretty md:mt-12">
-          {copy.body.map((paragraph) => (
-            <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+        {/* Real Authorial Prose */}
+        <div className="space-y-4 pt-4 text-[16px] sm:text-[17px] font-serif leading-[1.75] text-neutral-700 dark:text-neutral-300">
+          {writingIntro.body.map((paragraph, idx) => (
+            <p key={idx}>
+              {idx === 0 ? (
+                <>
+                  <GhostDraft
+                    original="Writing is the only way I can see whether an argument holds."
+                    revised={paragraph}
+                  />
+                  <MarginAnnotation>Keep link to /now explicit</MarginAnnotation>
+                </>
+              ) : idx === 1 ? (
+                <>
+                  Two were written for{" "}
+                  <Sidenote
+                    number={1}
+                    date="2024–2025"
+                    content="Bayes Business School (City, University of London), commissioned for the postgraduate cohort."
+                  >
+                    Bayes
+                  </Sidenote>
+                  , who asked. The rest were not asked for by anybody.
+                </>
+              ) : (
+                paragraph
+              )}
+            </p>
           ))}
         </div>
 
-        <p className="mt-12 font-mono text-apparatus-xs uppercase text-graphite">
-          {copy.note}
+        <p className="font-mono text-[11px] text-neutral-400 dark:text-neutral-500 pt-3">
+          {writingIntro.note}
         </p>
+      </header>
 
-        <ol className="mt-12 border-t border-hairline">
-          {writing.map((piece, i) => (
-            <li key={piece.href} className="border-b border-hairline">
+      {/* Divider */}
+      <hr className="my-12 border-t border-neutral-200 dark:border-neutral-800" />
+
+      {/* Published Works List with Temporal Ink Chemistry */}
+      <section>
+        <ul className="divide-y divide-neutral-200/80 dark:divide-neutral-800/80">
+          {writing.map((piece, idx) => (
+            <li key={idx} className="py-7 first:pt-0 last:pb-0">
               <a
                 href={piece.href}
                 target="_blank"
-                rel="noreferrer"
-                className="group block py-8 md:py-10"
+                rel="noopener noreferrer"
+                className="group flex flex-col justify-between gap-3 sm:flex-row sm:items-baseline"
               >
-                <div className="flex items-baseline gap-5 md:gap-8">
-                  <span className="shrink-0 font-mono text-apparatus-xs tabular-nums text-graphite/70 transition-colors duration-300 ease-editorial group-hover:text-through-line">
-                    {String(i + 1).padStart(2, '0')}
+                <ChronoInk
+                  year={piece.year || "2025"}
+                  className="font-serif text-xl sm:text-2xl font-normal transition-colors group-hover:text-amber-700 dark:group-hover:text-amber-400"
+                >
+                  {piece.title}
+                </ChronoInk>
+
+                <span className="shrink-0 font-mono text-[11px] uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
+                  {piece.source}
+                  {piece.year ? ` · ${piece.year}` : ""}
+                  <span className="ml-1 inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                    ↗
                   </span>
-
-                  <div className="min-w-0">
-                    <h2 className="font-serif-display text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-ink text-balance md:text-[1.75rem]">
-                      {piece.title}
-                      <span
-                        aria-hidden="true"
-                        className="ml-3 inline-block whitespace-nowrap text-graphite transition-transform duration-[700ms] ease-editorial group-hover:translate-x-1 motion-reduce:transition-none"
-                      >
-                        &nbsp;&rarr;
-                      </span>
-                    </h2>
-
-                    <p className="mt-3 font-mono text-apparatus-xs uppercase text-graphite">
-                      {piece.source}
-                      {piece.year ? (
-                        <>
-                          <span aria-hidden="true" className="mx-2 text-hairline">
-                            ·
-                          </span>
-                          <span className="tabular-nums">{piece.year}</span>
-                        </>
-                      ) : null}
-                    </p>
-                  </div>
-                </div>
-
-                <span className="sr-only">(opens in a new tab)</span>
+                </span>
               </a>
             </li>
           ))}
-        </ol>
+        </ul>
+      </section>
 
-        {/* The unfinished half. Everything above got to an end; the pile on
-            /now did not, and pointing at it from here is more honest than
-            letting this page imply these five are all there is. */}
-        <section className="mt-20 border-t border-hairline pt-12">
-          <p className="max-w-wide font-serif-display text-fluid-row text-balance">
-            The ones that stopped halfway are kept too.
-          </p>
-          <p className="mt-5 max-w-measure font-reading text-fluid-aside text-graphite text-pretty">
-            There is a pile of unfinished writing on the Now page, each piece
-            ending exactly where it actually stopped. Two of them will not become
-            anything.
-          </p>
-          <Link
-            href="/now"
-            className="link-rule group mt-8 inline-block font-mono text-apparatus uppercase text-ink"
-          >
-            Now
-            <span
-              aria-hidden="true"
-              className="ml-2 inline-block transition-transform duration-[700ms] ease-editorial group-hover:translate-x-[3px] motion-reduce:transition-none"
-            >
-              &rarr;
-            </span>
-          </Link>
-        </section>
-      </div>
+      {/* Footer Turn Links */}
+      <footer className="mt-24 border-t border-neutral-200 dark:border-neutral-800 pt-8 flex items-center justify-between font-mono text-xs text-neutral-400 dark:text-neutral-500">
+        <Link
+          href="/"
+          className="hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors underline underline-offset-4"
+        >
+          ← Frontispiece
+        </Link>
+        <Link
+          href="/now"
+          className="hover:text-neutral-700 dark:hover:text-neutral-300 transition-colors underline underline-offset-4"
+        >
+          Leaf 03: Now →
+        </Link>
+      </footer>
     </article>
   );
 }

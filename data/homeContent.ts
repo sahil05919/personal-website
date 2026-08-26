@@ -95,11 +95,13 @@ export const homeContent = {
     // Deliberately empty. Now's opening line IS the season line, and the
     // Currently strip four rows below already carries it verbatim. Printing it
     // twice on one page would be the duplication this file exists to prevent.
-    '/now': '',
+    '/now': 'The workbench, current season, and active focus.',
 
     // components/contact/ContactHero.tsx → the hero's opening sentence
     '/contact':
       "Everything before this page has been about how I think and what I've built.",
+    // app/writing/page.tsx → the chapter standfirst
+    '/Writing': 'A record of what I read, and what I thought about it.',
   } as Record<string, string>,
 
   /**

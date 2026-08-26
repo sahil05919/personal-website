@@ -1,14 +1,10 @@
-import type { Metadata } from 'next';
-import { pageMetadata } from '@/lib/seo';
-import WritingChapter from '@/app/writing/WritingChapter';
+import WritingChapter from "./WritingChapter";
 
-export const metadata: Metadata = pageMetadata({
-  path: '/writing',
-  title: 'Writing',
-  description:
-    'Published writing by Sahil Kumar — essays on LinkedIn and pieces commissioned by Bayes Business School.',
-});
+export const metadata = {
+  title: "Writing — Sahil Kumar",
+  description: "Essays, technical notes, and long-form thoughts.",
+};
 
-export default function Page() {
+export default function WritingPage() {
   return <WritingChapter />;
 }

@@ -51,6 +51,7 @@ export const navigation: Destination[] = [
   { href: '/media', label: 'Media' },
   { href: '/questions', label: 'Questions' },
   { href: '/contact', label: 'Contact' },
+  { href: '/writing', label: 'Writing' },
 ];
 
 /**
