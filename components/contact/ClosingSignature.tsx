@@ -161,7 +161,7 @@ export default function ClosingSignature() {
         <motion.p variants={rise} className="mt-10 md:mt-12">
           <Link
             href="/"
-            className="group relative inline-block font-mono text-[11px] tracking-[0.08em] text-graphite transition-colors duration-500 hover:text-ink focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[0.5em] focus-visible:outline-through-line motion-reduce:transition-none"
+            className="tap-y group relative inline-block font-mono text-[11px] tracking-[0.08em] text-graphite transition-colors duration-500 hover:text-ink focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[0.5em] focus-visible:outline-through-line motion-reduce:transition-none"
           >
             <span className="relative z-10">
               {returnLabel}

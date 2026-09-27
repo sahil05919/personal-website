@@ -65,7 +65,7 @@ export default function Currently({ line, updated }: CurrentlyProps) {
         <p className="mt-4 font-mono text-apparatus text-graphite">
           <Link
             href="/now"
-            className="underline decoration-hairline underline-offset-4 transition-colors hover:text-through-line hover:decoration-through-line focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
+            className="tap-y underline decoration-hairline underline-offset-4 transition-colors hover:text-through-line hover:decoration-through-line focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-through-line"
           >
             What I&apos;m doing now
           </Link>

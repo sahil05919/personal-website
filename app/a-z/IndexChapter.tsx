@@ -134,7 +134,7 @@ export default function IndexChapter() {
                           ) : null}
                           <Link
                             href={ref.href}
-                            className="transition-colors duration-300 ease-editorial hover:text-through-line"
+                            className="tap-y transition-colors duration-300 ease-editorial hover:text-through-line"
                           >
                             {ref.label}
                           </Link>
@@ -157,7 +157,7 @@ export default function IndexChapter() {
           </p>
           <Link
             href="/errata"
-            className="link-rule group mt-6 inline-block font-mono text-apparatus uppercase text-ink"
+            className="tap-y link-rule group mt-6 inline-block font-mono text-apparatus uppercase text-ink"
           >
             Errata
             <span

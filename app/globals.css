@@ -421,53 +421,26 @@
     /* Decoration only: it exists to be pressed, never to be seen or read. */
     background: transparent;
   }
-}
 
-/* ===========================================================================
-   ABOUT — the chrome unwind.
+  /* The same idea for the small mono text links that sit on their own line —
+     page-turn links, "back to the beginning", the A–Z chapter chips. Their
+     text is 10–12px tall; this grows the pressable area to 32px vertically
+     (above WCAG 2.2's 24px minimum) without moving a single glyph. 32 rather
+     than 44 so that stacked rows on the A–Z never claim each other's taps. */
+  .tap-y {
+    position: relative;
+  }
 
-   The reader arrives at a face on paper with nothing competing. The class
-   is added on mount and removed once they've scrolled past the frontispiece.
-   It resolves once and then holds. Reduced-motion users never get it.
-=========================================================================== */
-
-html.about-frontispiece header,
-html.about-frontispiece header * {
-  transition:
-    opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 700ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 700ms cubic-bezier(0.16, 1, 0.3, 1),
-    backdrop-filter 700ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-html.about-frontispiece header {
-  background-color: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-
-html.about-frontispiece header * {
-  opacity: 0.18;
-}
-
-html.about-frontispiece header a[href="/"] {
-  opacity: 0;
-}
-
-html.about-frontispiece header:hover,
-html.about-frontispiece header:focus-within {
-  background-color: rgb(var(--paper) / 0.95);
-  border-color: rgb(var(--hairline));
-  -webkit-backdrop-filter: blur(40px);
-  backdrop-filter: blur(40px);
-}
-
-html.about-frontispiece header:hover *,
-html.about-frontispiece header:focus-within *,
-html.about-frontispiece header a[href="/"]:focus-visible {
-  opacity: 1;
+  .tap-y::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 32px;
+    transform: translateY(-50%);
+    background: transparent;
+  }
 }
 
 /* ===========================================================================

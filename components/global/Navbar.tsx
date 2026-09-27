@@ -166,7 +166,7 @@ export default function Navbar() {
           <Link
             href="/"
             onClick={closeMenu}
-            className="group flex min-w-0 items-baseline gap-3"
+            className="tap-y group flex min-w-0 items-baseline gap-3"
           >
             <span
               /* `shrink-0 whitespace-nowrap`: with the reading switch and the CV

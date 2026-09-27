@@ -100,7 +100,7 @@ export default function BeforeYouGo() {
                 onClick={() => setOpen(true)}
                 aria-expanded={open}
                 aria-controls="last-note"
-                className="group relative inline-block font-mono text-[12px] tracking-[0.08em] uppercase text-ink focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[0.5em] focus-visible:outline-through-line"
+                className="tap-y group relative inline-block font-mono text-[12px] tracking-[0.08em] uppercase text-ink focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-[0.5em] focus-visible:outline-through-line"
               >
                 <span className="relative z-10">
                   {action}

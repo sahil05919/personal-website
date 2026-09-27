@@ -66,7 +66,7 @@ export function Exploring() {
                     href={place.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="link-rule text-ink"
+                    className="tap-y link-rule text-ink"
                   >
                     {place.name}
                   </a>

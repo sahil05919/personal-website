@@ -177,7 +177,7 @@ export default function PageTurn() {
           {previous ? (
             <Link
               href={previous.href}
-              className="group font-mono text-apparatus-xs uppercase text-graphite transition-colors duration-300 ease-editorial hover:text-ink"
+              className="tap-y group font-mono text-apparatus-xs uppercase text-graphite transition-colors duration-300 ease-editorial hover:text-ink"
             >
               <span
                 aria-hidden="true"

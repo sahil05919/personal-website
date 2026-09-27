@@ -211,7 +211,7 @@ export default function PaperSwitch({
             setTheme(paper.id);
             setOpen(false);
           }}
-          aria-label={`${paper.name} paper`}
+          aria-label={paper.name === "Paper" ? "Paper (light)" : `${paper.name} paper`}
           aria-pressed={current === paper.id}
           title={paper.name}
           className="tap-target block transition-transform duration-300 ease-editorial hover:-translate-y-px"

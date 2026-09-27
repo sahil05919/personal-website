@@ -190,7 +190,7 @@ export default function ErrataChapter() {
           </p>
           <Link
             href="/contact"
-            className="link-rule group mt-8 inline-block font-mono text-apparatus uppercase text-ink"
+            className="tap-y link-rule group mt-8 inline-block font-mono text-apparatus uppercase text-ink"
           >
             Contact
             <span
