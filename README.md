@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# sahilarora.vercel.app
 
-## Getting Started
+The source of Sahil Kumar's personal website — a record kept in London, set out
+as a short book: nine chapters (Home, About, Journey, Now, Projects, Experience,
+Media, Questions, Contact) and three pages of back matter (Index, Writing,
+Errata).
 
-First, run the development server:
+## Stack
+
+Next.js (App Router) · React · TypeScript · Tailwind CSS · Framer Motion.
+Fraunces, Newsreader and JetBrains Mono are self-hosted through Fontsource.
+Deployed on Vercel.
+
+## Running it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build; must pass before pushing
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where the words live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Content is kept apart from layout. To change what a page says, edit its content
+file, not its component:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Page | Content |
+| --- | --- |
+| Home | `data/homeContent.ts` |
+| About | `data/profileContent.ts` |
+| Journey | `data/journeyData.ts` |
+| Now | `app/now/now-content.ts` |
+| Projects | `data/projectsChapter.ts` |
+| Experience | `app/experience/experience-content.ts` |
+| Media | `data/mediaData.ts` |
+| Questions | `data/questions-content.ts` |
+| Contact | `data/contactData.ts` |
+| Writing / Errata / Index | `data/writingData.ts`, `data/errataData.ts`, `data/indexData.ts` |
 
-## Learn More
+Every English file has a Hinglish twin in `data/hinglish/`. The compiler checks
+that the two stay the same shape, so a field added to one must be added to the
+other. `CONTENT-GUIDE.md` has the editorial rules.
 
-To learn more about Next.js, take a look at the following resources:
+## Environment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Used by |
+| --- | --- |
+| `NEXT_PUBLIC_UNSIGNED_ACCESS_KEY` | The anonymous form on Contact (Web3Forms). Without it the form says it is not connected, rather than failing silently. Inlined at build time, so redeploy after changing it. |
