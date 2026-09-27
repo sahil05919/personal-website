@@ -107,6 +107,3 @@ export const publishedForNow = writing.map((piece) => ({
   href: piece.href,
   source: piece.source === 'Bayes Business School' ? 'Bayes' : piece.source,
 }));
-
-export const writingData = writing;
-export default writing;
