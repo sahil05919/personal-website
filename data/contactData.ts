@@ -87,6 +87,14 @@ export interface Channel {
   /** Appended to the accessible name where the title alone is ambiguous. */
   ariaSuffix?: string;
   external?: boolean;
+  /**
+   * Set on a row whose destination is also worth having as text — the email
+   * address. The row then carries a Copy control beside its mark, because a
+   * `mailto:` link does nothing at all for anyone who reads mail in a browser
+   * tab rather than a mail app, which on a desktop is most people. Without it
+   * the one door marked "reaches me first" was, for them, a dead click.
+   */
+  copyValue?: string;
 }
 
 export interface ChannelGroup {
@@ -142,6 +150,11 @@ export interface ContactContent {
   hero: { eyebrow: string; headline: string; body: readonly string[] };
   groups: readonly ChannelGroup[];
   apparatus: { cvLabel: string; cvNote: string };
+  /** The Copy control on a `copyValue` row. `selected` is the fallback when
+   *  the browser refuses clipboard access: the address is selected on the
+   *  page instead, so one keystroke still gets it. `announce` is read by a
+   *  screen reader; the visible label only changes word. */
+  copy: { action: string; done: string; selected: string; announce: string };
   unsigned: UnsignedContent;
   walk: { eyebrow: string; lines: readonly string[] };
   lastNote: {
@@ -174,7 +187,7 @@ export const contactContent: ContactContent = {
   groups: [
     {
       eyebrow: 'For work',
-      line: "I'm looking for people analytics work — where the question is about people and the tool is Power BI. An opportunity, a project, or something worth building together: email reaches me first and I read all of it.",
+      line: "I'm looking for people analytics work in London — HR reporting, workforce data, Power BI. An opportunity, a project, or something worth building together: email reaches me first and I read all of it.",
       channels: [
         {
           mark: 'email',
@@ -182,6 +195,7 @@ export const contactContent: ContactContent = {
           title: contactInfo.email,
           href: `mailto:${contactInfo.email}?subject=Connecting%20from%20your%20website`,
           ariaSuffix: 'Send an email',
+          copyValue: contactInfo.email,
         },
         {
           mark: 'linkedin',
@@ -224,6 +238,13 @@ export const contactContent: ContactContent = {
   apparatus: {
     cvLabel: 'Download the CV',
     cvNote: 'PDF · one page · the professional spine of this record',
+  },
+
+  copy: {
+    action: 'Copy',
+    done: 'Copied',
+    selected: 'Selected',
+    announce: 'Email address copied.',
   },
 
   unsigned: {

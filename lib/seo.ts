@@ -23,7 +23,8 @@
  *   3. `twitter.card: 'summary_large_image'` with no image anywhere in the
  *      tree. A large-image card with no image renders as a blank plate — which
  *      is what every share of this site produced. Fixed by `SOCIAL_CARD` below,
- *      attached to both cards on every route.
+ *      attached to both cards on every route; since
+ *      September 2026 each chapter carries its own (`cardFor`).
  *
  * THE SHAPE
  *
@@ -35,6 +36,7 @@
  */
 
 import type { Metadata } from 'next';
+import socialCards from '@/data/socialCards.json';
 
 /** The one absolute origin. `metadataBase` in app/layout.tsx uses the same. */
 export const SITE_URL = 'https://sahilarora.vercel.app';
@@ -43,26 +45,60 @@ export const SITE_URL = 'https://sahilarora.vercel.app';
 const TITLE_SUFFIX = 'Sahil Kumar';
 
 /**
- * The share card. One image for the whole record: the title page, set in the
- * site's own display face on the Paper ground.
+ * The share cards. One per chapter, plus the title page — because a link to
+ * /projects that previews as the title page tells the reader nothing about
+ * where they are going, and on LinkedIn the card is the first page of the book
+ * most people see.
  *
- * It lives in `public/` and is named explicitly here rather than being dropped
- * in as `app/opengraph-image.png`. The file convention looked tidier and was
+ * What each card says, and its alt text, lives in data/socialCards.json; the
+ * PNGs in public/og/ are drawn from that file by scripts/og-cards/render.mjs,
+ * in the site's own fonts on the Paper tokens. Every title and line on a card
+ * is quoted from its page, not written for the card.
+ *
+ * The images live in `public/` and are named explicitly rather than dropped in
+ * as `opengraph-image.png` files. The file convention looked tidier and was
  * wrong for this tree: a file-based OG image is attached to the segment it sits
  * in, and a page that declares its own `openGraph` block — which every page
- * here now does, because that is how it gets a per-page title and URL —
- * replaces the inherited one and loses the image. Verified in the build output:
- * Home carried `og:image`, /experience and /questions did not.
+ * here does, because that is how it gets a per-page title and URL — replaces
+ * the inherited one and loses the image. Verified in the build output: Home
+ * carried `og:image`, /experience and /questions did not.
  *
- * Declared once, spread into both cards below, so the two cannot disagree.
+ * They moved from `/og.png` to `/og/<page>.png` in September 2026, when the
+ * paper went white. A new URL is what makes LinkedIn and Slack fetch the new
+ * image instead of serving the cream one they already cached.
+ *
+ * `cardFor` is keyed by the same `path` every page already passes to
+ * `pageMetadata`, so no page has to remember which card is its own. A route
+ * with no card of its own (/writing, /errata, /a-z) gets the title page.
  */
-export const SOCIAL_CARD = {
-  url: '/og.png',
-  width: 1200,
-  height: 630,
-  type: 'image/png',
-  alt: "The title page of the record: 'Things I don't want to forget.' set in Fraunces on warm paper, above the line 'A record kept in London'.",
-} as const;
+interface CardEntry {
+  path: string;
+  file: string;
+  alt: string;
+}
+
+const CARDS = new Map<string, CardEntry>(
+  (socialCards.cards as CardEntry[]).map((c) => [c.path, c]),
+);
+
+function toCard({ file, alt }: CardEntry) {
+  return {
+    url: `/og/${file}.png`,
+    width: 1200,
+    height: 630,
+    type: 'image/png',
+    alt,
+  } as const;
+}
+
+/** The title page's card. Also the layout's sitewide default. */
+export const SOCIAL_CARD = toCard(CARDS.get('/')!);
+
+/** The card for a route, or the title page's when it has none. */
+export function cardFor(path: string) {
+  const entry = CARDS.get(path);
+  return entry ? toCard(entry) : SOCIAL_CARD;
+}
 
 export interface PageMeta {
   /**
@@ -96,6 +132,7 @@ export function pageMetadata({
   /* The card headline. A bare chapter title ("Now") is meaningless in a feed,
      so the name is always appended — except where the title already carries
      it, which is Home. */
+  const card = cardFor(path);
   const socialTitle = absoluteTitle ? title : `${title} — ${TITLE_SUFFIX}`;
 
   return {
@@ -109,13 +146,13 @@ export function pageMetadata({
       description,
       siteName: TITLE_SUFFIX,
       locale: 'en_GB',
-      images: [SOCIAL_CARD],
+      images: [card],
     },
     twitter: {
       card: 'summary_large_image',
       title: socialTitle,
       description,
-      images: [SOCIAL_CARD],
+      images: [card],
     },
   };
 }

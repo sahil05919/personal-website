@@ -1,0 +1,153 @@
+<!doctype html>
+<!--
+  The share card, drawn once per chapter by render.mjs at 1200 × 630.
+
+  It is the title page's layout, unchanged: the cobalt through-line tick top
+  left, an apparatus line, the display line, one hairline, and the imprint
+  underneath. The only thing that varies is which page it is. Colours are the
+  Paper tokens from app/globals.css, fonts are the same variable files the site
+  serves, and the display face carries the same SOFT/WONK settings and the same
+  deboss — so a card is a photograph of the page, not a poster about it.
+
+  The card data arrives as window.CARD (injected by the renderer before load).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face {
+    font-family: 'Fraunces';
+    src: url('../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2') format('woff2');
+    font-weight: 100 900;
+  }
+  @font-face {
+    font-family: 'Newsreader';
+    src: url('../../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2') format('woff2');
+    font-weight: 200 800;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    src: url('../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2');
+    font-weight: 100 800;
+  }
+
+  :root {
+    --paper: rgb(255 255 255);
+    --ink: rgb(24 23 21);
+    --graphite: rgb(104 104 104);
+    --hairline: rgb(222 222 222);
+    --through-line: rgb(29 74 199);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { width: 1200px; height: 630px; background: var(--paper); }
+
+  .card {
+    position: relative;
+    width: 1200px;
+    height: 630px;
+    padding: 60px 84px 0;
+    display: flex;
+    flex-direction: column;
+    color: var(--ink);
+  }
+
+  .tick { width: 96px; height: 3px; background: var(--through-line); }
+
+  .apparatus {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 21px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--graphite);
+    line-height: 1.45;
+  }
+  .apparatus .n { color: var(--ink); margin-right: 1.1em; }
+
+  .eyebrow { margin-top: 28px; }
+
+  /* The space between the apparatus line and the imprint. The display block
+     sits in it, a little above centre, as the title page's does. */
+  .field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 14px;
+  }
+
+  .display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400;
+    font-size: 116px;
+    line-height: 1.0;
+    letter-spacing: -0.028em;
+    font-variation-settings: "SOFT" 18, "WONK" 1;
+    text-shadow:
+      0 0.019em 0 rgb(255 255 255 / 0.8),
+      0 -0.011em 0.012em rgb(40 32 20 / 0.16);
+    text-wrap: balance;
+    max-width: 1000px;
+  }
+  .display.long { font-size: 104px; }
+
+  .line {
+    margin-top: 30px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 34px;
+    line-height: 1.34;
+    color: var(--graphite);
+    max-width: 960px;
+    text-wrap: pretty;
+  }
+
+  .imprint {
+    border-top: 1px solid var(--hairline);
+    height: 124px;
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 48px;
+  }
+  .imprint .url { text-transform: none; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="tick"></div>
+    <p class="apparatus eyebrow" id="eyebrow"></p>
+    <div class="field">
+      <h1 class="display" id="title"></h1>
+      <p class="line" id="line"></p>
+    </div>
+    <div class="imprint apparatus">
+      <span id="imprint"></span>
+      <span class="url" id="url"></span>
+    </div>
+  </div>
+  <script>
+    const c = window.CARD;
+    const eyebrow = document.getElementById('eyebrow');
+    if (c.number) {
+      const n = document.createElement('span');
+      n.className = 'n';
+      n.textContent = c.number;
+      eyebrow.append(n, document.createTextNode(c.chapter));
+    } else {
+      eyebrow.textContent = 'Sahil Kumar \u2014 London';
+    }
+    const title = document.getElementById('title');
+    title.textContent = c.title;
+    if (c.title.length > 22) title.classList.add('long');
+    const line = document.getElementById('line');
+    if (c.line) line.textContent = c.line; else line.remove();
+    document.getElementById('imprint').textContent = c.number
+      ? 'Sahil Kumar \u2014 London'
+      : 'A record kept in London';
+    document.getElementById('url').textContent =
+      'sahilarora.vercel.app' + (c.path === '/' ? '' : c.path);
+  </script>
+</body>
+</html>

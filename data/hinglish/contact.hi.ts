@@ -35,7 +35,7 @@ export const contactContentHi: ContactContent = {
   groups: [
     {
       eyebrow: 'Kaam ke liye',
-      line: 'Main people analytics ka kaam dhoondh raha hoon — jahaan sawaal logon ke baare mein ho aur tool Power BI ho. Koi mauka, koi project, ya aisi cheez jo milkar banaane laayak ho: email mujhe sabse pehle milti hai aur main saari padhta hoon.',
+      line: 'Main London mein people analytics ka kaam dhoondh raha hoon — HR reporting, workforce data, Power BI. Koi mauka, koi project, ya aisi cheez jo milkar banaane laayak ho: email mujhe sabse pehle milti hai aur main saari padhta hoon.',
       channels: [
         {
           mark: 'email',
@@ -43,6 +43,7 @@ export const contactContentHi: ContactContent = {
           title: contactInfo.email,
           href: `mailto:${contactInfo.email}?subject=Connecting%20from%20your%20website`,
           ariaSuffix: 'Email bhejiye',
+          copyValue: contactInfo.email,
         },
         {
           mark: 'linkedin',
@@ -85,6 +86,13 @@ export const contactContentHi: ContactContent = {
   apparatus: {
     cvLabel: 'CV download kijiye',
     cvNote: 'PDF · ek page · is record ki professional reedh',
+  },
+
+  copy: {
+    action: 'Copy',
+    done: 'Copy ho gaya',
+    selected: 'Select ho gaya',
+    announce: 'Email address copy ho gaya.',
   },
 
   unsigned: {

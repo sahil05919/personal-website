@@ -1,0 +1,86 @@
+{
+  "_comment": "The share cards. One per chapter, plus the title page. Read by lib/seo.ts (which card a route gets, and its alt text) and by scripts/og-cards/render.mjs (what gets drawn). Every `title` is the page's own h1 or chapter name, and every `line` is quoted from the page itself — nothing here is written for the card. Change a page's opening words, change them here, then re-run the script. Routes with no entry (/writing, /errata, /a-z, /_not-found) get the title page.",
+  "cards": [
+    {
+      "path": "/",
+      "file": "home",
+      "number": "",
+      "chapter": "",
+      "title": "Things I don't want to forget.",
+      "line": "",
+      "alt": "The title page of the record: 'Things I don't want to forget.' set in Fraunces on white paper, above the line 'A record kept in London'."
+    },
+    {
+      "path": "/about",
+      "file": "about",
+      "number": "01",
+      "chapter": "About",
+      "title": "The patterns, not the events.",
+      "line": "",
+      "alt": "Chapter 01, About: 'The patterns, not the events.' set in Fraunces on white paper."
+    },
+    {
+      "path": "/journey",
+      "file": "journey",
+      "number": "02",
+      "chapter": "Journey",
+      "title": "Nobody planned this.",
+      "line": "Before anyone sees the work, I'd rather they understood the person.",
+      "alt": "Chapter 02, Journey: 'Nobody planned this.' set in Fraunces on white paper, above the line 'Before anyone sees the work, I'd rather they understood the person.'"
+    },
+    {
+      "path": "/now",
+      "file": "now",
+      "number": "03",
+      "chapter": "Now",
+      "title": "Now",
+      "line": "One season, written in the present tense and kept with its crossings-out showing.",
+      "alt": "Chapter 03, Now, set in Fraunces on white paper, above the line 'One season, written in the present tense and kept with its crossings-out showing.'"
+    },
+    {
+      "path": "/projects",
+      "file": "projects",
+      "number": "04",
+      "chapter": "Projects",
+      "title": "Projects",
+      "line": "Some refused to leave me alone until I built something.",
+      "alt": "Chapter 04, Projects, set in Fraunces on white paper, above the line 'Some refused to leave me alone until I built something.'"
+    },
+    {
+      "path": "/experience",
+      "file": "experience",
+      "number": "05",
+      "chapter": "Experience",
+      "title": "Experience",
+      "line": "Most of it I didn't choose.",
+      "alt": "Chapter 05, Experience, set in Fraunces on white paper, above the line 'Most of it I didn't choose.'"
+    },
+    {
+      "path": "/media",
+      "file": "media",
+      "number": "06",
+      "chapter": "Media",
+      "title": "Media",
+      "line": "Proof of presence, not a portfolio.",
+      "alt": "Chapter 06, Media, set in Fraunces on white paper, above the line 'Proof of presence, not a portfolio.'"
+    },
+    {
+      "path": "/questions",
+      "file": "questions",
+      "number": "07",
+      "chapter": "Questions",
+      "title": "Questions",
+      "line": "If we had another hour together, these are probably the questions we'd eventually get to.",
+      "alt": "Chapter 07, Questions, set in Fraunces on white paper, above the line 'If we had another hour together, these are probably the questions we'd eventually get to.'"
+    },
+    {
+      "path": "/contact",
+      "file": "contact",
+      "number": "08",
+      "chapter": "Contact",
+      "title": "Write back.",
+      "line": "You've reached the end of the record.",
+      "alt": "Chapter 08, Contact: 'Write back.' set in Fraunces on white paper, above the line 'You've reached the end of the record.'"
+    }
+  ]
+}

@@ -1,11 +1,13 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import BrandMark from '@/components/contact/BrandMark';
 import {
   contactInfo,
   contactContent,
   type Channel,
+  type ContactContent,
   type MarkName,
 } from '@/data/contactData';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
@@ -64,23 +66,78 @@ const BRAND_HOVER: Record<MarkName, string> = {
 const SWEEP =
   'transition-transform duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none';
 
+/** How long "Copied" stays before the control goes back to "Copy". */
+const COPY_HOLD_MS = 2_400;
+
+type CopyState = 'idle' | 'done' | 'selected';
+
 function ChannelRow({
   channel,
   variants,
+  copy,
 }: {
   channel: Channel;
   variants: Variants;
+  copy: ContactContent['copy'];
 }) {
-  const { mark, label, title, href, external, ariaSuffix } = channel;
+  const { mark, label, title, href, external, ariaSuffix, copyValue } = channel;
+
+  /*
+    THE COPY CONTROL — only on a row with a `copyValue`, which is the email row.
+
+    A `mailto:` link does nothing for anyone who reads mail in a browser tab,
+    so the address also has to be available as text. The control sits under
+    the address in the apparatus register, where the CV row keeps its note: a
+    line of letterhead under the line, not a button bolted onto the side.
+    That position is also the only one that survives a 320px screen without
+    breaking the address across two lines.
+
+    It is a sibling of the row's link, not inside it — a button inside an <a>
+    is invalid and would open the mail app on every copy. It is positioned
+    over the link's enlarged bottom padding, so hovering it does not sweep the
+    rule: the rule answers "open this door", and copying is not that.
+
+    If the browser refuses the clipboard (older Safari, an in-app browser), the
+    address is selected on the page instead and the label says so. One
+    keystroke still gets it, and the page never claims a copy it didn't make.
+  */
+  const addressRef = useRef<HTMLParagraphElement>(null);
+  const [copyState, setCopyState] = useState<CopyState>('idle');
+  const holdTimer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(holdTimer.current), []);
+
+  async function onCopy() {
+    if (!copyValue) return;
+    let next: CopyState = 'done';
+    try {
+      await navigator.clipboard.writeText(copyValue);
+    } catch {
+      const node = addressRef.current;
+      const selection = window.getSelection();
+      if (node && selection) {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+      next = 'selected';
+    }
+    setCopyState(next);
+    window.clearTimeout(holdTimer.current);
+    holdTimer.current = window.setTimeout(() => setCopyState('idle'), COPY_HOLD_MS);
+  }
 
   return (
-    <motion.li variants={variants}>
+    <motion.li variants={variants} className={copyValue ? 'relative' : undefined}>
       <a
         href={href}
         {...(external
           ? { target: '_blank', rel: 'noopener noreferrer' }
           : {})}
-        className="group relative block py-6 md:py-7 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-through-line"
+        className={`group relative block ${
+          copyValue ? 'pb-14 pt-6 md:pb-[3.75rem] md:pt-7' : 'py-6 md:py-7'
+        } focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-through-line`}
       >
         {/* The rule at rest: hairline across, ink tick at the left. */}
         <span
@@ -104,7 +161,10 @@ function ChannelRow({
             <p className="font-mono text-[11px] tracking-[0.08em] uppercase text-graphite transition-colors duration-500 group-hover:text-ink group-focus-visible:text-ink motion-reduce:transition-none">
               {label}
             </p>
-            <p className="mt-2 break-words font-serif-display text-[1.25rem] md:text-[1.625rem] leading-[1.25] tracking-[-0.01em] text-ink">
+            <p
+              ref={copyValue ? addressRef : undefined}
+              className="mt-2 break-words font-serif-display text-[1.25rem] md:text-[1.625rem] leading-[1.25] tracking-[-0.01em] text-ink"
+            >
               {title}
             </p>
             {ariaSuffix ? <span className="sr-only">{ariaSuffix}</span> : null}
@@ -118,22 +178,51 @@ function ChannelRow({
               name={mark}
               className={`h-6 w-6 md:h-[26px] md:w-[26px] text-graphite transition-colors duration-500 motion-reduce:transition-none ${BRAND_HOVER[mark]}`}
             />
+            {/* Hover-only, so not drawn below md: on a phone there is no
+                hover to reveal it, and its reserved width was enough to break
+                the email address as "gmail.co / m" at 320px. */}
             <span
               aria-hidden="true"
-              className={`inline-block -translate-x-2 text-graphite opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none`}
+              className={`hidden md:inline-block -translate-x-2 text-graphite opacity-0 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 transition-all duration-[700ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none`}
             >
               &rarr;
             </span>
           </div>
         </div>
       </a>
+
+      {copyValue ? (
+        <div className="absolute bottom-5 left-0 md:bottom-6">
+          <button
+            type="button"
+            onClick={onCopy}
+            className="tap-y link-rule font-mono text-[11px] uppercase tracking-[0.08em] text-graphite focus-visible:text-ink focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-through-line"
+          >
+            {copyState === 'done'
+              ? copy.done
+              : copyState === 'selected'
+                ? copy.selected
+                : copy.action}
+            {/* Makes the name "Copy sahil05919@gmail.com" rather than a bare
+                "Copy", in either language. */}
+            <span className="sr-only"> {copyValue}</span>
+          </button>
+          <span role="status" className="sr-only">
+            {copyState === 'done'
+              ? copy.announce
+              : copyState === 'selected'
+                ? copy.selected
+                : ''}
+          </span>
+        </div>
+      ) : null}
     </motion.li>
   );
 }
 
 export default function Imprint() {
   const prefersReducedMotion = useReducedMotionSafe();
-  const { groups, apparatus, walk } = useVariant(contactContent, contactContentHi);
+  const { groups, apparatus, walk, copy } = useVariant(contactContent, contactContentHi);
 
   const group: Variants = {
     hidden: {},
@@ -177,7 +266,7 @@ export default function Imprint() {
 
             <ul>
               {g.channels.map((c) => (
-                <ChannelRow key={c.href} channel={c} variants={rise} />
+                <ChannelRow key={c.href} channel={c} variants={rise} copy={copy} />
               ))}
             </ul>
 

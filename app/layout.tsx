@@ -70,7 +70,7 @@ import ThemeProvider from "@/components/providers/ThemeProvider";
    stays is only what is true of the whole book — the base URL, the title
    template, authorship, and the card format.
 
-   The card image is `SOCIAL_CARD` (public/og.png, declared in lib/seo.ts). It
+   The card image is `SOCIAL_CARD` (public/og/home.png, declared in lib/seo.ts). It
    is attached here as the sitewide default — /_not-found is the one route that
    does not call `pageMetadata` — and again per page, because a page's own
    `openGraph` block replaces an inherited one rather than merging into it. The
