@@ -116,7 +116,7 @@ export const projectEntriesHi: ProjectEntry[] = [
     rhythm: { measure: "narrow", seam: "wide", centered: true },
     body: [
       "Chhah hafte, aur pehli baar problem kisi ne mere haath mein nahi di. Dataset humne chuna, sawaal humne banaye, analysis humne banayi, aur findings humne present kiye.",
-      "Maine ek conventional business dataset ki jagah ek dating app dataset chuna kyunki use explore karna zyada dilchasp lag raha tha. Dataset synthetic tha—pachaas hazaar generated users—aur wahi sabse kaam ka sabak nikla. Usne mujhe yeh poochhna sikhaaya ki koi analytical pattern asliyat dikhaata hai ya bas woh assumptions jo data ke andar bana diye gaye hain. Yeh sawaal project se bahut zyada waqt tak mere saath raha hai.",
+      "Maine ek conventional business dataset ki jagah ek dating app dataset chuna kyunki use explore karna zyada dilchasp lag raha tha. Dataset synthetic tha — pachaas hazaar generated users — aur wahi sabse kaam ka sabak nikla. Usne mujhe yeh poochhna sikhaaya ki koi analytical pattern asliyat dikhaata hai ya bas woh assumptions jo data ke andar bana diye gaye hain. Yeh sawaal project se bahut zyada waqt tak mere saath raha hai.",
     ],
   },
 
@@ -151,13 +151,13 @@ export const projectEntriesHi: ProjectEntry[] = [
     table: {
       columns: ["Year", "Reported", "Reconstructed", "Residual", ""],
       rows: [
-        ["2021", "12.1", "12.0", "+0.10", "Methodology updates"],
+        ["2021", "12.1", "12.0", "−0.10", "Methodology updates"],
         ["2022", "11.4", "11.4", "0.0", "Portfolio-driven changes"],
-        ["2023", "11.6", "11.5", "+0.06", "Small rise despite incentives"],
+        ["2023", "11.6", "11.5", "−0.06", "Small rise despite incentives"],
         ["2024", "11.0", "12.5", "+1.5", "Unreconciled"],
       ],
       emphasisRow: 3,
-      note: "Scope 1 and 2, MtCO₂e. Four of nine years shown.",
+      note: "Scope 1 and 2, MtCO₂e. Residual is reconstructed minus reported. Four of nine years shown.",
     },
   },
 ];

@@ -59,7 +59,7 @@ function Plate({
     >
       <span className="font-mono text-[0.625rem] uppercase leading-[1.7] tracking-[0.16em] text-graphite">
         Photograph not taken yet
-        <span className="mt-1 block normal-case tracking-[0.08em] text-graphite/70">
+        <span className="mt-1 block normal-case tracking-[0.08em] text-graphite">
           {awaiting}
         </span>
       </span>
@@ -133,7 +133,7 @@ function Item({ item }: { item: BecomingItem }) {
     case 'struck':
       return (
         <div className="max-w-[36rem]">
-          <p className="font-reading text-[1.0625rem] leading-[1.7] text-graphite/70 [text-decoration-color:rgb(var(--through-line)/0.6)] [text-decoration-line:line-through] [text-decoration-thickness:1px]">
+          <p className="font-reading text-[1.0625rem] leading-[1.7] text-graphite [text-decoration-color:rgb(var(--through-line)/0.6)] [text-decoration-line:line-through] [text-decoration-thickness:1px]">
             {item.struck}
           </p>
           <Annotation>{item.annotation}</Annotation>

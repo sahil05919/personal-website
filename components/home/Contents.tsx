@@ -106,11 +106,11 @@ export default function Contents() {
                           It was set in `text-hairline`, which measures 1.40:1
                           against Paper and 1.47:1 against Ink — a number
                           nobody could actually read, on the one list that has
-                          to be readable. `text-graphite/70` is the quietest
+                          to be readable. `text-graphite` is the quietest
                           tone here that still passes as text (5.09:1); the
                           same swap was made in the colophon, the page turn,
                           the fore-edge rail, /writing and the 404. */}
-                      <span className="font-mono text-apparatus-xs text-graphite/70 transition-colors duration-200 group-hover:text-through-line">
+                      <span className="font-mono text-apparatus-xs text-graphite transition-colors duration-200 group-hover:text-through-line">
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       {destination.label}
@@ -121,7 +121,7 @@ export default function Contents() {
                         belongs relative to writing. It resolves to the
                         through-line on hover alongside the title and the
                         station. */}
-                    <span className="shrink-0 text-graphite/70 transition-colors duration-200 group-hover:text-through-line">
+                    <span className="shrink-0 text-graphite transition-colors duration-200 group-hover:text-through-line">
                       <PageMark href={destination.href} />
                     </span>
                   </div>

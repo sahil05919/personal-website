@@ -140,7 +140,7 @@ export default function Colophon() {
                     href={destination.href}
                     className="group flex items-baseline gap-3 py-1 font-reading text-fluid-aside text-graphite transition-colors duration-300 ease-editorial hover:text-ink"
                   >
-                    <span className="font-mono text-apparatus-xs text-graphite/70 transition-colors duration-300 ease-editorial group-hover:text-through-line">
+                    <span className="font-mono text-apparatus-xs text-graphite transition-colors duration-300 ease-editorial group-hover:text-through-line">
                       {folio(destination.href)}
                     </span>
                     {destination.label}
@@ -179,7 +179,7 @@ export default function Colophon() {
         <div className="mt-14 flex flex-col gap-10 border-t border-hairline sm:flex-row sm:items-start sm:justify-between sm:gap-10">
           <TwoClocks />
 
-          <p className="font-mono text-apparatus-xs uppercase leading-[2] text-graphite/80 sm:pt-6 sm:text-right">
+          <p className="font-mono text-apparatus-xs uppercase leading-[2] text-graphite sm:pt-6 sm:text-right">
             Set in Fraunces, Newsreader
             <br className="hidden sm:inline" /> and JetBrains Mono
           </p>

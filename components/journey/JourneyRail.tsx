@@ -115,14 +115,14 @@ export default function JourneyRail() {
                 />
                 <span
                   className={`font-mono text-[11px] tabular-nums transition-colors duration-300 ${
-                    isActive ? 'text-ink' : 'text-graphite/70 group-hover:text-ink'
+                    isActive ? 'text-ink' : 'text-graphite group-hover:text-ink'
                   }`}
                 >
                   {point.year}
                 </span>
                 <span
                   className={`text-[12.5px] leading-snug transition-colors duration-300 ${
-                    isActive ? 'text-ink' : 'text-graphite/70 group-hover:text-ink'
+                    isActive ? 'text-ink' : 'text-graphite group-hover:text-ink'
                   }`}
                 >
                   {point.label}

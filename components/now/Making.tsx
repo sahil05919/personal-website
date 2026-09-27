@@ -97,7 +97,7 @@ export function Making() {
                   key={item}
                   className="flex gap-4 border-b border-hairline px-5 py-3.5 last:border-b-0"
                 >
-                  <span className="shrink-0 font-mono text-[0.625rem] leading-[1.8] tracking-[0.14em] text-graphite/60">
+                  <span className="shrink-0 font-mono text-[0.625rem] leading-[1.8] tracking-[0.14em] text-graphite">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <span className="font-reading text-[0.9375rem] leading-[1.7] text-graphite">

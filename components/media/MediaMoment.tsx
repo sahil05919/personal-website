@@ -202,11 +202,11 @@ export function MediaMoment({
         {frame !== undefined && frameCount !== undefined && (
           <p
             aria-hidden="true"
-            className="font-mono text-[10px] tracking-[0.14em] text-graphite/70"
+            className="font-mono text-[10px] tracking-[0.14em] text-graphite"
             style={{ marginLeft: alignEnd ? "auto" : undefined }}
           >
             {String(frame).padStart(2, "0")}
-            <span className="opacity-50"> / {String(frameCount).padStart(2, "0")}</span>
+            <span> / {String(frameCount).padStart(2, "0")}</span>
           </p>
         )}
         <p

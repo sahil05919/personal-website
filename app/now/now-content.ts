@@ -193,9 +193,11 @@ export const work = {
    * publish the thing you would normally quietly delete.
    */
   unfinished: {
-    note: 'Unfinished on this site, 16 August 2026',
+    note: 'Unfinished on this site, 27 September 2026',
     items: [
-      'the CV still opens on the old description of me',
+      // "the CV still opens on the old description of me" was here until
+      // 27 September 2026. The PDF was replaced on 17 August (see /errata),
+      // so by this list's own rule the line goes.
       'nothing on /projects is people analytics yet',
       // "/writing does not exist yet" was here from 10 August. It exists now,
       // so the line goes — this list is what is unfinished TODAY, and leaving a

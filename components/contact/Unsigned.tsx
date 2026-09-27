@@ -441,7 +441,7 @@ export default function Unsigned() {
               <Ruled>
                 <label htmlFor="unsigned-reply" className={FIELD_LABEL}>
                   {copy.replyLabel}{' '}
-                  <span className="text-graphite/70">— optional</span>
+                  <span className="text-graphite">— optional</span>
                 </label>
                 {/*
                   The one field that needs an edge of its own. The textarea

@@ -115,9 +115,8 @@ export const workHi = {
 
   unfinished: {
     // Dated apparatus, set in mono at the head of the errata slip.
-    note: 'Unfinished on this site, 16 August 2026',
+    note: 'Unfinished on this site, 27 September 2026',
     items: [
-      'CV aaj bhi mere purane description se shuru hota hai',
       '/projects par abhi kuch bhi people analytics nahi hai',
       '/questions par chhah sawaal likhe hi nahi gaye',
       'jo adhoora nahi balki galat hai woh /errata par hai',

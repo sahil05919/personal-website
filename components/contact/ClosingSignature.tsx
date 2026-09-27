@@ -146,7 +146,7 @@ export default function ClosingSignature() {
           <p className="font-mono text-[11px] tracking-[0.08em] text-graphite">
             {signature}
           </p>
-          <p className="mt-1 font-mono text-[11px] tracking-[0.08em] text-graphite/70">
+          <p className="mt-1 font-mono text-[11px] tracking-[0.08em] text-graphite">
             {place}
           </p>
         </motion.div>

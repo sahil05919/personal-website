@@ -67,7 +67,7 @@ export default function ReadingSwitch({ className = '' }: { className?: string }
           EN
         </button>
 
-        <span aria-hidden="true" className="font-mono text-apparatus-xs text-graphite/70">
+        <span aria-hidden="true" className="font-mono text-apparatus-xs text-graphite">
           /
         </span>
 

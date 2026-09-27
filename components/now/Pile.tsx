@@ -39,7 +39,7 @@ export function Pile({ fragments }: { fragments: readonly Fragment[] }) {
 
         return (
           <li key={fragment.id} className="border-b border-hairline">
-            <h4 className="m-0">
+            <h3 className="m-0">
               <button
                 type="button"
                 aria-expanded={isOpen}
@@ -60,7 +60,7 @@ export function Pile({ fragments }: { fragments: readonly Fragment[] }) {
                   {fragment.opening}
                 </span>
               </button>
-            </h4>
+            </h3>
 
             <div
               id={`leaf-${fragment.id}`}
@@ -89,7 +89,7 @@ export function Pile({ fragments }: { fragments: readonly Fragment[] }) {
                     </p>
                   ))}
 
-                  <p className="mt-6 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-graphite/70">
+                  <p className="mt-6 font-mono text-[0.625rem] uppercase tracking-[0.16em] text-graphite">
                     stops here
                   </p>
 

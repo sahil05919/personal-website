@@ -111,7 +111,7 @@ export function GlanceContents({
 
               {item.note ? (
                 <span
-                  className={`font-mono text-apparatus-xs uppercase text-graphite/80 ${
+                  className={`font-mono text-apparatus-xs uppercase text-graphite ${
                     notesBelow ? "basis-full pl-[5.5rem]" : "shrink-0"
                   }`}
                 >

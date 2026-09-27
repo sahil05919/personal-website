@@ -83,7 +83,7 @@ export default function WritingChapter() {
                 className="group block py-8 md:py-10"
               >
                 <div className="flex items-baseline gap-5 md:gap-8">
-                  <span className="shrink-0 font-mono text-apparatus-xs tabular-nums text-graphite/70 transition-colors duration-300 ease-editorial group-hover:text-through-line">
+                  <span className="shrink-0 font-mono text-apparatus-xs tabular-nums text-graphite transition-colors duration-300 ease-editorial group-hover:text-through-line">
                     {String(i + 1).padStart(2, '0')}
                   </span>
 

@@ -271,7 +271,7 @@ export default function Search() {
                       {record.external ? " · opens off-site" : ""}
                     </span>
                   </span>
-                  <span className="shrink-0 font-mono text-apparatus-xs uppercase text-graphite/70">
+                  <span className="shrink-0 font-mono text-apparatus-xs uppercase text-graphite">
                     {record.kind}
                   </span>
                 </button>

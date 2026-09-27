@@ -269,7 +269,7 @@ export const projectEntries: ProjectEntry[] = [
     // taken up; left as written rather than applied unilaterally.
     body: [
       "Six weeks, and for the first time nobody handed me the problem. We chose the dataset, framed the questions, built the analysis, and presented the findings.",
-      "I picked a dating app dataset over a conventional business dataset because it felt more interesting to explore. The dataset was synthetic\u2014fifty thousand generated users\u2014which turned out to be the most valuable lesson. It taught me to question whether an analytical pattern reflects reality or simply the assumptions built into the data. That question has stayed with me far longer than the project itself.",
+      "I picked a dating app dataset over a conventional business dataset because it felt more interesting to explore. The dataset was synthetic \u2014 fifty thousand generated users \u2014 which turned out to be the most valuable lesson. It taught me to question whether an analytical pattern reflects reality or simply the assumptions built into the data. That question has stayed with me far longer than the project itself.",
     ],
     // No figure: no artefact survives. The Bayes account is closed, so the
     // Tableau workbook and deck are gone.
@@ -311,13 +311,13 @@ export const projectEntries: ProjectEntry[] = [
     table: {
       columns: ["Year", "Reported", "Reconstructed", "Residual", ""],
       rows: [
-        ["2021", "12.1", "12.0", "+0.10", "Methodology updates"],
+        ["2021", "12.1", "12.0", "−0.10", "Methodology updates"],
         ["2022", "11.4", "11.4", "0.0", "Portfolio-driven changes"],
-        ["2023", "11.6", "11.5", "+0.06", "Small rise despite incentives"],
+        ["2023", "11.6", "11.5", "−0.06", "Small rise despite incentives"],
         ["2024", "11.0", "12.5", "+1.5", "Unreconciled"],
       ],
       emphasisRow: 3,
-      note: "Scope 1 and 2, MtCO\u2082e. Four of nine years shown.",
+      note: "Scope 1 and 2, MtCO\u2082e. Residual is reconstructed minus reported. Four of nine years shown.",
     },
   },
 ];

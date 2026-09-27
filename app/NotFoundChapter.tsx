@@ -89,7 +89,7 @@ export default function NotFoundChapter() {
                   href={destination.href}
                   className="group flex items-baseline gap-4 py-4"
                 >
-                  <span className="font-mono text-apparatus-xs text-graphite/70 transition-colors duration-300 ease-editorial group-hover:text-through-line">
+                  <span className="font-mono text-apparatus-xs text-graphite transition-colors duration-300 ease-editorial group-hover:text-through-line">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <span className="font-serif-display text-fluid-row text-ink">

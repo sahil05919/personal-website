@@ -79,10 +79,10 @@ function Entry({ entry }: { entry: Erratum }) {
         regular would be inventing a sentence that never existed.
       */}
       {entry.struck ? (
-        <p className="mt-6 max-w-wide font-serif-display text-fluid-row text-balance">
+        <p className="mt-6 max-w-wide font-serif-display text-fluid-row text-balance [overflow-wrap:anywhere]">
           <del
             className="
-              text-graphite/70 no-underline
+              text-graphite no-underline
               [text-decoration-line:line-through]
               [text-decoration-color:rgb(var(--through-line)/0.5)]
               [text-decoration-thickness:1px]

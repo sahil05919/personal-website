@@ -137,7 +137,7 @@ export const entriesHi: ExperienceEntry[] = [
     place: 'London',
     gloss: 'Maine emails phir bhi likhi, aur uske baad follow-ups bhi.',
     body: [
-      'Society ne mujhe president banane se pehle saath se zyada applications aur ek interview liya tha, jiska zikr main mukhya roop se isliye kar raha hoon ki jab maine apply kiya tab main is desh mein lagbhag ek mahine ka tha.',
+      'Society ne mujhe co-president banane se pehle saath se zyada applications aur ek interview liya tha, jiska zikr main mukhya roop se isliye kar raha hoon ki jab maine apply kiya tab main is desh mein lagbhag ek mahine ka tha.',
       'Maine chhe logon ki committee chalaayi, har ek ka apna hissa — marketing, finance, operations, communications — aur mera kaam zyadatar unhein ek hi taraf rakhna tha. Saal mein humne chaar events kiye, jinmein ek flagship data science aur analytics session tha, aur main society ke accounts aur faculty aur speakers ke rishte dekhta tha.',
       'Events mushkil hissa nahi the. Mushkil hissa un logon ko likhna tha jinse main kabhi mila nahi tha, London bhar ki companies mein, apna parichay dete hue aur poochhte hue ki kya woh aakar ek aisi society se baat karenge jismein main khud haal hi mein juda tha. Mere paas unhein dene ke liye koi hasiyat nahi thi aur dikhaane ke liye kuch nahi. Maine emails phir bhi likhi, aur uske baad follow-ups bhi, aur yeh woh hissa hai jiske baare mein koi pehle se nahi bataata.',
       'Saal zyadatar isi ka bana tha. Emails bhejna, jawaabon ke peechhe lagna, rooms confirm karna, chhe logon ko batana ki mangalwaar se kya badla hai, aur yeh pakka karna ki us raat cheez asal mein ho jaaye. Zimmedaari us shabd se kai guna zyada aam nikli jitna woh sunai deti hai.',
@@ -220,7 +220,7 @@ export const entriesHi: ExperienceEntry[] = [
       'Yeh bhi Unitemps se aaya, jo iski sabse saaf-suthri baat hai — do saal ke hafte-dar-hafte contracts ke baad ek aisa contract jispar end date likhi hai, usi raaste se.',
       'Accounts payable. Oracle se invoices, sahi coding, farak nikaale gaye, aur payment ki line chalti rakhi gayi. Aam din mein pachaas se sattar invoices, jab jamaa ho jaaye toh zyada.',
       'Yeh dohraane waala kaam hai aur ismein sahi hona zaroori hai. Galat invoice aage kisi doosre ki problem ban jaati hai, aam taur par ek supplier ki jo paise ka intezaar kar raha hai — toh sahi hona koi abstract baat nahi hai. Mujhe lagta hai mujhe yeh pasand hai.',
-      'Main pehle hi khud ko process ke hisson ko dekhte aur yeh sochte hue paa chuka hoon ki kya saada ho sakta hai. Main abhi iske baare mein kuch kar nahi raha. Yeh saaf lagta hai ki system ko theek se samajhna padta hai use behtar banane se pehle, aur main yahaan chaar mahine se hoon.',
+      'Main pehle hi khud ko process ke hisson ko dekhte aur yeh sochte hue paa chuka hoon ki kya saada ho sakta hai. Main abhi iske baare mein kuch kar nahi raha. Yeh saaf lagta hai ki system ko theek se samajhna padta hai use behtar banane se pehle, aur main yahaan sirf April se hoon.',
     ],
     attribution: 'Middlesex University, London, 2026–present.',
   },

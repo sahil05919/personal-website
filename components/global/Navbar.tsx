@@ -198,20 +198,13 @@ export default function Navbar() {
                     /
                   </span>
                   <span className="text-through-line">{hereFolio}</span>
-                  {/* The chapter's name, and the one thing in this row that has to give
-                      way when the row is full.
-
-                      It was `truncate`, which produced "05 EXPERI…" — a word
-                      broken mid-syllable, which reads as a rendering fault
-                      rather than as a decision. It is now shown or not shown:
-                      hidden exactly in the 1024–1279 band, where the nine-item
-                      nav has just appeared and there is genuinely no room for it,
-                      and present either side of that — below 1024 the nav has
-                      collapsed to the index button and there is room to spare,
-                      from 1280 the row is wide enough to carry both. The folio
-                      NUMBER stays at every width, so the reader's position is
-                      never unstated. */}
-                  <span className="lg:hidden xl:inline">{here.label}</span>
+                  {/* The chapter's name. The full nine-item nav now appears
+                      only from 1280px (xl), where the row has room for both
+                      it and this label, so the label no longer needs a band
+                      in which it hides. Between 1024 and 1279 the nav
+                      collided with the wordmark itself — measured, Sept 2026
+                      — so that band now uses the index button instead. */}
+                  <span>{here.label}</span>
                 </motion.span>
               ) : null}
             </AnimatePresence>
@@ -230,7 +223,7 @@ export default function Navbar() {
             The search mark is useful at every size, so it lives here, once,
             and the clusters sit beside it.
           */}
-          <div className="flex shrink-0 items-center gap-3 lg:gap-5">
+          <div className="flex shrink-0 items-center gap-3 xl:gap-5">
             <Search />
 
           {/* ── Desktop contents ─────────────────────────────────────────── */}
@@ -246,7 +239,7 @@ export default function Navbar() {
                above some breakpoint was tried and reverted — the row is full at
                1600px too, because the shell stops growing at max-w-spread while
                the gaps do not. */
-            className="hidden items-center gap-5 lg:flex"
+            className="hidden items-center gap-5 xl:flex"
           >
             <nav aria-label="Primary">
               <ul
@@ -303,7 +296,7 @@ export default function Navbar() {
               CV
               <span
                 aria-hidden="true"
-                className="hidden text-[9px] leading-none text-graphite/70 transition-colors duration-300 group-hover:text-through-line min-[1700px]:inline"
+                className="hidden text-[9px] leading-none text-graphite transition-colors duration-300 group-hover:text-through-line min-[1700px]:inline"
               >
                 PDF
               </span>
@@ -313,7 +306,7 @@ export default function Navbar() {
           </div>
 
           {/* ── Index toggle ─────────────────────────────────────────────── */}
-          <div className="flex items-center gap-4 lg:hidden">
+          <div className="flex items-center gap-4 xl:hidden">
             <PaperSwitch className="hidden sm:flex" />
 
             <button
@@ -377,7 +370,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: EASE }}
-            className="fixed inset-x-0 bottom-0 top-[58px] z-[45] overflow-y-auto border-t border-hairline bg-paper lg:hidden"
+            className="fixed inset-x-0 bottom-0 top-[58px] z-[45] overflow-y-auto border-t border-hairline bg-paper xl:hidden"
           >
             <nav aria-label="Index" className="px-5 pb-16 pt-8 sm:px-8">
               <p className="apparatus">{t.contents}</p>

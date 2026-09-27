@@ -275,7 +275,7 @@ export const entries: ExperienceEntry[] = [
     place: "London",
     gloss: "I wrote the emails anyway, and then wrote the follow-ups.",
     body: [
-      "There were more than sixty applications and an interview before the society appointed me president, which I mention mainly because I had been in the country about a month when I applied.",
+      "There were more than sixty applications and an interview before the society appointed me co-president, which I mention mainly because I had been in the country about a month when I applied.",
       "I led a committee of six, each with an area — marketing, finance, operations, communications — and my job was largely to keep them pointing the same way. We ran four events across the year, including a flagship data science and analytics session, and I looked after the society's accounts and the relationships with faculty and speakers.",
       "The events were not the difficult part. The difficult part was writing to people I had never met, at companies across London, introducing myself and asking whether they would come and speak to a society I had only recently joined myself. I had no standing to offer them and nothing to point at. I wrote the emails anyway, and then wrote the follow-ups, which is the part nobody warns you about.",
       "That is most of what the year consisted of. Sending emails, chasing replies, confirming rooms, telling six people what had changed since Tuesday, making sure the thing actually happened on the night. Responsibility turned out to be a great deal more ordinary than the word makes it sound.",
@@ -364,9 +364,9 @@ export const entries: ExperienceEntry[] = [
       "This came through Unitemps as well, which is the tidiest thing about it — a contract with an end date on it at the end of two years of week-to-week ones, by the same route.",
       "Accounts payable. Invoices through Oracle, coded correctly, discrepancies chased down, the payment queue kept moving. Fifty to seventy invoices on an ordinary day, more when it backs up.",
       "It is repetitive and it has to be right. An invoice that is wrong becomes somebody else's problem further down the line, usually a supplier waiting to be paid, so the accuracy is not abstract. I find that I like it.",
-      // "I have been here four months" is a live temporal claim. It will need
-      // editing, or removing, once it stops being true.
-      "I have already caught myself looking at parts of the process and wondering what could be simpler. I am not doing anything about it yet. It seems obvious that you have to understand a system properly before you start improving it, and I have been here four months.",
+      // Was "I have been here four months" — true in August, false by
+      // September. Anchored to the start month instead so it cannot go stale.
+      "I have already caught myself looking at parts of the process and wondering what could be simpler. I am not doing anything about it yet. It seems obvious that you have to understand a system properly before you start improving it, and I have only been here since April.",
     ],
     attribution: "Middlesex University, London, 2026–present.",
   },

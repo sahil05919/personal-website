@@ -146,7 +146,7 @@ export default function PageTurn() {
 
             <p className="mt-5 flex items-baseline gap-4 font-serif-display text-fluid-title text-ink">
               {folio(next.href) ? (
-                <span className="font-mono text-apparatus-xs text-graphite/70 transition-colors duration-300 ease-editorial group-hover:text-through-line">
+                <span className="font-mono text-apparatus-xs text-graphite transition-colors duration-300 ease-editorial group-hover:text-through-line">
                   {folio(next.href)}
                 </span>
               ) : null}
@@ -197,7 +197,7 @@ export default function PageTurn() {
             the rest of the book on two keys. Hidden on touch, where there are
             no arrow keys and the line would just be a lie.
           */}
-          <p className="hidden font-mono text-apparatus-xs uppercase text-graphite/70 [@media(hover:hover)]:block">
+          <p className="hidden font-mono text-apparatus-xs uppercase text-graphite [@media(hover:hover)]:block">
             <kbd className="font-mono">&larr;</kbd>{" "}
             <kbd className="font-mono">&rarr;</kbd> {turnsHint}
           </p>

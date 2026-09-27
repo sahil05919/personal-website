@@ -347,7 +347,13 @@ function ReconciliationTable({ table }: { table: ProjectTable }) {
     <div className="mx-auto my-20 w-full sm:my-24" style={{ maxWidth: TABLE_MAX }}>
       {/* Horizontal scroll on narrow viewports rather than reflow: five mono
           columns cannot stack without destroying the comparison. */}
-      <div className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:overflow-x-visible sm:px-0">
+      <div
+        className="-mx-6 overflow-x-auto px-6 sm:mx-0 sm:overflow-x-visible sm:px-0"
+        // Scrollable on phones, so it must be reachable by keyboard too.
+        tabIndex={0}
+        role="region"
+        aria-label="Reconciliation table, scrolls sideways on small screens"
+      >
         <table className="w-full min-w-[540px] border-collapse font-mono text-[13px] tabular-nums">
           <thead>
             <tr className="border-b border-hairline">
@@ -361,7 +367,7 @@ function ReconciliationTable({ table }: { table: ProjectTable }) {
                     i === table.columns.length - 1 ? "pr-0" : "",
                   ].join(" ")}
                 >
-                  {column}
+                  {column || <span className="sr-only">Note</span>}
                 </th>
               ))}
             </tr>

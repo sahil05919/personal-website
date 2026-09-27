@@ -133,7 +133,7 @@ export default function Wayfinder() {
                   className={`font-mono text-apparatus-xs uppercase transition-colors duration-300 ease-editorial ${
                     active
                       ? 'text-ink'
-                      : 'text-graphite/70 group-hover:text-ink'
+                      : 'text-graphite group-hover:text-ink'
                   }`}
                 >
                   {destination.label}
@@ -147,7 +147,7 @@ export default function Wayfinder() {
                       // against Ink, i.e. a number nobody could read in either
                       // theme. Matched to the label's tone (5.09:1), which is
                       // the quietest value on the site that is still text.
-                      : 'text-graphite/70 group-hover:text-ink'
+                      : 'text-graphite group-hover:text-ink'
                   }`}
                 >
                   {String(i + 1).padStart(2, '0')}

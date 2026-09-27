@@ -80,14 +80,14 @@ export function GlanceRail({
                   />
                   <span
                     className={`shrink-0 font-mono text-[10px] tabular-nums transition-colors duration-300 ${
-                      active ? "text-ink" : "text-graphite/70 group-hover:text-ink"
+                      active ? "text-ink" : "text-graphite group-hover:text-ink"
                     }`}
                   >
                     {item.marker}
                   </span>
                   <span
                     className={`text-[12.5px] leading-snug transition-colors duration-300 ${
-                      active ? "text-ink" : "text-graphite/70 group-hover:text-ink"
+                      active ? "text-ink" : "text-graphite group-hover:text-ink"
                     }`}
                   >
                     {item.label}

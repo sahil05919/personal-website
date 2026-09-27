@@ -71,7 +71,7 @@ export function Revised({ struck, now, until }: Revision) {
     >
       <del
         className="
-          text-graphite/70 no-underline
+          text-graphite no-underline
           [text-decoration-line:line-through]
           [text-decoration-color:rgb(var(--through-line)/0.45)]
           [text-decoration-thickness:1px]
@@ -82,7 +82,6 @@ export function Revised({ struck, now, until }: Revision) {
           group-hover/rev:[text-decoration-color:rgb(var(--through-line))]
           group-focus-visible/rev:[text-decoration-color:rgb(var(--through-line))]
           group-data-[held]/rev:[text-decoration-color:rgb(var(--through-line))]
-          lg:text-graphite/45
         "
       >
         {struck}
@@ -91,7 +90,7 @@ export function Revised({ struck, now, until }: Revision) {
       <span
         className="
           ml-1.5 whitespace-nowrap font-mono text-[0.5625rem] uppercase tracking-[0.16em]
-          text-through-line/75 lg:text-through-line/45
+          text-through-line
           motion-safe:transition-colors motion-safe:duration-300
           group-hover/rev:text-through-line
           group-focus-visible/rev:text-through-line
