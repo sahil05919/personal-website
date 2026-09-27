@@ -376,7 +376,7 @@ export function ProjectsChapter() {
               reader hit a wall — and it is the platform dependency worth
               designing out later by hosting the artefacts on this domain. */}
           <p className="mt-8 font-mono text-[11px] leading-[1.7] tracking-[0.06em] text-graphite">
-            Linked items open on LinkedIn.
+            Linked items open on LinkedIn, which may ask you to sign in.
           </p>
         </section>
       </section>

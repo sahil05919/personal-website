@@ -43,6 +43,9 @@ export const personSchema = {
     addressLocality: 'London',
     addressCountry: 'GB',
   },
+  // The direction the record leads with (Now, Contact) and the tools named in
+  // Experience. Added Sept 2026 when Sahil made people analytics the lead.
+  knowsAbout: ['People analytics', 'Power BI', 'Excel', 'SQL'],
   knowsLanguage: ['en', 'hi'],
   alumniOf: {
     '@type': 'CollegeOrUniversity',

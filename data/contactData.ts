@@ -174,7 +174,7 @@ export const contactContent: ContactContent = {
   groups: [
     {
       eyebrow: 'For work',
-      line: 'An opportunity, a project, or something worth building together. Email reaches me first and I read all of it.',
+      line: "I'm looking for people analytics work — where the question is about people and the tool is Power BI. An opportunity, a project, or something worth building together: email reaches me first and I read all of it.",
       channels: [
         {
           mark: 'email',

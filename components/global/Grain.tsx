@@ -44,7 +44,7 @@ export function Grain() {
         className="pointer-events-none fixed inset-0 z-[39]"
         style={{
           backgroundImage:
-            "radial-gradient(120% 90% at 8% -10%, rgb(var(--ink) / 0.028) 0%, transparent 55%)",
+            "radial-gradient(120% 90% at 8% -10%, rgb(var(--ink) / var(--vignette, 0.028)) 0%, transparent 55%)",
         }}
       />
     </>

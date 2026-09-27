@@ -41,13 +41,10 @@ import { useVariant } from '@/hooks/use-reading-mode';
 interface CurrentlyProps {
   /** One line, lifted verbatim from the Now data source. Keep it short. */
   line: string;
-  /** The Now page's own last-updated stamp. Never hand-set here. */
-  updated: string;
 }
 
-export default function Currently({ line, updated }: CurrentlyProps) {
+export default function Currently({ line }: CurrentlyProps) {
   const currentlyLabel = useVariant('Currently', chromeHi.currently);
-  const updatedLabel = useVariant('Updated', chromeHi.updated);
 
   return (
     <section aria-label="Currently" className="bg-paper text-ink">
@@ -69,10 +66,6 @@ export default function Currently({ line, updated }: CurrentlyProps) {
           >
             What I&apos;m doing now
           </Link>
-          <span className="mx-2 text-hairline" aria-hidden="true">
-            /
-          </span>
-          {updatedLabel} {updated}
         </p>
       </Column>
     </section>

@@ -21,7 +21,7 @@ import { pageMetadata } from '@/lib/seo';
 
 import { homeContent } from '@/data/homeContent';
 import { personSchema } from '@/lib/person-schema';
-import { lastUpdated, seasonLine } from './now/now-content';
+import { seasonLine } from './now/now-content';
 
 import Frontispiece from '@/components/home/Frontispiece';
 import Statement from '@/components/home/Statement';
@@ -57,7 +57,7 @@ export default function HomePage() {
       <Frontispiece />
       <Statement />
       <Contents />
-      <Currently line={seasonLine} updated={lastUpdated} />
+      <Currently line={seasonLine} />
       <Colophon />
     </>
   );

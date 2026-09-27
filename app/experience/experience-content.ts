@@ -318,18 +318,21 @@ export const entries: ExperienceEntry[] = [
     title: "Once a week",
     tier: "turn",
     year: "2025–present",
-    organisation: "St Luke's",
+    // Two separate things, not one. St Luke's is helping people with
+    // technology; the baby bank is its own volunteering. Sahil, Sept 2026.
+    organisation: "St Luke's & a baby bank",
     place: "London",
     gloss: "In that room, none of the rest of it is worth mentioning.",
     body: [
-      "I started volunteering during my first year here because I did not want to live in London only as a student, and I have gone once a week since.",
-      "The baby bank supports families with young children who need help getting hold of things. Different families each week, different volunteers, a room that is busy without ever being frantic. What I do is welcome people, explain how it works, sort donated clothes and essentials, and put care packages together.",
+      "I started volunteering during my first year here because I did not want to live in London only as a student. It became two separate things, each once a week.",
+      "At St Luke's Community Centre I help people with technology — mostly sitting beside someone while they work out what a form is asking them for.",
+      "The baby bank is separate. It supports families with young children who need help getting hold of things. Different families each week, different volunteers, a room that is busy without ever being frantic. What I do is welcome people, explain how it works, sort donated clothes and essentials, and put care packages together.",
       "I also look after the stationery, which means helping the children choose theirs. That is my favourite part of the week and I have never entirely been able to explain why.",
       "None of it is complicated. It is a large number of small acts that make somebody's week slightly easier, done by people who mostly do not know each other's names.",
       "Nobody there knows what I studied or where I work the rest of the time. To them I am another volunteer who turns up on the same day. I like that more than I expected to. In that room, none of the rest of it is worth mentioning.",
     ],
     attribution:
-      "St Luke's Community Centre & Children's Baby Bank, London, 2025–present.",
+      "St Luke's Community Centre, and Children's Baby Bank, London, 2025–present.",
   },
   {
     // Sits after St Luke's despite starting earlier. Middlesex came through
@@ -364,9 +367,12 @@ export const entries: ExperienceEntry[] = [
       "This came through Unitemps as well, which is the tidiest thing about it — a contract with an end date on it at the end of two years of week-to-week ones, by the same route.",
       "Accounts payable. Invoices through Oracle, coded correctly, discrepancies chased down, the payment queue kept moving. Fifty to seventy invoices on an ordinary day, more when it backs up.",
       "It is repetitive and it has to be right. An invoice that is wrong becomes somebody else's problem further down the line, usually a supplier waiting to be paid, so the accuracy is not abstract. I find that I like it.",
-      // Was "I have been here four months" — true in August, false by
-      // September. Anchored to the start month instead so it cannot go stale.
-      "I have already caught myself looking at parts of the process and wondering what could be simpler. I am not doing anything about it yet. It seems obvious that you have to understand a system properly before you start improving it, and I have only been here since April.",
+      // Until September 2026 this said "I am not doing anything about it yet".
+      // Sahil confirmed the CV is the true version: the sign-off workflow and
+      // the ageing dashboards exist. Keep this paragraph and the CV's Middlesex
+      // bullets saying the same thing.
+      "For the first few months I only watched the process, because it seemed obvious that you have to understand a system properly before you start improving it. Then I found a gap in how supplier accounts were being set up, the place where verification kept backing up. I designed a weekly sign-off by a manager to close it, and the team adopted it.",
+      "I also built Power BI dashboards that track invoice ageing and what is still outstanding. The team uses them to decide which overdue payments to deal with first.",
     ],
     attribution: "Middlesex University, London, 2026–present.",
   },

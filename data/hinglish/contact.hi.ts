@@ -35,7 +35,7 @@ export const contactContentHi: ContactContent = {
   groups: [
     {
       eyebrow: 'Kaam ke liye',
-      line: 'Koi mauka, koi project, ya aisi cheez jo milkar banaane laayak ho. Email mujhe sabse pehle milti hai aur main saari padhta hoon.',
+      line: 'Main people analytics ka kaam dhoondh raha hoon — jahaan sawaal logon ke baare mein ho aur tool Power BI ho. Koi mauka, koi project, ya aisi cheez jo milkar banaane laayak ho: email mujhe sabse pehle milti hai aur main saari padhta hoon.',
       channels: [
         {
           mark: 'email',

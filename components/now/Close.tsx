@@ -32,7 +32,7 @@ export function Close() {
   return (
     <Leaf className="px-6 pb-28 pt-20 md:px-10 md:pb-36 md:pt-28">
       <div className="mx-auto w-full max-w-[62rem]">
-        <LeafRow note={<MarginNote>{copy.date}</MarginNote>}>
+        <LeafRow>
           <div>
             <p className="max-w-[46rem] font-serif-display text-[2rem] font-normal leading-[1.1] tracking-[-0.03em] text-ink md:text-[3rem] lg:text-[3.5rem]">
               {copy.line}
@@ -56,9 +56,11 @@ export function Close() {
                     <span className="block font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-ink">
                       {stamp.name}
                     </span>
-                    <span className="mt-1 block font-mono text-[0.5625rem] uppercase tracking-[0.14em] text-graphite">
-                      {stamp.stamped}
-                    </span>
+                    {stamp.stamped ? (
+                      <span className="mt-1 block font-mono text-[0.5625rem] uppercase tracking-[0.14em] text-graphite">
+                        {stamp.stamped}
+                      </span>
+                    ) : null}
                   </>
                 );
 

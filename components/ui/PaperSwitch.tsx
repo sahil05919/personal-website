@@ -56,8 +56,8 @@ const PAPERS: Paper[] = [
   {
     id: "light",
     name: "Paper",
-    blurb: "Warm, uncoated",
-    ground: "#F7F5F0",
+    blurb: "Plain white",
+    ground: "#FFFFFF",
     ink: "#181715",
     accent: "#1D4AC7",
   },

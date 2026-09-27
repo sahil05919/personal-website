@@ -46,9 +46,6 @@ export function Stamp() {
             </h1>
 
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <p className="now-stamp inline-block border-y border-through-line/40 px-3 py-1.5 font-mono text-[0.625rem] uppercase tracking-[0.22em] text-through-line">
-                {copy.stamp}
-              </p>
               <p className="font-mono text-[0.625rem] uppercase tracking-[0.18em] text-graphite">
                 {revisionCount} crossings-out kept
               </p>

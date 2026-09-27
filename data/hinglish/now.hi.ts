@@ -45,7 +45,6 @@ import { publishedForNow } from '@/data/writingData';
  */
 export const seasonHi = {
   name: 'Summer 2026',
-  stamp: 'True on 16 August 2026',
   entryNo: 'Entry 01',
 };
 
@@ -115,7 +114,7 @@ export const workHi = {
 
   unfinished: {
     // Dated apparatus, set in mono at the head of the errata slip.
-    note: 'Unfinished on this site, 27 September 2026',
+    note: 'Unfinished on this site',
     items: [
       '/projects par abhi kuch bhi people analytics nahi hai',
       '/questions par chhah sawaal likhe hi nahi gaye',
@@ -274,7 +273,6 @@ export const exploringHi = {
 
 export const closeHi = {
   line: 'Yeh season guzar jaayega.',
-  date: '16 August 2026',
   cadence:
     'Yeh page waise badalta hai jaise zindagi badalti hai — koi fixed schedule nahi, bas jab season badal jaata hai.',
 };
@@ -284,6 +282,6 @@ export const archiveHi = {
   promise:
     'Jab yeh dobara likha jaayega, yeh entry rahegi. Neeche ke stamps se aap iske paas wapas aa sakte hain.',
   stamps: [
-    { name: 'Summer 2026', stamped: '16 Aug 2026', current: true },
+    { name: 'Summer 2026', current: true },
   ] as SeasonStamp[],
 };

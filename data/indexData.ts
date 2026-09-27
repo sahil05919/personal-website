@@ -88,6 +88,7 @@ export const indexEntries: IndexEntry[] = [
      cannot find is the exact failure this file's header calls worse than no
      index at all, and it would have been the first thing on the errata leaf.
      Restore it when the analysis exists and is an essay. */
+  { term: 'Baby bank', refs: [EXPERIENCE] },
   { term: 'Bayes Business School', refs: [JOURNEY, PROJECTS, EXPERIENCE] },
   { term: 'Bhagavad Gita', refs: [NOW] },
   { term: 'Brighton', refs: [MEDIA, NOW] },
@@ -135,12 +136,13 @@ export const indexEntries: IndexEntry[] = [
   { term: 'Oracle', refs: [EXPERIENCE] },
   { term: 'Oxford', refs: [MEDIA, NOW] },
   { term: 'Pooja Saree Centre', refs: [EXPERIENCE] },
-  { term: 'Power BI', refs: [NOW, PROJECTS] },
+  { term: 'People analytics', refs: [NOW, CONTACT] },
+  { term: 'Power BI', refs: [NOW, PROJECTS, EXPERIENCE] },
   { term: 'Punjabi songs', refs: [ABOUT] },
   { term: 'Rauha', refs: [EXPERIENCE] },
   { term: 'Residual', note: 'the 1.5 that would not close', refs: [PROJECTS] },
   { term: 'Rewriting', note: 'and what is kept', refs: [NOW, ERRATA] },
-  { term: 'St Luke’s Community Centre', refs: [NOW] },
+  { term: 'St Luke’s Community Centre', refs: [NOW, EXPERIENCE] },
   { term: 'Seven Sisters', refs: [NOW] },
   { term: 'SolutionTech', refs: [EXPERIENCE] },
   { term: 'Unitemps', refs: [EXPERIENCE] },

@@ -10,8 +10,10 @@
 // Edit this file when the season shifts. Nothing here touches layout. Adding a
 // paragraph, a revision, a fragment or a place re-renders correctly.
 //
-// ALWAYS update `season.stamp` in the same commit. It is hand-set on purpose:
-// a build-derived date would silently refresh every time an unrelated page
+// No "true on" / "updated" date is shown any more (removed Sept 2026 at
+// Sahil's request: a visible day-date read as stale within weeks and confused
+// visitors). The season name is the entry's only date. Do not add a
+// build-derived date either — it would refresh whenever an unrelated page
 // changed, which is the one lie this page cannot afford to tell.
 //
 // ---------------------------------------------------------------------------
@@ -98,8 +100,6 @@ export function countRevisions(paragraphs: Paragraph[][]): number {
 export const season = {
   /** The <h1>. The season is the identity of the entry — "Now" is navigation. */
   name: 'Summer 2026',
-  /** Present tense on purpose. Not "updated" — "true on". */
-  stamp: 'True on 16 August 2026',
   /** Increments with each new entry. Entry 01 is the first kept season. */
   entryNo: 'Entry 01',
 } as const;
@@ -193,7 +193,7 @@ export const work = {
    * publish the thing you would normally quietly delete.
    */
   unfinished: {
-    note: 'Unfinished on this site, 27 September 2026',
+    note: 'Unfinished on this site',
     items: [
       // "the CV still opens on the old description of me" was here until
       // 27 September 2026. The PDF was replaced on 17 August (see /errata),
@@ -457,7 +457,6 @@ export const exploring = {
 
 export const close = {
   line: 'This season will pass.',
-  date: '16 August 2026',
   /** Kept word for word. The best sentence the old page had. */
   cadence:
     'This page changes as life does — no fixed schedule, just whenever the season shifts.',
@@ -471,7 +470,7 @@ export const close = {
  */
 export interface SeasonStamp {
   name: string;
-  stamped: string;
+  stamped?: string;
   href?: string;
   current?: boolean;
 }
@@ -481,7 +480,7 @@ export const archive = {
   promise:
     'When this is rewritten, this entry stays. The stamps below are how you get back to it.',
   stamps: [
-    { name: 'Summer 2026', stamped: '16 Aug 2026', current: true },
+    { name: 'Summer 2026', current: true },
   ] as SeasonStamp[],
 } as const;
 
@@ -496,7 +495,7 @@ export const revisionCount = countRevisions([
 /* -------------------------------------------------------------------------- */
 
 /**
- * app/page.tsx renders <Currently line={seasonLine} updated={lastUpdated} />.
+ * app/page.tsx renders <Currently line={seasonLine} />.
  *
  * The season is written in exactly one place — the page that owns it — and
  * Home follows automatically. Do not duplicate either value into
@@ -506,7 +505,6 @@ export const revisionCount = countRevisions([
  * must survive being read entirely on its own, out of context, above a
  * colophon. Keep it to one sentence and keep it perishable.
  */
-export const lastUpdated = close.date;
 
 export const seasonLine =
-  'A second London summer: Accounts Payable at Middlesex, a direction finally chosen, and this site being rebuilt underneath itself.';
+  'A second London summer: Accounts Payable at Middlesex, a direction finally chosen in people analytics, and this site being rebuilt underneath itself.';

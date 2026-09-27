@@ -311,9 +311,9 @@ export const projectEntries: ProjectEntry[] = [
     table: {
       columns: ["Year", "Reported", "Reconstructed", "Residual", ""],
       rows: [
-        ["2021", "12.1", "12.0", "−0.10", "Methodology updates"],
+        ["2021", "12.1", "12.0", "−0.1", "Methodology updates"],
         ["2022", "11.4", "11.4", "0.0", "Portfolio-driven changes"],
-        ["2023", "11.6", "11.5", "−0.06", "Small rise despite incentives"],
+        ["2023", "11.6", "11.5", "−0.1", "Small rise despite incentives"],
         ["2024", "11.0", "12.5", "+1.5", "Unreconciled"],
       ],
       emphasisRow: 3,
