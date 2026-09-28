@@ -1,3 +1,5 @@
+import { writing } from '@/data/writingData';
+
 /**
  * PageMark — eight marks, one per destination.
  *
@@ -61,9 +63,7 @@ function Mark({ children }: { children: React.ReactNode }) {
 
 /**
  * Keyed by route, not by label — `data/navigation.ts` owns the labels and they
- * are allowed to change wording without silently dropping a mark. The route
- * is `/questions`; see
- * the note in navigation.ts.
+ * are allowed to change wording without silently dropping a mark.
  */
 export function PageMark({ href }: { href: string }) {
   switch (href) {
@@ -144,22 +144,32 @@ export function PageMark({ href }: { href: string }) {
         </Mark>
       );
 
-    /* Questions — one answered, six not. This is not a metaphor: the page
-       currently holds one written answer and six questions still open, and
-       the mark counts them. If that changes, this mark becomes false and
-       should be redrawn — the same contract Fig. 01's caption carries. */
-    case '/questions':
+    /* Writing — the offprints. One full-strength rule per published piece,
+       each as long as that piece's title is relative to the longest, so the
+       mark is the list at 32px. It is drawn from data/writingData.ts rather
+       than by hand: a sixth piece adds a sixth rule, and the mark cannot go
+       false the way a hand count can. Each rule is drawn whole — none of
+       Questions' short, faded answer lines — because every one of these got
+       to the end; at Media's 0.65 weight, because five hairlines 3.5px apart
+       read heavier than any single mark in the column.
+       (Questions' mark went with it to the back matter in September 2026.) */
+    case '/writing': {
+      const pieces = writing;
+      const longest = Math.max(...pieces.map((p) => p.title.length));
+      const gap = 14 / Math.max(pieces.length - 1, 1);
       return (
         <Mark>
-          <path {...STROKE} d="M2 3 H30" />
-          <path {...STROKE} d="M2 7 H12" strokeOpacity={0.4} />
-          <path {...STROKE} d="M16 7 H24" strokeOpacity={0.4} />
-          <path {...STROKE} d="M2 11 H10" strokeOpacity={0.4} />
-          <path {...STROKE} d="M14 11 H26" strokeOpacity={0.4} />
-          <path {...STROKE} d="M2 15 H14" strokeOpacity={0.4} />
-          <path {...STROKE} d="M18 15 H28" strokeOpacity={0.4} />
+          {pieces.map((piece, i) => (
+            <path
+              key={piece.href}
+              {...STROKE}
+              strokeOpacity={0.65}
+              d={`M2 ${3 + i * gap} H${Math.round(10 + (20 * piece.title.length) / longest)}`}
+            />
+          ))}
         </Mark>
       );
+    }
 
     /* Contact — ruled letterhead. Full-width rules, each with a short ink tick
        at its left end: exactly the motif Imprint sets the channels on, where

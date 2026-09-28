@@ -37,7 +37,8 @@ export const homeContentHi = {
     '/experience': 'Zyadatar maine chuna nahi tha.',
     '/media': 'Haazir hone ka saboot, portfolio nahi.',
     '/about': 'Patterns, ghatnaayein nahi.',
-    '/questions': 'Agar humein ek ghanta aur mil jaata.',
+    // backmatter.hi.ts → writingIntroHi.standfirst
+    '/writing': 'Woh tukde jo poore hue, aur kahin aur chhape.',
     /* Deliberately empty in both readings — Now's opening line IS the season
        line, and the Currently strip below already carries it verbatim. */
     '/now': '',

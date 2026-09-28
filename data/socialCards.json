@@ -1,5 +1,5 @@
 {
-  "_comment": "The share cards. One per chapter, plus the title page. Read by lib/seo.ts (which card a route gets, and its alt text) and by scripts/og-cards/render.mjs (what gets drawn). Every `title` is the page's own h1 or chapter name, and every `line` is quoted from the page itself — nothing here is written for the card. Change a page's opening words, change them here, then re-run the script. Routes with no entry (/writing, /errata, /a-z, /_not-found) get the title page.",
+  "_comment": "The share cards. One per chapter, plus the title page. Read by lib/seo.ts (which card a route gets, and its alt text) and by scripts/og-cards/render.mjs (what gets drawn). Every `title` is the page's own h1 or chapter name, and every `line` is quoted from the page itself — nothing here is written for the card. Change a page's opening words, change them here, then re-run the script. Questions is back matter, so its card carries no number. Routes with no entry (/errata, /a-z, /_not-found) get the title page.",
   "cards": [
     {
       "path": "/",
@@ -65,13 +65,13 @@
       "alt": "Chapter 06, Media, set in Fraunces on white paper, above the line 'Proof of presence, not a portfolio.'"
     },
     {
-      "path": "/questions",
-      "file": "questions",
+      "path": "/writing",
+      "file": "writing",
       "number": "07",
-      "chapter": "Questions",
-      "title": "Questions",
-      "line": "If we had another hour together, these are probably the questions we'd eventually get to.",
-      "alt": "Chapter 07, Questions, set in Fraunces on white paper, above the line 'If we had another hour together, these are probably the questions we'd eventually get to.'"
+      "chapter": "Writing",
+      "title": "Writing",
+      "line": "The pieces that were finished, and published elsewhere.",
+      "alt": "Chapter 07, Writing, set in Fraunces on white paper, above the line 'The pieces that were finished, and published elsewhere.'"
     },
     {
       "path": "/contact",
@@ -81,6 +81,15 @@
       "title": "Write back.",
       "line": "You've reached the end of the record.",
       "alt": "Chapter 08, Contact: 'Write back.' set in Fraunces on white paper, above the line 'You've reached the end of the record.'"
+    },
+    {
+      "path": "/questions",
+      "file": "questions",
+      "number": "",
+      "chapter": "",
+      "title": "Questions",
+      "line": "If we had another hour together, these are probably the questions we'd eventually get to.",
+      "alt": "'Questions' set in Fraunces on white paper, above the line 'If we had another hour together, these are probably the questions we'd eventually get to.'"
     }
   ]
 }

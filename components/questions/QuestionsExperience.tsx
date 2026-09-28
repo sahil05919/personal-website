@@ -59,7 +59,8 @@ export default function QuestionsExperience({ questions, intro, closing }: Props
         The page used to open on a visually hidden <h1> and roughly three
         hundred pixels of empty paper, then an italic sentence floating in the
         middle of the screen. The titlelessness was deliberate and the instinct
-        behind it was right — this page is a held page, not a chapter — but the
+        behind it was right — this page is a held page, not a chapter (and since
+        September 2026 it is literally back matter, beside Index and Errata) — but the
         result on arrival was indistinguishable from a page that had failed to
         load its heading.
 

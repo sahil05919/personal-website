@@ -76,7 +76,7 @@ const CV_HREF = `/documents/${contactInfo.resume.fileName}`;
  *  find the Index page that exists to save them scrolling a whole chapter. */
 const BACK_MATTER = [
   { href: "/a-z", label: "Index" },
-  { href: "/writing", label: "Writing" },
+  { href: "/questions", label: "Questions" },
   { href: "/errata", label: "Errata" },
 ];
 

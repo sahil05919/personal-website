@@ -19,7 +19,7 @@ import { navigation } from '@/data/navigation';
 import { SITE_URL } from '@/lib/seo';
 
 /** Back matter: reachable, indexable, but not part of the reading order. */
-const BACK_MATTER = ['/a-z', '/writing', '/errata'];
+const BACK_MATTER = ['/a-z', '/questions', '/errata'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const chapters = navigation.map((item) => ({

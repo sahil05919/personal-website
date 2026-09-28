@@ -69,7 +69,7 @@ const TITLE_SUFFIX = 'Sahil Kumar';
  *
  * `cardFor` is keyed by the same `path` every page already passes to
  * `pageMetadata`, so no page has to remember which card is its own. A route
- * with no card of its own (/writing, /errata, /a-z) gets the title page.
+ * with no card of its own (/errata, /a-z) gets the title page.
  */
 interface CardEntry {
   path: string;

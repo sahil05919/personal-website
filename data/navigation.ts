@@ -10,6 +10,12 @@
  * If the order needs to change, change it here and it changes everywhere.
  * Do not re-declare a list of pages in a component.
  *
+ * September 2026: Writing took chapter 07 and Questions moved to the back
+ * matter. Writing holds five finished, published pieces; Questions holds one
+ * answer and six open questions, and its own masthead already called it "a
+ * held page, not a chapter". A reader in the sequence gets more from the
+ * first. Nothing else in the order moved.
+ *
  * The route and the label now agree: `/questions`, "Questions". They did not
  * for a long time — the directory was `app/question` and the page called
  * itself Questions, so every link, index entry and errata reference had to
@@ -49,7 +55,7 @@ export const navigation: Destination[] = [
   { href: '/projects', label: 'Projects' },
   { href: '/experience', label: 'Experience' },
   { href: '/media', label: 'Media' },
-  { href: '/questions', label: 'Questions' },
+  { href: '/writing', label: 'Writing' },
   { href: '/contact', label: 'Contact' },
 ];
 

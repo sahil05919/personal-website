@@ -65,7 +65,7 @@ const chapters: SearchRecord[] = destinations.map((d) => ({
 
 const backMatter: SearchRecord[] = [
   { title: "Index", context: "Back matter", kind: "Chapter", href: "/a-z" },
-  { title: "Writing", context: "Back matter", kind: "Chapter", href: "/writing" },
+  { title: "Questions", context: "Back matter", kind: "Chapter", href: "/questions" },
   { title: "Errata", context: "Back matter", kind: "Chapter", href: "/errata" },
 ];
 

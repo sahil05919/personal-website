@@ -91,10 +91,10 @@ export default function Colophon() {
               </li>
               <li>
                 <Link
-                  href="/writing"
+                  href="/questions"
                   className="inline-flex min-h-11 items-center transition-colors duration-300 ease-editorial hover:text-through-line"
                 >
-                  Writing
+                  Questions
                 </Link>
               </li>
               <li>

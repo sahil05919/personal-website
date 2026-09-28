@@ -15,7 +15,9 @@ import { writing, writingIntro } from '@/data/writingData';
 import { writingIntroHi } from '@/data/hinglish';
 import { useVariant } from '@/hooks/use-reading-mode';
 /**
- * Writing — back matter, beside the index and the errata leaf.
+ * Writing — chapter 07 since September 2026. It was back matter, beside the
+ * index and the errata leaf, and swapped places with Questions (see
+ * data/navigation.ts).
  *
  * The Now page's own list of what is unfinished on this site had "/writing does
  * not exist yet" on it since 10 August. It exists now, and that line has been
@@ -36,9 +38,9 @@ import { useVariant } from '@/hooks/use-reading-mode';
  * Every link leaves the site, which is stated once at the top rather than
  * five times in five little icons.
  *
- * NOT IN THE NAVIGATION, for the same reason /a-z and /errata are not: the book
- * is nine chapters and this is back matter. It sits in the imprint at the foot
- * of every page, with the other two.
+ * IN THE NAVIGATION as chapter 07, so it gets the running-head folio, the
+ * fore-edge rail and a PageTurn to Contact from the shared chrome — nothing
+ * here renders those itself.
  *
  * Server component. No motion, no reveal-on-scroll — the page is five links and
  * it should be usable the instant it paints.

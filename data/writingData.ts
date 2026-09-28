@@ -52,7 +52,11 @@ export interface WritingPiece {
 }
 
 export const writingIntro = {
-  eyebrow: 'Back matter',
+  /** An offprint is the copy of an article an author keeps when the piece
+   *  itself was published in someone else's pages — which is exactly what
+   *  every item on this page is. It replaced 'Back matter' when Writing
+   *  became chapter 07. */
+  eyebrow: 'Offprints',
   title: 'Writing',
   standfirst: 'The pieces that were finished, and published elsewhere.',
   body: [

@@ -22,7 +22,7 @@
  */
 
 export const writingIntroHi = {
-  eyebrow: 'Pichhla hissa',
+  eyebrow: 'Offprints',
   title: 'Likhaai',
   standfirst: 'Woh tukde jo poore hue, aur kahin aur chhape.',
   body: [

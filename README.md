@@ -2,7 +2,7 @@
 
 The source of Sahil Kumar's personal website — a record kept in London, set out
 as a short book: nine chapters (Home, About, Journey, Now, Projects, Experience,
-Media, Questions, Contact) and three pages of back matter (Index, Writing,
+Media, Writing, Contact) and three pages of back matter (Index, Questions,
 Errata).
 
 ## Stack
