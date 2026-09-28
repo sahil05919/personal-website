@@ -97,9 +97,9 @@ export const homeContent = {
     // twice on one page would be the duplication this file exists to prevent.
     '/now': '',
 
-    // components/contact/ContactHero.tsx → the hero's opening sentence
-    '/contact':
-      "Everything before this page has been about how I think and what I've built.",
+    // data/contactData.ts → contactContent.hero.body[0], first sentence.
+    // (It quoted a hero sentence Contact no longer has until Sept 2026.)
+    '/contact': "You've reached the end of the record.",
   } as Record<string, string>,
 
   /**

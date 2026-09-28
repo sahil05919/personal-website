@@ -41,8 +41,8 @@ export const homeContentHi = {
     /* Deliberately empty in both readings — Now's opening line IS the season
        line, and the Currently strip below already carries it verbatim. */
     '/now': '',
-    '/contact':
-      'Is page se pehle sab kuch is baare mein tha ki main kaise sochta hoon aur maine kya banaya hai.',
+    // contact.hi.ts → hero.body[0], first sentence.
+    '/contact': 'Aap record ke aakhir tak pahunch gaye.',
   } as Record<string, string>,
 
   colophon: {
