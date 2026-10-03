@@ -265,7 +265,7 @@ export function ProjectsChapter() {
         <div className="mx-auto w-full max-w-[64ch] pb-8 lg:hidden">
           <GlanceContents
             heading={chapter.glanceHeading}
-            note="Five, and the last one is the one I would read."
+            note="Six, and the last one is the one I would read."
             items={glanceItems}
             // These titles run long enough that some rows fit their
             // attribution inline and some don't. Below, always.

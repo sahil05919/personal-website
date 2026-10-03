@@ -77,6 +77,18 @@ export interface ProjectTable {
    *  callout. */
   emphasisRow?: number;
   note?: string;
+  /** Table only, no chart above it. The chart is Equinor's reported-versus-
+   *  reconstructed plot and means nothing for any other table. */
+  plain?: boolean;
+  /** Accessible name for the scrolling wrapper. Defaults to the Equinor one. */
+  ariaLabel?: string;
+}
+
+/** A file the reader can take away — the work itself, not a picture of it.
+ *  Set under the attribution as apparatus, never above the prose. */
+export interface ProjectDownload {
+  href: string;
+  label: string;
 }
 
 /**
@@ -115,19 +127,88 @@ export interface ProjectEntry {
   /** Zero-based paragraph index after which the figure is inserted. */
   mediaAfterParagraph?: number;
   evidenceMark?: EvidenceMark;
+  download?: ProjectDownload;
 }
 
 /**
  * ORDER IS LOAD-BEARING.
- *   1. "A place to stand" opens — smallest stake, plainest language, the only
- *      project nobody assigned.
- *   2. "The year that did both jobs" closes — most recent, entirely
+ *   1. "The other door" opens (October 2026) — Sahil's call: his own people-
+ *      analytics project, and the direction the work is going, so it leads
+ *      the chapter rather than waiting behind five older pieces. Its first
+ *      line is about recruitment, which is where /experience leaves off.
+ *   2. "A place to stand" follows — smallest stake, plainest language, and
+ *      the second project nobody assigned.
+ *   3. "The year that did both jobs" closes — most recent, entirely
  *      individual, ends unresolved, hands off cleanly to /now.
- *   3. "Understanding behaviour through data" sits immediately before Equinor.
+ *   4. "Understanding behaviour through data" sits immediately before Equinor.
  *      Its closing question is the question Equinor asks of a company's
  *      published accounts. Same dependency as Oxford→Cambridge on /media.
  */
 export const projectEntries: ProjectEntry[] = [
+  {
+    id: "other-door",
+    title: "The other door",
+    attribution:
+      "Built for myself, on the Huebner & Patalano HR dataset, 2026.",
+    // Opens cold on recruitment, the way Equinor opens cold on its own
+    // number. No pull-quote: the chapter's three are spent (USS ×2, Equinor)
+    // and a fourth would make them a device. The evidence mark carries the
+    // finding instead.
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "Every number I watched in recruitment stopped on the day someone joined.",
+      "Funnel stages, time-to-hire, how close we were to filling a role. I studied HR, I worked in it for three years, and I loved it — but the part of it I knew best was the way in. This project was the first time I looked properly at the way out.",
+      // Fictional company: the Huebner & Patalano set is a teaching dataset.
+      // 311 rows, 104 with a termination date.
+      "The dataset is a public one, made for teaching: a little over three hundred employees of a company that doesn't exist, with when they were hired, when they left if they did, why, which department, who managed them and where they were recruited from. A hundred and four of them had gone.",
+      "I built it in Power BI as four pages, each answering one question — what the workforce looks like, where attrition is happening, what stands out on pay, and where to look more closely. What I wanted out of it was simpler than any of those. I wanted a description of the people who leave.",
+      // Production: 83 of 104 leavers. TermReason: another position 20,
+      // unhappy 14, more money 11.
+      "The profile came out more specific than I expected. Most of the leavers were in Production — eighty-three of the hundred and four. The commonest reason given was another job, then being unhappy, then money. And the sharpest pattern was in where they had come from.",
+      "That one stayed with me. Where to look for candidates is a choice a recruiter makes every week, and sourcing was a large part of my job. Here was the same choice, seen from the other end.",
+      // Risk Score Base > 0 on 40 of 207 current employees.
+      "The last page is a watchlist: current employees, scored on the things that went with leaving — a short time in the job, and having come in through Google Search. Forty people score above zero.",
+      // Leavers' tenure at exit: 61 of 104 had three years or more.
+      "I'm less sure of that page than of the others. Length of service is measured at the exit for the people who left and at the end of the data for those who stayed, so the newest starters look riskier partly by construction. And most of the people who actually left had been there three years or more. The score points at the first year; the leavers mostly didn't go then.",
+      "So the watchlist is a place to start looking, not a verdict. A list of names is the easiest thing in a dashboard to act on, and the one that most needs a caveat underneath it.",
+      "It's the project I'm happiest with. It's the first one that is entirely about people, which is where I want my work to be, and I learned a great deal building it — most of all from the one page I trust least.",
+    ],
+    // Lifted from the end of paragraph 4, where it followed "where they had
+    // come from". The finding itself, so a fast reader meets it without the
+    // table.
+    evidenceMark: {
+      insertAfter: 4,
+      lines: [
+        "Of the forty-nine people hired through Google Search, thirty left.",
+        "Of the thirty-one who came through an employee referral, five did.",
+      ],
+    },
+    mediaAfterParagraph: 5,
+    // Recomputed from the .pbix's own model, not typed from memory. Sources
+    // with fewer than ten hires (Other: 2, On-line Web application: 1) left
+    // out — a 100% rate on one person is not a row worth reading.
+    table: {
+      columns: ["Recruitment source", "Hired", "Left", "Left %"],
+      rows: [
+        ["Google Search", "49", "30", "61%"],
+        ["Diversity Job Fair", "29", "16", "55%"],
+        ["CareerBuilder", "23", "11", "48%"],
+        ["Indeed", "87", "21", "24%"],
+        ["LinkedIn", "76", "18", "24%"],
+        ["Employee Referral", "31", "5", "16%"],
+        ["Website", "13", "1", "8%"],
+      ],
+      emphasisRow: 0,
+      note: "Fictional company, hires 2006–2018. Left % is leavers ÷ everyone hired through that source over the whole period — not an annual rate. Sources with fewer than ten hires not shown.",
+      plain: true,
+      ariaLabel: "Attrition by recruitment source, scrolls sideways on small screens",
+    },
+    download: {
+      href: "/files/HR_People_Analytics_Dashboard.pbix",
+      label: "Download the dashboard · Power BI .pbix · 280 KB",
+    },
+  },
+
   {
     id: "place-to-stand",
     title: "A place to stand",
@@ -370,11 +451,10 @@ export const projectEntries: ProjectEntry[] = [
  * the work is actually going, and seventh of eight is where a reader stops.
  * The six strategy and ML pieces keep their relative order behind them.
  *
- * STILL MISSING, and the real gap: no people-analytics project of Sahil's own
- * exists on this page yet. The HR Analytics Dashboard is coursework. When the
- * attrition/retention analysis is actually built it belongs in `entries` above
- * as a sixth essay, not down here as a line — do not add it to either list
- * before it exists.
+ * NO LONGER MISSING (October 2026): Sahil's own attrition project now exists
+ * and is the first essay above, "The other door". The HR Analytics Dashboard
+ * line below is the older coursework and a different piece of work — left
+ * exactly as it was.
  */
 export interface RecordItem {
   title: string;

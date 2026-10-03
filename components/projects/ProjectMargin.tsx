@@ -9,7 +9,7 @@
  * that used to be empty.
  *
  * Three parts, not all present on every entry:
- *   · a case number (01–05) — apparatus, not decoration; the equivalent of
+ *   · a case number (01–06) — apparatus, not decoration; the equivalent of
  *     Journey's era numeral, but counting case files instead of years.
  *   · a small abstract motif, tied to that entry's actual content the same
  *     way Journey's ChapterArtifact is. Withheld on the interstitial on
@@ -23,18 +23,32 @@
  * values, not a valid SVG paint on their own (same caveat as Journey).
  */
 
-const CASE: Record<string, { number: string; motif?: "dashboard" | "reversal" | "scatter" | "residual" }> = {
-  "place-to-stand": { number: "01", motif: "dashboard" },
-  "wrong-first-question": { number: "02", motif: "reversal" },
-  "looking-properly": { number: "03", motif: "scatter" },
-  "understanding-behaviour": { number: "04" }, // no motif — stays as quiet as the essay itself
-  "did-both-jobs": { number: "05", motif: "residual" },
+const CASE: Record<string, { number: string; motif?: "exits" | "dashboard" | "reversal" | "scatter" | "residual" }> = {
+  "other-door": { number: "01", motif: "exits" },
+  "place-to-stand": { number: "02", motif: "dashboard" },
+  "wrong-first-question": { number: "03", motif: "reversal" },
+  "looking-properly": { number: "04", motif: "scatter" },
+  "understanding-behaviour": { number: "05" }, // no motif — stays as quiet as the essay itself
+  "did-both-jobs": { number: "06", motif: "residual" },
 };
 
 function Motif({ kind }: { kind: NonNullable<(typeof CASE)[string]["motif"]> }) {
   const line = "rgb(var(--through-line))";
 
   switch (kind) {
+    case "exits":
+      // A row of people on one line; two have stepped off it — "the way
+      // out". Abstract on purpose: no count, nothing that reads as a rate.
+      return (
+        <svg viewBox="0 0 56 36" className="h-8 w-14" aria-hidden="true">
+          <line x1="4" y1="14" x2="52" y2="14" stroke={line} strokeWidth="1" opacity="0.3" />
+          <circle cx="8" cy="14" r="2" fill={line} opacity="0.55" />
+          <circle cx="18" cy="14" r="2" fill={line} opacity="0.55" />
+          <circle cx="28" cy="26" r="2" fill={line} opacity="0.85" />
+          <circle cx="38" cy="14" r="2" fill={line} opacity="0.55" />
+          <circle cx="48" cy="28" r="2" fill={line} opacity="0.85" />
+        </svg>
+      );
     case "dashboard":
       // Ledger rows of falling weight, one current-position mark — "a place
       // to stand": not a chart, a settled view.

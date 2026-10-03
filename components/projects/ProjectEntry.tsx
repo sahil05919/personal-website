@@ -352,7 +352,10 @@ function ReconciliationTable({ table }: { table: ProjectTable }) {
         // Scrollable on phones, so it must be reachable by keyboard too.
         tabIndex={0}
         role="region"
-        aria-label="Reconciliation table, scrolls sideways on small screens"
+        aria-label={
+          table.ariaLabel ??
+          "Reconciliation table, scrolls sideways on small screens"
+        }
       >
         <table className="w-full min-w-[540px] border-collapse font-mono text-[13px] tabular-nums">
           <thead>
@@ -419,6 +422,7 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
     table,
     mediaAfterParagraph,
     evidenceMark,
+    download,
   } = entry;
 
   const measure = MEASURE[rhythm.measure];
@@ -444,7 +448,9 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
     )
   ) : table ? (
     <>
-      <ReconciliationChart table={table} />
+      {/* The chart is Equinor's reported-versus-reconstructed plot; a plain
+          table gets the table alone. */}
+      {!table.plain && <ReconciliationChart table={table} />}
       <ReconciliationTable table={table} />
     </>
   ) : null;
@@ -587,6 +593,20 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
         <p className="mt-16 font-mono text-[11px] leading-[1.7] tracking-[0.1em] text-graphite">
           {attribution}
         </p>
+        {/* The work itself, for anyone who wants to open it. Apparatus, so
+            mono and under the credit line — a download button above the
+            prose would turn the essay into a product page. */}
+        {download && (
+          <p className="mt-3 font-mono text-[11px] leading-[1.7] tracking-[0.1em]">
+            <a
+              href={download.href}
+              download
+              className="tap-y text-through-line underline decoration-through-line/40 underline-offset-4 transition-colors hover:decoration-through-line"
+            >
+              {download.label}
+            </a>
+          </p>
+        )}
       </>
 )}
     </article>

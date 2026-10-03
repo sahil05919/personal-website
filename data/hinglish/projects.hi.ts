@@ -27,6 +27,54 @@ import type { ProjectEntry, RecordItem } from '@/data/projectsChapter';
 
 export const projectEntriesHi: ProjectEntry[] = [
   {
+    id: "other-door",
+    title: "Doosra darwaaza",
+    // Apparatus — the citation, table and download stay English (README rule 3).
+    attribution: "Built for myself, on the Huebner & Patalano HR dataset, 2026.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "Recruitment mein jo bhi number main dekhta tha, woh us din ruk jaata tha jis din koi join karta tha.",
+      "Funnel stages, time-to-hire, role bharne se hum kitna door hain. Maine HR padha, teen saal usmein kaam kiya, aur mujhe woh bahut pasand tha — lekin jo hissa main sabse achhe se jaanta tha woh andar aane ka raasta tha. Yeh project pehli baar tha jab maine bahar jaane waale raaste ko dhyaan se dekha.",
+      "Dataset public hai, padhaane ke liye banaya gaya: ek aisi company ke teen sau se thode zyada employees jo exist hi nahi karti — kab hire hue, agar gaye toh kab gaye, kyun, kaunsa department, manager kaun tha, aur kahaan se recruit hue. Unmein se ek sau chaar ja chuke the.",
+      "Maine ise Power BI mein chaar pages mein banaya, har page ek sawaal ka jawaab — workforce kaisi dikhti hai, attrition kahaan ho raha hai, pay mein kya alag dikhta hai, aur kahaan zyada dhyaan se dekhna chahiye. Mujhe isse jo chahiye tha woh inmein se kisi se bhi seedha tha. Mujhe un logon ka ek description chahiye tha jo chhodkar jaate hain.",
+      "Profile meri umeed se zyada specific nikla. Zyaadatar leavers Production mein the — ek sau chaar mein se tirasi. Sabse common reason tha doosri job, phir unhappy hona, phir paisa. Aur sabse saaf pattern yeh tha ki woh aaye kahaan se the.",
+      "Yeh baat mere saath reh gayi. Candidates kahaan dhoondhne hain, yeh choice ek recruiter har hafte karta hai, aur sourcing mere kaam ka bada hissa tha. Yahaan wahi choice thi, doosri taraf se dikhti hui.",
+      "Aakhri page ek watchlist hai: current employees, un cheezon par score kiye gaye jo chhodne ke saath judi thi — job mein kam waqt, aur Google Search se aana. Chaalees log zero se upar score karte hain.",
+      "Us page par mujhe baaki pages se kam bharosa hai. Length of service jaane waalon ke liye exit par naapi jaati hai aur rukne waalon ke liye data ke end par, toh sabse naye log kuch had tak banaawat ki wajah se hi zyada risky dikhte hain. Aur jo log asal mein gaye, unmein se zyaadatar teen saal ya usse zyada se wahaan the. Score pehle saal ki taraf ishaara karta hai; leavers zyaadatar tab nahi gaye.",
+      "Isliye watchlist dekhna shuru karne ki jagah hai, faisla nahi. Naamon ki list dashboard mein sabse aasaan cheez hai jis par action liya jaa sake, aur wahi jiske neeche caveat ki sabse zyada zaroorat hoti hai.",
+      "Yeh woh project hai jisse main sabse zyada khush hoon. Yeh pehla hai jo poori tarah logon ke baare mein hai, jahaan main apna kaam chahta hoon, aur ise banaate hue maine bahut kuch seekha — sabse zyada us ek page se jis par mujhe sabse kam bharosa hai.",
+    ],
+    evidenceMark: {
+      insertAfter: 4,
+      lines: [
+        "Google Search se hire hue unchaas logon mein se tees chale gaye.",
+        "Employee referral se aaye iktees mein se paanch gaye.",
+      ],
+    },
+    mediaAfterParagraph: 5,
+    table: {
+      columns: ["Recruitment source", "Hired", "Left", "Left %"],
+      rows: [
+        ["Google Search", "49", "30", "61%"],
+        ["Diversity Job Fair", "29", "16", "55%"],
+        ["CareerBuilder", "23", "11", "48%"],
+        ["Indeed", "87", "21", "24%"],
+        ["LinkedIn", "76", "18", "24%"],
+        ["Employee Referral", "31", "5", "16%"],
+        ["Website", "13", "1", "8%"],
+      ],
+      emphasisRow: 0,
+      note: "Fictional company, hires 2006–2018. Left % is leavers ÷ everyone hired through that source over the whole period — not an annual rate. Sources with fewer than ten hires not shown.",
+      plain: true,
+      ariaLabel: "Attrition by recruitment source, scrolls sideways on small screens",
+    },
+    download: {
+      href: "/files/HR_People_Analytics_Dashboard.pbix",
+      label: "Download the dashboard · Power BI .pbix · 280 KB",
+    },
+  },
+
+  {
     id: "place-to-stand",
     title: "Khade hone ki ek jagah",
     // Apparatus — the citation is not translated (README rule 3).
