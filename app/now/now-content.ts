@@ -198,7 +198,10 @@ export const work = {
       // "the CV still opens on the old description of me" was here until
       // 27 September 2026. The PDF was replaced on 17 August (see /errata),
       // so by this list's own rule the line goes.
-      'nothing on /projects is people analytics yet',
+      // "nothing on /projects is people analytics yet" was here until
+      // 7 October 2026. /projects now opens on two people-analytics pieces
+      // (The other door, Ten one-day absences), so by this list's own rule
+      // the line goes.
       // "/writing does not exist yet" was here from 10 August. It exists now,
       // so the line goes — this list is what is unfinished TODAY, and leaving a
       // completed item on it to show progress would make every other line
