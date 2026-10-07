@@ -116,7 +116,8 @@ export const workHi = {
     // Dated apparatus, set in mono at the head of the errata slip.
     note: 'Unfinished on this site',
     items: [
-      '/projects par abhi kuch bhi people analytics nahi hai',
+      // '/projects par abhi kuch bhi people analytics nahi hai' removed
+      // 7 October 2026 — mirrors now-content.ts.
       '/questions par chhah sawaal likhe hi nahi gaye',
       'jo adhoora nahi balki galat hai woh /errata par hai',
     ],
