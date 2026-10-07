@@ -136,6 +136,9 @@ export interface ProjectEntry {
  *      analytics project, and the direction the work is going, so it leads
  *      the chapter rather than waiting behind five older pieces. Its first
  *      line is about recruitment, which is where /experience leaves off.
+ *   1a. "Ten one-day absences" sits straight after it (October 2026) — the
+ *      second people-analytics piece, kept beside the first so the two read
+ *      as a pair rather than being split by the older work.
  *   2. "A place to stand" follows — smallest stake, plainest language, and
  *      the second project nobody assigned.
  *   3. "The year that did both jobs" closes — most recent, entirely
@@ -206,6 +209,58 @@ export const projectEntries: ProjectEntry[] = [
     download: {
       href: "/files/HR_People_Analytics_Dashboard.pbix",
       label: "Download the dashboard · Power BI .pbix · 280 KB",
+    },
+  },
+
+  {
+    id: "ten-one-day-absences",
+    title: "Ten one-day absences",
+    attribution:
+      "Built for myself, on the UCI Absenteeism at Work dataset, 2026.",
+    // Written from Sahil's own words in the build session (October 2026) —
+    // the Bradford Factor not landing at first, checking it by hand, walking
+    // back into the sum-vs-average trap, and deciding to stop. Every number
+    // is read from the .pbix; nothing here is something he didn't find.
+    rhythm: { measure: "reading", seam: "normal" },
+    body: [
+      "The second dashboard was supposed to be revision.",
+      "After the attrition project I wanted to do the same things again — clean the data, write the measures, decide what was fair to use — on a question I hadn't asked yet. Absence was the obvious one. The dataset is public: 740 absence records from a courier company in Brazil, July 2007 to July 2010, for thirty-six employees. Each row is one absence: who, when, why, and for how many hours.",
+      "The first answers came quickly. About five thousand hours lost, roughly six hundred and forty working days. March and July were the worst months. Monday carried nearly a third of the hours, and the week got lighter towards Friday. Two reasons — musculoskeletal conditions and injury — made up about a third of everything, in a business where people lift and drive all day. And seven of the thirty-six people accounted for more than half of the hours.",
+      "The new thing was the Bradford Factor, and it didn't make sense to me the first time it was explained. It took a plain comparison before it landed.",
+      "B = S² × D. Spells squared, times days.",
+      "A long absence — an operation, maternity leave — is something a manager can plan cover for. Ten mornings of someone not turning up is not. The squaring is the whole idea: how often counts for far more than how long.",
+      "I worked it through by hand before I trusted the measure. Employee 3 had 113 separate absences and about sixty days off: 113 × 113 × 60.25, roughly 769,000. Employee 1 had 23 absences and about fifteen days: around 8,000. The calculator and the dashboard disagreed in the decimals, which turned out to be rounding on the card. The gap between the two people didn't move.",
+      "The dataset also records whether people drink or smoke, and their BMI. My first chart said drinkers lost far more hours than non-drinkers — because I was adding hours up, and there were simply more drinkers. It was the same trap I had caught on the pay-gap work, and I walked straight back into it. Per person, drinkers still averaged more, smokers averaged less than non-smokers, and BMI turned out to be one or two people per value. None of it made sense as a finding, and on thirty-six people it shouldn't be treated as one. Those charts sit on a page marked exploration only.",
+      "I stopped there. Thirty-six people is a small room, and past a certain point I would only have been practising the buttons. My job in a dashboard like this is to say what is happening, not to decide what to do about it. Here that means four names worth a conversation with their managers, and one measure I now understand.",
+    ],
+    // The comparison that finally made the measure make sense, promoted out
+    // of the space between paragraphs 4 and 5 rather than written new.
+    evidenceMark: {
+      insertAfter: 4,
+      lines: [
+        "Ten one-day absences score far higher than one ten-day absence.",
+      ],
+    },
+    mediaAfterParagraph: 6,
+    // Read from the .pbix's Bradford Factor measure. Employee 1 is included
+    // only for scale — the hand-worked comparison in paragraph 6.
+    table: {
+      columns: ["Employee", "Bradford score"],
+      rows: [
+        ["3", "769,332"],
+        ["28", "250,534"],
+        ["34", "130,075"],
+        ["11", "90,000"],
+        ["1", "8,001"],
+      ],
+      emphasisRow: 0,
+      note: "Score = spells² × days, where days = hours ÷ 8. Calculated over the whole period rather than the usual rolling 52 weeks, because the data has no year field. Employee 1 shown for scale.",
+      plain: true,
+      ariaLabel: "Highest Bradford Factor scores by employee, scrolls sideways on small screens",
+    },
+    download: {
+      href: "/files/Absence_at_Work_Dashboard.pbix",
+      label: "Download the dashboard · Power BI .pbix · 65 KB",
     },
   },
 
