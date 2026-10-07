@@ -75,6 +75,51 @@ export const projectEntriesHi: ProjectEntry[] = [
   },
 
   {
+    id: "ten-one-day-absences",
+    title: "Das ek-din ki chhuttiyaan",
+    // Apparatus — the citation, table and download stay English (README rule 3).
+    attribution:
+      "Built for myself, on the UCI Absenteeism at Work dataset, 2026.",
+    rhythm: { measure: "reading", seam: "normal" },
+    body: [
+      "Doosra dashboard revision ke liye tha.",
+      "Attrition project ke baad main wahi sab dobara karna chahta tha — data saaf karna, measures likhna, decide karna ki kya use karna fair hai — par ek naye sawaal par. Absence sabse seedha sawaal tha. Dataset public hai: Brazil ki ek courier company ke 740 absence records, July 2007 se July 2010 tak, chhattees employees ke. Har row ek absence hai: kaun, kab, kyun, aur kitne ghante.",
+      "Pehle jawaab jaldi aa gaye. Lagbhag paanch hazaar ghante gaye, yaani kareeb chhah sau chaalees working days. March aur July sabse bure mahine the. Monday akele lagbhag ek-tihaai ghante le gaya, aur Friday tak hafta halka hota gaya. Do kaaran — musculoskeletal problems aur injury — milkar sab ka kareeb ek-tihaai the, ek aise business mein jahaan log poora din saamaan uthaate aur gaadi chalaate hain. Aur chhattees mein se saat logon ke hisse aadhe se zyada ghante aaye.",
+      "Nayi cheez thi Bradford Factor, aur pehli baar samjhaane par mujhe samajh nahi aaya. Ek seedhi si tulna ke baad hi baat baithi.",
+      "B = S² × D. Spells ka square, guna days.",
+      "Lambi chhutti — operation, maternity leave — ke liye manager pehle se cover plan kar sakta hai. Das subah koi na aaye, uska plan nahi hota. Square karna hi poora idea hai: kitni baar, kitne lambe se kahin zyada maayne rakhta hai.",
+      "Measure par bharosa karne se pehle maine haath se hisaab lagaaya. Employee 3 ki 113 alag chhuttiyaan thi aur lagbhag saath din: 113 × 113 × 60.25, kareeb 769,000. Employee 1 ki 23 chhuttiyaan aur lagbhag pandrah din: kareeb 8,000. Calculator aur dashboard decimals mein alag the, jo card par rounding nikla. Dono logon ka farq wahi raha.",
+      "Dataset yeh bhi batata hai ki log peete hain ya smoke karte hain, aur unka BMI. Mera pehla chart keh raha tha ki peene waale kahin zyada ghante gawaate hain — kyunki main ghante jod raha tha, aur peene waale bas zyada the. Yahi trap maine pay-gap waale kaam mein pakda tha, aur seedha phir usi mein gir gaya. Per person dekho toh peene waalon ka average phir bhi zyada tha, smoke karne waalon ka kam, aur BMI ki har value par bas ek-do log the. Isme se kuch bhi finding ki tarah samajh nahi aata, aur chhattees logon par use finding maanna bhi nahi chahiye. Woh charts ek aise page par hain jis par likha hai: sirf exploration.",
+      "Main wahin ruk gaya. Chhattees log ek chhota kamra hai, aur ek point ke baad main bas buttons ki practice kar raha hota. Is tarah ke dashboard mein mera kaam hai batana ki kya ho raha hai, yeh tay karna nahi ki uske baare mein kya kiya jaaye. Yahaan iska matlab hai chaar naam jin par unke managers se baat honi chahiye, aur ek measure jo ab mujhe samajh aata hai.",
+    ],
+    evidenceMark: {
+      insertAfter: 4,
+      lines: [
+        "Das ek-din ki chhuttiyaan ek das-din ki chhutti se kahin zyada score karti hain.",
+      ],
+    },
+    mediaAfterParagraph: 6,
+    table: {
+      columns: ["Employee", "Bradford score"],
+      rows: [
+        ["3", "769,332"],
+        ["28", "250,534"],
+        ["34", "130,075"],
+        ["11", "90,000"],
+        ["1", "8,001"],
+      ],
+      emphasisRow: 0,
+      note: "Score = spells² × days, where days = hours ÷ 8. Calculated over the whole period rather than the usual rolling 52 weeks, because the data has no year field. Employee 1 shown for scale.",
+      plain: true,
+      ariaLabel: "Highest Bradford Factor scores by employee, scrolls sideways on small screens",
+    },
+    download: {
+      href: "/files/Absence_at_Work_Dashboard.pbix",
+      label: "Download the dashboard · Power BI .pbix · 65 KB",
+    },
+  },
+
+  {
     id: "place-to-stand",
     title: "Khade hone ki ek jagah",
     // Apparatus — the citation is not translated (README rule 3).
