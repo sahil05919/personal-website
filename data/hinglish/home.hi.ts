@@ -65,6 +65,9 @@ export const chromeHi = {
   /** The colophon's standfirst, under the name. */
   imprint: 'London mein rakha gaya ek record. Jab sach nahi rehta, badal diya jaata hai.',
   backMatter: 'Pichhla hissa',
+  /** The two parts of the book — navbar, mobile index, Home's contents. */
+  partLife: 'Zindagi',
+  partWork: 'Kaam',
   reading: 'Padhna',
   paper: 'Kaagaz',
   /** The mobile index toggle, open and closed. */

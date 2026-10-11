@@ -22,7 +22,31 @@
  * remember which one it was quoting. `/question` still resolves; it is a
  * permanent redirect declared in next.config.ts, because a URL that has been
  * on the internet does not stop existing when you rename the folder.
+ *
+ * October 2026: the book is now in two PARTS — Life, then Work. Nine equal
+ * labels in a row told a reader where they could go but never what kind of
+ * page each one was, so a recruiter and a curious reader had to open chapters
+ * to find out which were for them. A book with parts says so in its contents.
+ *
+ * Only one chapter moved to make the parts contiguous: Media, from after
+ * Experience to after Now. Life comes first because the book already argues
+ * for that order in its own words — Journey opens "Before anyone sees the
+ * work, I'd rather they understood the person." Writing stays chapter 07.
+ * Home and Contact belong to neither part: one is the title page, the other
+ * the way out.
+ *
+ * Folios still derive from this array, so every list numbered from it — the
+ * running head, Home's contents, the colophon, the page turn, the dog-ear —
+ * renumbers together.
  */
+
+/** The two parts of the book, in reading order. */
+export type Part = 'life' | 'work';
+
+export const PARTS: readonly { id: Part; label: string }[] = [
+  { id: 'life', label: 'Life' },
+  { id: 'work', label: 'Work' },
+];
 
 export interface Destination {
   href: string;
@@ -44,18 +68,20 @@ export interface Destination {
    * one-word change rather than an edit to shared navigation logic.
    */
   ownExit?: boolean;
+  /** Which part of the book this chapter sits in. Absent on Home and Contact. */
+  part?: Part;
 }
 
 /** Canonical order, Home first. */
 export const navigation: Destination[] = [
   { href: '/', label: 'Home' },
-  { href: '/about', label: 'About', ownExit: true },
-  { href: '/journey', label: 'Journey' },
-  { href: '/now', label: 'Now' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/experience', label: 'Experience' },
-  { href: '/media', label: 'Media' },
-  { href: '/writing', label: 'Writing' },
+  { href: '/about', label: 'About', ownExit: true, part: 'life' },
+  { href: '/journey', label: 'Journey', part: 'life' },
+  { href: '/now', label: 'Now', part: 'life' },
+  { href: '/media', label: 'Media', part: 'life' },
+  { href: '/projects', label: 'Projects', part: 'work' },
+  { href: '/experience', label: 'Experience', part: 'work' },
+  { href: '/writing', label: 'Writing', part: 'work' },
   { href: '/contact', label: 'Contact' },
 ];
 
@@ -90,4 +116,26 @@ export function folio(href: string): string | null {
 export function isActiveRoute(pathname: string, href: string): boolean {
   if (href === '/') return pathname === '/';
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/**
+ * The contents, sectioned: chapters with no part (Home's absent from
+ * `destinations`, so in practice only Contact) come back as `part: null`
+ * sections in their own position, so a list can render each section with or
+ * without a heading and the canonical order is still the only order.
+ */
+export interface ContentsSection {
+  part: Part | null;
+  items: Destination[];
+}
+
+export function sections(list: Destination[] = destinations): ContentsSection[] {
+  const out: ContentsSection[] = [];
+  for (const item of list) {
+    const part = item.part ?? null;
+    const last = out[out.length - 1];
+    if (last && last.part === part) last.items.push(item);
+    else out.push({ part, items: [item] });
+  }
+  return out;
 }

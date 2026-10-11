@@ -11,7 +11,15 @@ import { chromeHi } from "@/data/hinglish";
 import { useVariant } from "@/hooks/use-reading-mode";
 import Search from "@/components/global/Search";
 import { contactInfo } from "@/data/contactData";
-import { destinations, folio, isActiveRoute, navigation } from "@/data/navigation";
+import {
+  destinations,
+  folio,
+  isActiveRoute,
+  navigation,
+  sections,
+  type Destination,
+  type Part,
+} from "@/data/navigation";
 
 /**
  * The running head.
@@ -88,7 +96,10 @@ export default function Navbar() {
     paper: useVariant("Paper", chromeHi.paper),
     index: useVariant("Index", chromeHi.index),
     close: useVariant("Close", chromeHi.close),
+    life: useVariant("Life", chromeHi.partLife),
+    work: useVariant("Work", chromeHi.partWork),
   };
+  const partLabel = (part: Part) => (part === "life" ? t.life : t.work);
 
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -153,6 +164,71 @@ export default function Navbar() {
 
   const here = navigation.find((d) => isActive(d.href));
   const hereFolio = here ? folio(here.href) : null;
+
+  // One chapter link in the desktop row. A function rather than inline
+  // markup because the row now renders links in two shapes — loose (Home,
+  // Contact) and inside a part — and the link itself must not differ.
+  const desktopLink = (link: Destination) => {
+    const active = isActive(link.href);
+    return (
+      <Link
+        href={link.href}
+        aria-current={active ? "page" : undefined}
+        className={`group relative flex items-center gap-2 py-2 font-mono text-apparatus-xs uppercase transition-colors duration-300 ease-editorial ${
+          active ? "text-ink" : "text-graphite hover:text-ink"
+        }`}
+      >
+        {/* The station. A filled square when you are on the page, a hollow
+            one when you are not — the same vocabulary Home's contents list
+            uses for its stations, so the two read as one system. */}
+        <span
+          aria-hidden="true"
+          className={`h-[5px] w-[5px] shrink-0 border transition-all duration-300 ease-editorial ${
+            active
+              ? "border-through-line bg-through-line"
+              : "border-hairline bg-transparent group-hover:border-graphite"
+          }`}
+        />
+        {link.label}
+      </Link>
+    );
+  };
+
+  // One row of the mobile index.
+  const indexRow = (link: Destination, i: number) => {
+    const active = isActive(link.href);
+    return (
+      <motion.li
+        key={link.href}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.04 + i * 0.035, ease: EASE }}
+        className="border-b border-hairline last:border-b-0"
+      >
+        <Link
+          href={link.href}
+          onClick={closeMenu}
+          aria-current={active ? "page" : undefined}
+          className="flex items-baseline gap-5 py-4"
+        >
+          <span
+            className={`font-mono text-apparatus-xs ${
+              active ? "text-through-line" : "text-graphite"
+            }`}
+          >
+            {folio(link.href)}
+          </span>
+          <span
+            className={`font-serif-display text-fluid-row ${
+              active ? "text-through-line" : "text-ink"
+            }`}
+          >
+            {link.label}
+          </span>
+        </Link>
+      </motion.li>
+    );
+  };
 
   return (
     <>
@@ -252,35 +328,44 @@ export default function Navbar() {
                    row's total width — which includes its padding. */
                 className="flex items-center gap-4 min-[1560px]:gap-5"
               >
-                {navigation.map((link) => {
-                  const active = isActive(link.href);
-
-                  return (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        aria-current={active ? "page" : undefined}
-                        className={`group relative flex items-center gap-2 py-2 font-mono text-apparatus-xs uppercase transition-colors duration-300 ease-editorial ${
-                          active ? "text-ink" : "text-graphite hover:text-ink"
+                {/* PARTS (October 2026). Home, then Life, then Work, then
+                    Contact — see data/navigation.ts. Each part is one <li>
+                    holding its own list, with the part's name set over it on a
+                    hairline that spans exactly its chapters. The label sits
+                    ABOVE the row, absolutely positioned, so it costs no width:
+                    this row is measured to the pixel (see the gap note above)
+                    and the parts had to arrive without moving it. The 16px gap
+                    between two parts is what breaks the hairline in two, which
+                    is the whole of the separation — no divider, no extra air. */}
+                {sections(navigation).map((section) =>
+                  section.part ? (
+                    <li key={section.part} className="relative">
+                      <span
+                        aria-hidden="true"
+                        className={`pointer-events-none absolute inset-x-0 -top-[9px] flex items-center gap-1.5 font-mono text-[9px] uppercase leading-none tracking-[0.14em] ${
+                          section.items.some((d) => isActive(d.href))
+                            ? "text-ink"
+                            : "text-graphite"
                         }`}
                       >
-                        {/* The station. A filled square when you are on the
-                          page, a hollow one when you are not — the same
-                          vocabulary Home's contents list uses for its
-                          stations, so the two read as one system. */}
-                        <span
-                          aria-hidden="true"
-                          className={`h-[5px] w-[5px] shrink-0 border transition-all duration-300 ease-editorial ${
-                            active
-                              ? "border-through-line bg-through-line"
-                              : "border-hairline bg-transparent group-hover:border-graphite"
-                          }`}
-                        />
-                        {link.label}
-                      </Link>
+                        {partLabel(section.part)}
+                        <span className="h-px flex-1 bg-hairline" />
+                      </span>
+                      <ul
+                        aria-label={partLabel(section.part)}
+                        className="flex items-center gap-4 min-[1560px]:gap-5"
+                      >
+                        {section.items.map((link) => (
+                          <li key={link.href}>{desktopLink(link)}</li>
+                        ))}
+                      </ul>
                     </li>
-                  );
-                })}
+                  ) : (
+                    section.items.map((link) => (
+                      <li key={link.href}>{desktopLink(link)}</li>
+                    ))
+                  ),
+                )}
               </ul>
             </nav>
 
@@ -375,47 +460,32 @@ export default function Navbar() {
             <nav aria-label="Index" className="px-5 pb-16 pt-8 sm:px-8">
               <p className="apparatus">{t.contents}</p>
 
-              <ul className="mt-6">
-                {destinations.map((link, i) => {
-                  const active = isActive(link.href);
-
-                  return (
-                    <motion.li
-                      key={link.href}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.45,
-                        delay: 0.04 + i * 0.035,
-                        ease: EASE,
-                      }}
-                      className="border-b border-hairline last:border-b-0"
-                    >
-                      <Link
-                        href={link.href}
-                        onClick={closeMenu}
-                        aria-current={active ? "page" : undefined}
-                        className="flex items-baseline gap-5 py-4"
-                      >
-                        <span
-                          className={`font-mono text-apparatus-xs ${
-                            active ? "text-through-line" : "text-graphite"
-                          }`}
-                        >
-                          {folio(link.href)}
-                        </span>
-                        <span
-                          className={`font-serif-display text-fluid-row ${
-                            active ? "text-through-line" : "text-ink"
-                          }`}
-                        >
-                          {link.label}
-                        </span>
-                      </Link>
-                    </motion.li>
-                  );
-                })}
-              </ul>
+              {/* Sectioned by part, the same as the desktop row. Contact has
+                  no part and closes the list under a rule of its own. */}
+              {sections(destinations).map((section, si) => (
+                <div
+                  key={section.part ?? section.items[0].href}
+                  className={
+                    section.part
+                      ? si === 0 ? "mt-6" : "mt-8"
+                      : "mt-8 border-t border-hairline"
+                  }
+                >
+                  {section.part ? (
+                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-graphite">
+                      {partLabel(section.part)}
+                    </p>
+                  ) : null}
+                  <ul
+                    aria-label={section.part ? partLabel(section.part) : undefined}
+                    className={section.part ? "mt-2" : ""}
+                  >
+                    {section.items.map((link) =>
+                      indexRow(link, destinations.indexOf(link)),
+                    )}
+                  </ul>
+                </div>
+              ))}
 
               {/* Back matter and the CV. Both were reachable on a phone only
                   from the colophon at the very bottom of whichever chapter the

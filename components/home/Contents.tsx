@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import { homeContent } from '@/data/homeContent';
-import { destinations } from '@/data/navigation';
+import { destinations, folio, sections, type Part } from '@/data/navigation';
 import { useReducedMotionSafe } from '@/hooks/use-reduced-motion-safe';
 import Column from './Column';
 import { PageMark } from './PageMark';
@@ -41,6 +41,12 @@ import { useVariant } from '@/hooks/use-reading-mode';
  * form their own column down the right-hand edge. They inherit the row's
  * colour rather than carrying their own, which is what keeps the hover a
  * single gesture instead of a second thing happening.
+ *
+ * PARTS (October 2026). The list is now set in two parts, Life and Work, each
+ * under its own small heading, with Contact on its own after them — the same
+ * sections the navbar draws, from the same function in data/navigation.ts.
+ * The folio is read from `folio()` rather than the loop index, because the
+ * loop now restarts in each part and the numbers must not.
  */
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -51,6 +57,9 @@ export default function Contents() {
     homeContentHi.invitations,
   );
   const contentsLabel = useVariant('Contents', chromeHi.contents);
+  const lifeLabel = useVariant('Life', chromeHi.partLife);
+  const workLabel = useVariant('Work', chromeHi.partWork);
+  const partLabel = (part: Part) => (part === 'life' ? lifeLabel : workLabel);
 
   const prefersReducedMotion = useReducedMotionSafe();
 
@@ -64,8 +73,26 @@ export default function Contents() {
           {contentsLabel}
         </h2>
 
-        <ul className={`${full} mt-7`}>
-          {destinations.map((destination, i) => {
+        <div className={`${full} mt-7`}>
+          {sections(destinations).map((section, si) => (
+            <div
+              key={section.part ?? section.items[0].href}
+              className={si === 0 ? '' : 'mt-10'}
+            >
+              {section.part ? (
+                <h3 className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-graphite">
+                  {partLabel(section.part)}
+                  <span aria-hidden="true" className="h-px flex-1 bg-hairline" />
+                </h3>
+              ) : (
+                <span aria-hidden="true" className="block h-px bg-hairline" />
+              )}
+              <ul
+                aria-label={section.part ? partLabel(section.part) : undefined}
+                className={section.part ? 'mt-1' : ''}
+              >
+          {section.items.map((destination) => {
+            const i = destinations.indexOf(destination);
             const invitation = invitations[destination.href];
 
             return (
@@ -97,7 +124,7 @@ export default function Contents() {
                   </span>
 
                   <div className="flex items-center justify-between gap-6">
-                    <h3 className="flex items-baseline gap-4 font-serif-display text-fluid-row font-medium transition-colors duration-200 group-hover:text-through-line">
+                    <h4 className="flex items-baseline gap-4 font-serif-display text-fluid-row font-medium transition-colors duration-200 group-hover:text-through-line">
                       {/* The folio. A contents list without page numbers is a
                           menu; with them it is a contents list. The number is
                           the row's position in the canonical order, so it can
@@ -111,10 +138,10 @@ export default function Contents() {
                           same swap was made in the colophon, the page turn,
                           the fore-edge rail, /writing and the 404. */}
                       <span className="font-mono text-apparatus-xs text-graphite transition-colors duration-200 group-hover:text-through-line">
-                        {String(i + 1).padStart(2, '0')}
+                        {folio(destination.href)}
                       </span>
                       {destination.label}
-                    </h3>
+                    </h4>
 
                     {/* Apparatus weight at rest — graphite at 45% sits below
                         the invitation line beneath it, which is where a mark
@@ -137,7 +164,10 @@ export default function Contents() {
               </motion.li>
             );
           })}
-        </ul>
+              </ul>
+            </div>
+          ))}
+        </div>
       </Column>
     </section>
   );
