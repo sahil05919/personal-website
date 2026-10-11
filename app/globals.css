@@ -610,3 +610,42 @@
 html {
   scrollbar-color: rgb(var(--hairline)) rgb(var(--paper));
 }
+
+/* ── The parts' doors (navbar, October 2026) ─────────────────────────────
+   Hovering "Life" or "Work" previews what the part holds before the reader
+   commits: the rule draws across the part's chapters in the through-line, the
+   stations light left to right, and the chapter names come up to ink. Uses
+   :has() so the link can reach its siblings without JS. Reduced motion keeps
+   the colour change and drops the drawing and the stagger. */
+.part-rule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--through-line));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.part:has(.part-door:hover) .part-rule::after,
+.part:has(.part-door:focus-visible) .part-rule::after {
+  transform: scaleX(1);
+}
+.part-chapters [data-station] {
+  transition-delay: 0ms;
+}
+.part:has(.part-door:hover) .part-chapters [data-station],
+.part:has(.part-door:focus-visible) .part-chapters [data-station] {
+  border-color: rgb(var(--through-line));
+  transition-delay: calc(80ms + var(--i, 0) * 70ms);
+}
+.part:has(.part-door:hover) .part-chapters a,
+.part:has(.part-door:focus-visible) .part-chapters a {
+  color: rgb(var(--ink));
+}
+@media (prefers-reduced-motion: reduce) {
+  .part-rule::after { transition: none; }
+  .part:has(.part-door:hover) .part-chapters [data-station],
+  .part:has(.part-door:focus-visible) .part-chapters [data-station] {
+    transition-delay: 0ms;
+  }
+}

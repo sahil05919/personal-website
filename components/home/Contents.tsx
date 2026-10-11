@@ -80,9 +80,23 @@ export default function Contents() {
               className={si === 0 ? '' : 'mt-10'}
             >
               {section.part ? (
-                <h3 className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-graphite">
-                  {partLabel(section.part)}
-                  <span aria-hidden="true" className="h-px flex-1 bg-hairline" />
+                <h3 className="part flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.14em] text-graphite">
+                  {/* The part's name opens its first chapter, and on hover
+                      the rule beside it draws in — the same door as the
+                      navbar's, so the two read as one gesture. */}
+                  <Link
+                    href={section.items[0].href}
+                    className="part-door group/door inline-flex min-h-11 items-center gap-2 transition-colors duration-300 ease-editorial hover:text-through-line focus-visible:text-through-line focus-visible:outline-none"
+                  >
+                    {partLabel(section.part)}
+                    <span
+                      aria-hidden="true"
+                      className="text-through-line opacity-60 transition-all duration-300 ease-editorial group-hover/door:translate-x-1 group-hover/door:opacity-100 motion-reduce:transition-none"
+                    >
+                      &rarr;
+                    </span>
+                  </Link>
+                  <span aria-hidden="true" className="part-rule relative h-px flex-1 bg-hairline" />
                 </h3>
               ) : (
                 <span aria-hidden="true" className="block h-px bg-hairline" />

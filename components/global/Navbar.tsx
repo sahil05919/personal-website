@@ -183,6 +183,7 @@ export default function Navbar() {
             uses for its stations, so the two read as one system. */}
         <span
           aria-hidden="true"
+          data-station=""
           className={`h-[5px] w-[5px] shrink-0 border transition-all duration-300 ease-editorial ${
             active
               ? "border-through-line bg-through-line"
@@ -339,24 +340,53 @@ export default function Navbar() {
                     is the whole of the separation — no divider, no extra air. */}
                 {sections(navigation).map((section) =>
                   section.part ? (
-                    <li key={section.part} className="relative">
-                      <span
-                        aria-hidden="true"
-                        className={`pointer-events-none absolute inset-x-0 -top-[9px] flex items-center gap-1.5 font-mono text-[9px] uppercase leading-none tracking-[0.14em] ${
-                          section.items.some((d) => isActive(d.href))
-                            ? "text-ink"
-                            : "text-graphite"
-                        }`}
-                      >
-                        {partLabel(section.part)}
-                        <span className="h-px flex-1 bg-hairline" />
+                    <li key={section.part} className="part relative">
+                      {/* The part's name is a door, not a caption: it opens
+                          the part's first chapter. Hovering it previews the
+                          choice before it is made — the rule beneath draws in
+                          across exactly this part's chapters, their stations
+                          light one after another, and their names come up to
+                          ink — so a reader sees what "Work" contains before
+                          committing to it. The choreography is CSS, in
+                          globals.css under `.part-door`, because it reaches
+                          from this link into the sibling list. */}
+                      <span className="pointer-events-none absolute inset-x-0 -top-[14px] z-10 flex items-center">
+                        <Link
+                          href={section.items[0].href}
+                          onClick={closeMenu}
+                          aria-label={`${partLabel(section.part)}: ${section.items
+                            .map((d) => d.label)
+                            .join(", ")}`}
+                          className={`part-door group/door pointer-events-auto flex shrink-0 items-center gap-1.5 py-[5px] pr-2 font-mono text-[9px] uppercase leading-none tracking-[0.14em] transition-colors duration-300 ease-editorial hover:text-through-line focus-visible:text-through-line focus-visible:outline-none ${
+                            section.items.some((d) => isActive(d.href))
+                              ? "text-ink"
+                              : "text-graphite"
+                          }`}
+                        >
+                          {partLabel(section.part)}
+                          <span
+                            aria-hidden="true"
+                            className="-translate-x-1 opacity-0 transition-all duration-300 ease-editorial group-hover/door:translate-x-0 group-hover/door:opacity-100 group-focus-visible/door:translate-x-0 group-focus-visible/door:opacity-100 motion-reduce:transition-none"
+                          >
+                            &rarr;
+                          </span>
+                        </Link>
+                        {/* The rule: hairline at rest, with a through-line
+                            stroke over it that draws in from the left while
+                            the door is hovered. */}
+                        <span aria-hidden="true" className="part-rule relative h-px flex-1 bg-hairline" />
                       </span>
                       <ul
                         aria-label={partLabel(section.part)}
-                        className="flex items-center gap-4 min-[1560px]:gap-5"
+                        className="part-chapters flex items-center gap-4 min-[1560px]:gap-5"
                       >
-                        {section.items.map((link) => (
-                          <li key={link.href}>{desktopLink(link)}</li>
+                        {section.items.map((link, i) => (
+                          <li
+                            key={link.href}
+                            style={{ "--i": i } as React.CSSProperties}
+                          >
+                            {desktopLink(link)}
+                          </li>
                         ))}
                       </ul>
                     </li>
@@ -471,14 +501,24 @@ export default function Navbar() {
                       : "mt-8 border-t border-hairline"
                   }
                 >
+                  {/* On a phone the part's name is a door too. No hover
+                      here, so the arrow is always shown — it is what tells a
+                      thumb the label can be pressed. */}
                   {section.part ? (
-                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-graphite">
+                    <Link
+                      href={section.items[0].href}
+                      onClick={closeMenu}
+                      className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-graphite active:text-through-line"
+                    >
                       {partLabel(section.part)}
-                    </p>
+                      <span aria-hidden="true" className="text-through-line">
+                        &rarr;
+                      </span>
+                    </Link>
                   ) : null}
                   <ul
                     aria-label={section.part ? partLabel(section.part) : undefined}
-                    className={section.part ? "mt-2" : ""}
+                    className=""
                   >
                     {section.items.map((link) =>
                       indexRow(link, destinations.indexOf(link)),
