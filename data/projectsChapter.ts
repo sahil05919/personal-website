@@ -64,6 +64,8 @@ export interface ProjectImage {
   widthPercent?: number;
   aspectRatio: string;
   caption?: string;
+  /** A phone screenshot: rounded like the device, with a soft shadow. */
+  device?: boolean;
 }
 
 /** A small table set as HTML rather than dropped in as a screenshot.
@@ -89,6 +91,8 @@ export interface ProjectTable {
 export interface ProjectDownload {
   href: string;
   label: string;
+  /** A live page rather than a file: opens in a new tab, no `download`. */
+  external?: boolean;
 }
 
 /**
@@ -128,6 +132,10 @@ export interface ProjectEntry {
   mediaAfterParagraph?: number;
   evidenceMark?: EvidenceMark;
   download?: ProjectDownload;
+  /** A drawn specimen of the work, with invented figures, in place of a
+   *  screenshot that would publish private data. See
+   *  components/projects/ProjectSpecimen.tsx. */
+  specimen?: "uk-money" | "india-money";
 }
 
 /**
@@ -141,6 +149,12 @@ export interface ProjectEntry {
  *      as a pair rather than being split by the older work.
  *   2. "A place to stand" follows — smallest stake, plainest language, and
  *      the second project nobody assigned.
+ *   2a. Three tools built for himself follow it (October 2026): "What I can
+ *      actually reach" (its sequel — the same Indian money, asked by time),
+ *      "About this much a day" (London money) and "It didn't feel like home"
+ *      (the Today app). Together they are the clearest evidence on the site
+ *      of the thing he says he does: the simpler thing, tailored to one
+ *      person, private, opened anywhere from a link.
  *   3. "The year that did both jobs" closes — most recent, entirely
  *      individual, ends unresolved, hands off cleanly to /now.
  *   4. "Understanding behaviour through data" sits immediately before Equinor.
@@ -302,6 +316,96 @@ export const projectEntries: ProjectEntry[] = [
     // the point to reconsider whether it can move earlier than paragraph 5
     // for scan speed.
     mediaAfterParagraph: 5,
+  },
+
+  {
+    id: "what-i-can-reach",
+    title: "What I can actually reach",
+    // October 2026. Written from Sahil's own account of why he built the
+    // three personal tools (a simpler thing tailored to himself; privacy;
+    // open it anywhere from a link, no sheet) and from the app itself —
+    // every feature named here is on the live page. The figures in the
+    // specimen are invented; his real ones are never published.
+    attribution: "Built for myself, 2026. A web page that reads my own Google Sheet.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "A place to stand told me where I stood. This one tells me what I can actually reach.",
+      "Most of what I own is in India: savings, mutual funds, fixed deposits, insurance policies, a gold bond, a pension account. Add it all together and you get one number. The trouble is that almost none of it moves at the same speed, so the total on its own doesn't answer much.",
+      "What is in my account today. What I could have in one to three working days if I sold funds. What I could get by breaking a deposit early, for a small penalty. And what is locked until a date I can't move.",
+      "Under the net worth there is one line: how much of it I could have in my account within three working days. That line does more work than the number above it.",
+      "Then a small box that asks the question I'd actually ask on a bad day: if I need this much, where does it come from? Savings first, then funds, then a deposit. Sometimes the answer is one line — covered by savings alone — and nothing else needs to be touched.",
+      "I didn't want my money in somebody else's app, and I didn't want to open a spreadsheet on my phone to find out. The records still live in a Google Sheet. The page only reads it, sits behind a link that opens for me alone, and looks the same on my laptop and my phone.",
+      "Below that, the next twelve months — money coming in above the line, going out below — and the year each locked amount becomes usable. At the very bottom there is one honest note: what insurers promise to pay later isn't counted, because it only arrives if every future premium is paid.",
+    ],
+    // Lifted from the opening of paragraph 3, where it introduced the list.
+    evidenceMark: {
+      insertAfter: 1,
+      lines: ["So this page doesn't start with the total. It starts with time."],
+    },
+    specimen: "india-money",
+    mediaAfterParagraph: 4,
+  },
+
+  {
+    id: "about-this-much-a-day",
+    title: "About this much a day",
+    attribution: "Built for myself, 2026. A web page that reads my own Google Sheet.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "In London the money question is smaller, and it comes round more often: how much can I spend today?",
+      "My Indian money moves in years. My London money moves in weeks — rent, food, travel, a tiffin, the phone bill, and whatever else the month brings.",
+      "I didn't need a budgeting app full of charts for things I don't buy. I needed one screen: what I've saved, what I've spent this month against what I said I would, and what's left.",
+      "Then the line that does the work: how many days are left in the month, and roughly how much a day that leaves.",
+      "Each category has its own budget and its own bar, so I can see which one is running ahead without doing the sums. Money a friend owes me sits in its own box until it comes back, so I don't have to remember it.",
+      "Like the India page, it reads a Google Sheet I already keep. I add a line when I spend and the page does the rest. No bank login, nothing to install — just a link that opens on whatever is in my hand.",
+      "Every month gets a bar of its own: blue if I stayed inside the budget, red if I didn't. That's the whole verdict.",
+    ],
+    // Lifted from the end of paragraph 4.
+    evidenceMark: {
+      insertAfter: 3,
+      lines: ["Not a warning, not a score — just a number small enough to act on."],
+    },
+    specimen: "uk-money",
+    mediaAfterParagraph: 4,
+  },
+
+  {
+    id: "feel-like-home",
+    title: "It didn't feel like home",
+    // "Doesn't feel like home" is Sahil's own phrase for the first native
+    // build. Features named are in the app's README and the screenshot is a
+    // fresh install (no personal data), captured October 2026.
+    attribution: "Built for myself, 2026. A web app and an Android app from the same code.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "The first version worked. It just didn't feel like home.",
+      "For a long time my days lived in Google Keep: a card for each part of life — Power BI, meditation, job applications, English reading, walking — and inside each one, sessions. Power BI session 13. Meditation session 7. Counting them was the point.",
+      "Keep could hold the list, but it couldn't plan a day. So I started building something that could, with two rules from the start: it costs nothing, and my data stays on my phone. No account, no server holding my life, no subscription.",
+      "The version that finally felt like home is almost embarrassingly simple. One box at the bottom: type or say anything, in English, Hinglish or Hindi, and it gets filed. “Kal shaam 6 baje dentist” becomes a fixed event tomorrow at six, and the sessions that were sitting there move around it.",
+      "It knows the shape of my weekdays — work until five, tea and food, a walk in the evening — and fits each week's sessions into the gaps. When something has to move, it says so in one line. It checks in at the moments I'd forget: wrap up work, sort the email, did you do today's sessions?",
+      "What I didn't want was an assistant that does the work for me.",
+      "It even limits how many days off I can take in a week — two — so I can't take advantage of it.",
+      "It runs on the web and on my Android phone from the same code. Open the link below and it starts with my defaults, but whatever you add stays in your browser, not with me.",
+    ],
+    evidenceMark: {
+      insertAfter: 5,
+      lines: ["I wanted something that sorts, reminds and nudges — and then leaves the doing to me."],
+    },
+    image: {
+      src: "/images/projects/today-app.webp",
+      alt: "Today on a phone: the next session with Start, Done and Snooze, the day as a timeline, and a Hinglish note being read as a fixed event tomorrow at six.",
+      treatment: "inset",
+      widthPercent: 28,
+      device: true,
+      aspectRatio: "390 / 844",
+      caption: "Typed in Hinglish. It read a fixed event for tomorrow at six and moved the sessions around it.",
+    },
+    mediaAfterParagraph: 3,
+    download: {
+      href: "https://today-app-pi.vercel.app",
+      label: "Open Today →",
+      external: true,
+    },
   },
 
   {

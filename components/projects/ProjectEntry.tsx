@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { ProjectSpecimen } from "./ProjectSpecimen";
 import type {
   ProjectEntry as ProjectEntryType,
   ProjectImage,
@@ -110,11 +111,15 @@ function Plate({ image }: { image: ProjectImage }) {
 function Inset({ image }: { image: ProjectImage }) {
   return (
     <figure
-      className="group my-14"
-      style={{ width: `${image.widthPercent ?? 100}%`, maxWidth: "100%" }}
+      className="group mx-auto my-14"
+      // Never narrower than a phone-sized 18rem, so a portrait screenshot set
+      // at a small percentage of a wide frame stays legible on a phone.
+      style={{ width: `max(${image.widthPercent ?? 100}%, min(100%, 18rem))`, maxWidth: "100%" }}
     >
       <div
-        className="relative w-full overflow-hidden bg-hairline/40"
+        className={`relative w-full overflow-hidden bg-hairline/40 ${
+          image.device ? "rounded-[2rem] border border-hairline shadow-[0_40px_80px_-50px_rgb(var(--ink)/0.45)]" : ""
+        }`}
         style={{ aspectRatio: image.aspectRatio }}
       >
         <Image
@@ -423,6 +428,7 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
     mediaAfterParagraph,
     evidenceMark,
     download,
+    specimen,
   } = entry;
 
   const measure = MEASURE[rhythm.measure];
@@ -440,7 +446,11 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
     mediaAfterParagraph !== undefined ? mediaAfterParagraph : body.length - 1;
   const evidenceMarkIndex = evidenceMark?.insertAfter;
 
-  const figure = image ? (
+  const figure = specimen ? (
+    <div className="mx-auto w-full" style={{ maxWidth: measure }}>
+      <ProjectSpecimen kind={specimen} />
+    </div>
+  ) : image ? (
     image.treatment === "plate" ? (
       <Plate image={image} />
     ) : (
@@ -600,7 +610,9 @@ export function ProjectEntry({ entry }: { entry: ProjectEntryType }) {
           <p className="mt-3 font-mono text-[11px] leading-[1.7] tracking-[0.1em]">
             <a
               href={download.href}
-              download
+              {...(download.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : { download: true })}
               className="tap-y text-through-line underline decoration-through-line/40 underline-offset-4 transition-colors hover:decoration-through-line"
             >
               {download.label}

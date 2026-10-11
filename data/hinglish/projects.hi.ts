@@ -145,6 +145,86 @@ export const projectEntriesHi: ProjectEntry[] = [
   },
 
   {
+    id: "what-i-can-reach",
+    title: "Jahaan tak main sach mein pahunch sakta hoon",
+    attribution: "Built for myself, 2026. A web page that reads my own Google Sheet.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "Khade hone ki jagah ne bataaya ki main kahaan khada hoon. Yeh batata hai ki main sach mein kahaan tak pahunch sakta hoon.",
+      "Mera zyadatar paisa India mein hai: savings, mutual funds, fixed deposits, insurance policies, ek gold bond, ek pension account. Sab jodo toh ek number aata hai. Dikkat yeh hai ki inmein se lagbhag kuch bhi ek hi raftaar se nahi chalta, isliye akela total zyada kuch nahi batata.",
+      "Aaj mere account mein kya hai. Funds bechkar ek se teen working days mein kya mil sakta hai. Deposit jaldi todkar, thodi penalty ke saath, kya mil sakta hai. Aur kya ek aisi tareekh tak band hai jise main badal nahi sakta.",
+      "Net worth ke neeche ek line hai: isme se kitna main teen working days ke andar apne account mein la sakta hoon. Woh line upar waale number se zyada kaam karti hai.",
+      "Phir ek chhota sa box jo wahi sawaal poochhta hai jo main bure din par poochhunga: agar itna chahiye, toh kahaan se aayega? Pehle savings, phir funds, phir deposit. Kabhi-kabhi jawaab ek line ka hota hai — sirf savings se ho jayega — aur kuch aur chhoona nahi padta.",
+      "Main nahi chahta tha ki mera paisa kisi aur ki app mein ho, aur na yeh ki phone par spreadsheet kholkar pata karoon. Records aaj bhi ek Google Sheet mein hain. Page use sirf padhta hai, ek aise link ke peechhe hai jo sirf mere liye khulta hai, aur laptop aur phone par ek jaisa dikhta hai.",
+      "Uske neeche agle baarah mahine — line ke upar aane waala paisa, neeche jaane waala — aur woh saal jab har band rakam istemaal ho sakegi. Bilkul aakhir mein ek imaandaar note: insurers jo baad mein dene ka waada karte hain woh gina nahi gaya, kyunki woh tabhi milega jab har aane waala premium bhara jaaye.",
+    ],
+    evidenceMark: {
+      insertAfter: 1,
+      lines: ["Isliye yeh page total se shuru nahi hota. Waqt se shuru hota hai."],
+    },
+    specimen: "india-money",
+    mediaAfterParagraph: 4,
+  },
+
+  {
+    id: "about-this-much-a-day",
+    title: "Lagbhag itna roz",
+    attribution: "Built for myself, 2026. A web page that reads my own Google Sheet.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "London mein paise ka sawaal chhota hai, aur zyada baar aata hai: aaj main kitna kharch kar sakta hoon?",
+      "Mera India ka paisa saalon mein chalta hai. London ka paisa hafton mein — kiraaya, khaana, travel, tiffin, phone ka bill, aur mahina jo bhi le aaye.",
+      "Mujhe aisi budgeting app nahi chahiye thi jo un cheezon ke charts se bhari ho jo main khareedta hi nahi. Mujhe ek screen chahiye thi: kitna bachaaya, is mahine kitna kharch kiya jitna socha tha uske muqaable, aur kitna bacha.",
+      "Phir woh line jo asli kaam karti hai: mahine mein kitne din bache hain, aur roz ke hisaab se lagbhag kitna bachta hai.",
+      "Har category ka apna budget aur apni bar hai, toh bina hisaab lagaaye dikh jaata hai kaunsi aage bhaag rahi hai. Jo paisa kisi dost par baaki hai woh apne alag box mein rehta hai jab tak wapas na aaye, toh mujhe yaad nahi rakhna padta.",
+      "India waale page ki tarah, yeh bhi ek Google Sheet padhta hai jo main pehle se rakhta hoon. Kharch karta hoon toh ek line jod deta hoon, baaki page kar deta hai. Na bank login, na kuch install karna — bas ek link jo haath mein jo bhi ho us par khul jaata hai.",
+      "Har mahine ko apni ek bar milti hai: neeli agar budget ke andar raha, laal agar nahi. Bas yahi faisla hai.",
+    ],
+    evidenceMark: {
+      insertAfter: 3,
+      lines: ["Na warning, na score — bas ek number jo itna chhota ho ki us par amal kiya ja sake."],
+    },
+    specimen: "uk-money",
+    mediaAfterParagraph: 4,
+  },
+
+  {
+    id: "feel-like-home",
+    title: "Ghar jaisa nahi laga",
+    attribution: "Built for myself, 2026. A web app and an Android app from the same code.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "Pehla version chalta tha. Bas ghar jaisa nahi lagta tha.",
+      "Kaafi samay tak mere din Google Keep mein rehte the: zindagi ke har hisse ka ek card — Power BI, meditation, job applications, English reading, walking — aur har ek ke andar sessions. Power BI session 13. Meditation session 7. Ginna hi asli baat thi.",
+      "Keep list sambhaal sakta tha, din plan nahi kar sakta tha. Toh maine kuch aisa banana shuru kiya jo kar sake, shuru se do niyam: ek paisa kharch nahi, aur mera data mere phone par rahega. Na account, na koi server jo meri zindagi sambhaale, na subscription.",
+      "Jo version aakhir mein ghar jaisa laga woh lagbhag sharminda karne jitna simple hai. Neeche ek box: kuch bhi likho ya bolo, English, Hinglish ya Hindi mein, aur woh sahi jagah chala jaata hai. “Kal shaam 6 baje dentist” kal shaam chhah baje ka fixed event ban jaata hai, aur wahan pade sessions uske aas-paas khisak jaate hain.",
+      "Use mere weekdays ka dhaancha pata hai — paanch baje tak kaam, chai aur khaana, shaam ko walk — aur har hafte ke sessions khaali jagahon mein bitha deta hai. Jab kuch hilaana pade, ek line mein bata deta hai. Un pal check-in karta hai jo main bhool jaata: kaam samet lo, email sort karo, aaj ke sessions kiye?",
+      "Mujhe aisa assistant nahi chahiye tha jo mera kaam khud kar de.",
+      "Yeh hafte mein chhutti ke din bhi seemit karta hai — do — taaki main iska faayda na utha sakoon.",
+      "Yeh web par aur mere Android phone par ek hi code se chalta hai. Neeche ka link kholiye, yeh mere defaults ke saath shuru hota hai, lekin aap jo bhi jodenge woh aapke browser mein rahega, mere paas nahi.",
+    ],
+    evidenceMark: {
+      insertAfter: 5,
+      lines: ["Mujhe kuch aisa chahiye tha jo sort kare, yaad dilaaye aur halka sa dhakka de — aur karna mujh par chhod de."],
+    },
+    image: {
+      src: "/images/projects/today-app.webp",
+      alt: "Phone par Today: agla session, din ki timeline, aur ek Hinglish note jise kal shaam chhah baje ke fixed event ki tarah samjha gaya.",
+      treatment: "inset",
+      widthPercent: 28,
+      device: true,
+      aspectRatio: "390 / 844",
+      caption: "Hinglish mein likha. Usne kal shaam chhah baje ka fixed event samjha aur sessions uske aas-paas khiska diye.",
+    },
+    mediaAfterParagraph: 3,
+    download: {
+      href: "https://today-app-pi.vercel.app",
+      label: "Today kholiye →",
+      external: true,
+    },
+  },
+
+  {
     id: "wrong-first-question",
     title: "Pehla sawaal hi galat tha",
     attribution:

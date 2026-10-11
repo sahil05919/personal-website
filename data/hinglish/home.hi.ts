@@ -68,6 +68,8 @@ export const chromeHi = {
   /** The two parts of the book — navbar, mobile index, Home's contents. */
   partLife: 'Zindagi',
   partWork: 'Kaam',
+  /** The running head's third door. */
+  contact: 'Sampark',
   reading: 'Padhna',
   paper: 'Kaagaz',
   /** The mobile index toggle, open and closed. */

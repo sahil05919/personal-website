@@ -10,6 +10,7 @@ import ReadingSwitch from "@/components/global/ReadingSwitch";
 import { chromeHi } from "@/data/hinglish";
 import { useVariant } from "@/hooks/use-reading-mode";
 import Search from "@/components/global/Search";
+import { PartDoors, PartSpread, usePartMenu } from "@/components/global/PartMenu";
 import { contactInfo } from "@/data/contactData";
 import {
   destinations,
@@ -159,41 +160,18 @@ export default function Navbar() {
   // not from an effect watching `pathname`. Closing it in an effect would set
   // state synchronously during a render pass on every navigation, including
   // the eight where the index was never open.
+  const menu = usePartMenu();
+  const doorRefs = useRef<Record<Part, HTMLButtonElement | null>>({ life: null, work: null });
+  const contactLabel = useVariant("Contact", chromeHi.contact);
   const closeMenu = () => setIsOpen(false);
+  const closeAll = () => {
+    setIsOpen(false);
+    menu.closeNow();
+  };
   const isActive = (href: string) => isActiveRoute(pathname, href);
 
   const here = navigation.find((d) => isActive(d.href));
   const hereFolio = here ? folio(here.href) : null;
-
-  // One chapter link in the desktop row. A function rather than inline
-  // markup because the row now renders links in two shapes — loose (Home,
-  // Contact) and inside a part — and the link itself must not differ.
-  const desktopLink = (link: Destination) => {
-    const active = isActive(link.href);
-    return (
-      <Link
-        href={link.href}
-        aria-current={active ? "page" : undefined}
-        className={`group relative flex items-center gap-2 py-2 font-mono text-apparatus-xs uppercase transition-colors duration-300 ease-editorial ${
-          active ? "text-ink" : "text-graphite hover:text-ink"
-        }`}
-      >
-        {/* The station. A filled square when you are on the page, a hollow
-            one when you are not — the same vocabulary Home's contents list
-            uses for its stations, so the two read as one system. */}
-        <span
-          aria-hidden="true"
-          data-station=""
-          className={`h-[5px] w-[5px] shrink-0 border transition-all duration-300 ease-editorial ${
-            active
-              ? "border-through-line bg-through-line"
-              : "border-hairline bg-transparent group-hover:border-graphite"
-          }`}
-        />
-        {link.label}
-      </Link>
-    );
-  };
 
   // One row of the mobile index.
   const indexRow = (link: Destination, i: number) => {
@@ -242,7 +220,7 @@ export default function Navbar() {
           {/* ── The work, and where you are in it ───────────────────────── */}
           <Link
             href="/"
-            onClick={closeMenu}
+            onClick={closeAll}
             className="tap-y group flex min-w-0 items-baseline gap-3"
           >
             <span
@@ -300,7 +278,7 @@ export default function Navbar() {
             The search mark is useful at every size, so it lives here, once,
             and the clusters sit beside it.
           */}
-          <div className="flex shrink-0 items-center gap-3 xl:gap-5">
+          <div className="flex shrink-0 items-center gap-3 lg:gap-6">
             <Search />
 
           {/* ── Desktop contents ─────────────────────────────────────────── */}
@@ -316,87 +294,35 @@ export default function Navbar() {
                above some breakpoint was tried and reverted — the row is full at
                1600px too, because the shell stops growing at max-w-spread while
                the gaps do not. */
-            className="hidden items-center gap-5 xl:flex"
+            className="hidden items-center gap-6 lg:flex"
           >
-            <nav aria-label="Primary">
-              <ul
-                /* gap-4 up to 1560px. Nine labels, and each gap is 4px of pure
-                   air: at 1440px the row was exactly full (211px of running head
-                   + 1053px of controls in a 1264px content box), so the running
-                   head was truncated to "05 EXPERI…" not because the window was
-                   small but because the gaps had eaten the 16px the word needed.
-                   Measured per element, after two wrong guesses made from the
-                   row's total width — which includes its padding. */
-                className="flex items-center gap-4 min-[1560px]:gap-5"
+            {/* THE PARTS (October 2026). Two doors and the way out, in the
+                display face, where nine 11px labels used to be. Every chapter
+                is still one pointer movement away: the spread opens on hover
+                and lists each part's chapters at reading size. See
+                components/global/PartMenu.tsx. */}
+            <nav aria-label="Primary" className="flex items-baseline gap-7">
+              <PartDoors menu={menu} pathname={pathname} doorRefs={doorRefs} />
+              <Link
+                href="/contact"
+                onClick={closeAll}
+                aria-current={isActive("/contact") ? "page" : undefined}
+                className="group relative flex items-baseline py-3"
               >
-                {/* PARTS (October 2026). Home, then Life, then Work, then
-                    Contact — see data/navigation.ts. Each part is one <li>
-                    holding its own list, with the part's name set over it on a
-                    hairline that spans exactly its chapters. The label sits
-                    ABOVE the row, absolutely positioned, so it costs no width:
-                    this row is measured to the pixel (see the gap note above)
-                    and the parts had to arrive without moving it. The 16px gap
-                    between two parts is what breaks the hairline in two, which
-                    is the whole of the separation — no divider, no extra air. */}
-                {sections(navigation).map((section) =>
-                  section.part ? (
-                    <li key={section.part} className="part relative">
-                      {/* The part's name is a door, not a caption: it opens
-                          the part's first chapter. Hovering it previews the
-                          choice before it is made — the rule beneath draws in
-                          across exactly this part's chapters, their stations
-                          light one after another, and their names come up to
-                          ink — so a reader sees what "Work" contains before
-                          committing to it. The choreography is CSS, in
-                          globals.css under `.part-door`, because it reaches
-                          from this link into the sibling list. */}
-                      <span className="pointer-events-none absolute inset-x-0 -top-[14px] z-10 flex items-center">
-                        <Link
-                          href={section.items[0].href}
-                          onClick={closeMenu}
-                          aria-label={`${partLabel(section.part)}: ${section.items
-                            .map((d) => d.label)
-                            .join(", ")}`}
-                          className={`part-door group/door pointer-events-auto flex shrink-0 items-center gap-1.5 py-[5px] pr-2 font-mono text-[9px] uppercase leading-none tracking-[0.14em] transition-colors duration-300 ease-editorial hover:text-through-line focus-visible:text-through-line focus-visible:outline-none ${
-                            section.items.some((d) => isActive(d.href))
-                              ? "text-ink"
-                              : "text-graphite"
-                          }`}
-                        >
-                          {partLabel(section.part)}
-                          <span
-                            aria-hidden="true"
-                            className="-translate-x-1 opacity-0 transition-all duration-300 ease-editorial group-hover/door:translate-x-0 group-hover/door:opacity-100 group-focus-visible/door:translate-x-0 group-focus-visible/door:opacity-100 motion-reduce:transition-none"
-                          >
-                            &rarr;
-                          </span>
-                        </Link>
-                        {/* The rule: hairline at rest, with a through-line
-                            stroke over it that draws in from the left while
-                            the door is hovered. */}
-                        <span aria-hidden="true" className="part-rule relative h-px flex-1 bg-hairline" />
-                      </span>
-                      <ul
-                        aria-label={partLabel(section.part)}
-                        className="part-chapters flex items-center gap-4 min-[1560px]:gap-5"
-                      >
-                        {section.items.map((link, i) => (
-                          <li
-                            key={link.href}
-                            style={{ "--i": i } as React.CSSProperties}
-                          >
-                            {desktopLink(link)}
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  ) : (
-                    section.items.map((link) => (
-                      <li key={link.href}>{desktopLink(link)}</li>
-                    ))
-                  ),
-                )}
-              </ul>
+                <span
+                  className={`font-serif-display text-[19px] leading-none tracking-[-0.01em] transition-colors duration-300 ease-editorial ${
+                    isActive("/contact") ? "text-ink" : "text-graphite group-hover:text-ink"
+                  }`}
+                >
+                  {contactLabel}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className={`absolute inset-x-0 bottom-[6px] h-px origin-left bg-through-line transition-transform duration-500 ease-editorial ${
+                    isActive("/contact") ? "scale-x-100 opacity-40" : "scale-x-0 group-hover:scale-x-100"
+                  }`}
+                />
+              </Link>
             </nav>
 
             <span aria-hidden="true" className="h-4 w-px bg-hairline" />
@@ -421,7 +347,7 @@ export default function Navbar() {
           </div>
 
           {/* ── Index toggle ─────────────────────────────────────────────── */}
-          <div className="flex items-center gap-4 xl:hidden">
+          <div className="flex items-center gap-4 lg:hidden">
             <PaperSwitch className="hidden sm:flex" />
 
             <button
@@ -467,6 +393,14 @@ export default function Navbar() {
         />
       </header>
 
+      <PartSpread
+        menu={menu}
+        pathname={pathname}
+        top={condensed ? 58 : 72}
+        onNavigate={closeAll}
+        restoreFocus={(part) => doorRefs.current[part]?.focus()}
+      />
+
       {/*
         THE INDEX — rendered as a sibling of <header>, not a child of it.
 
@@ -485,7 +419,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: EASE }}
-            className="fixed inset-x-0 bottom-0 top-[58px] z-[45] overflow-y-auto border-t border-hairline bg-paper xl:hidden"
+            className="fixed inset-x-0 bottom-0 top-[58px] z-[45] overflow-y-auto border-t border-hairline bg-paper lg:hidden"
           >
             <nav aria-label="Index" className="px-5 pb-16 pt-8 sm:px-8">
               <p className="apparatus">{t.contents}</p>
@@ -497,8 +431,8 @@ export default function Navbar() {
                   key={section.part ?? section.items[0].href}
                   className={
                     section.part
-                      ? si === 0 ? "mt-6" : "mt-8"
-                      : "mt-8 border-t border-hairline"
+                      ? si === 0 ? "mt-6" : "mt-12"
+                      : "mt-10 border-t border-hairline"
                   }
                 >
                   {/* On a phone the part's name is a door too. No hover
@@ -508,10 +442,17 @@ export default function Navbar() {
                     <Link
                       href={section.items[0].href}
                       onClick={closeMenu}
-                      className="inline-flex min-h-11 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-graphite active:text-through-line"
+                      className="group flex items-baseline justify-between gap-4 border-b border-ink/80 pb-3"
                     >
-                      {partLabel(section.part)}
-                      <span aria-hidden="true" className="text-through-line">
+                      <span className="flex items-baseline gap-3">
+                        <span className="font-serif-display text-[2.25rem] leading-none tracking-[-0.03em] text-ink group-active:text-through-line">
+                          {partLabel(section.part)}
+                        </span>
+                        <span className="font-mono text-[10px] tabular-nums text-through-line">
+                          {String(section.items.length).padStart(2, "0")}
+                        </span>
+                      </span>
+                      <span aria-hidden="true" className="font-mono text-apparatus-xs text-through-line">
                         &rarr;
                       </span>
                     </Link>

@@ -23,14 +23,19 @@
  * values, not a valid SVG paint on their own (same caveat as Journey).
  */
 
-const CASE: Record<string, { number: string; motif?: "exits" | "dashboard" | "reversal" | "scatter" | "residual" }> = {
+const CASE: Record<string, { number: string; motif?: "exits" | "dashboard" | "reversal" | "scatter" | "residual" | "ladder" | "days" | "loop" }> = {
   "other-door": { number: "01", motif: "exits" },
   "ten-one-day-absences": { number: "02" }, // no motif yet — added October 2026
   "place-to-stand": { number: "03", motif: "dashboard" },
-  "wrong-first-question": { number: "04", motif: "reversal" },
-  "looking-properly": { number: "05", motif: "scatter" },
-  "understanding-behaviour": { number: "06" }, // no motif — stays as quiet as the essay itself
-  "did-both-jobs": { number: "07", motif: "residual" },
+  // October 2026 — the three tools built for himself, kept beside "A place to
+  // stand" because the first of them is its sequel.
+  "what-i-can-reach": { number: "04", motif: "ladder" },
+  "about-this-much-a-day": { number: "05", motif: "days" },
+  "feel-like-home": { number: "06", motif: "loop" },
+  "wrong-first-question": { number: "07", motif: "reversal" },
+  "looking-properly": { number: "08", motif: "scatter" },
+  "understanding-behaviour": { number: "09" }, // no motif — stays as quiet as the essay itself
+  "did-both-jobs": { number: "10", motif: "residual" },
 };
 
 function Motif({ kind }: { kind: NonNullable<(typeof CASE)[string]["motif"]> }) {
@@ -59,6 +64,39 @@ function Motif({ kind }: { kind: NonNullable<(typeof CASE)[string]["motif"]> }) 
           <line x1="4" y1="18" x2="40" y2="18" stroke={line} strokeWidth="1.25" opacity="0.4" />
           <line x1="4" y1="28" x2="46" y2="28" stroke={line} strokeWidth="1.25" opacity="0.25" />
           <circle cx="52" cy="8" r="2" fill={line} opacity="0.7" />
+        </svg>
+      );
+    case "ladder":
+      // Money by how fast it can move: one long bar that is yours now, then
+      // shorter, fainter ones further down — "what I can actually reach".
+      return (
+        <svg viewBox="0 0 56 36" className="h-8 w-14" aria-hidden="true">
+          <line x1="4" y1="7" x2="34" y2="7" stroke={line} strokeWidth="2" opacity="0.9" />
+          <line x1="4" y1="15" x2="44" y2="15" stroke={line} strokeWidth="1.25" opacity="0.55" />
+          <line x1="4" y1="23" x2="50" y2="23" stroke={line} strokeWidth="1.25" opacity="0.35" />
+          <line x1="4" y1="31" x2="40" y2="31" stroke={line} strokeWidth="1.25" opacity="0.2" />
+        </svg>
+      );
+    case "days":
+      // A month as a row of days, the spent ones filled — "about this much a
+      // day". No count that could be read as a figure.
+      return (
+        <svg viewBox="0 0 56 36" className="h-8 w-14" aria-hidden="true">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <rect key={i} x={4 + i * 5} y="14" width="3" height="8" fill={line} opacity={i < 6 ? 0.8 : 0.2} />
+          ))}
+        </svg>
+      );
+    case "loop":
+      // Capture, sort, remind, nudge: one loop with a single point moving on
+      // it — the app that leaves the doing to you.
+      return (
+        <svg viewBox="0 0 56 36" className="h-8 w-14" aria-hidden="true">
+          <circle cx="28" cy="18" r="11" fill="none" stroke={line} strokeWidth="1" opacity="0.35" />
+          <circle cx="39" cy="18" r="2.25" fill={line} opacity="0.9" />
+          <circle cx="28" cy="7" r="1.5" fill={line} opacity="0.45" />
+          <circle cx="17" cy="18" r="1.5" fill={line} opacity="0.45" />
+          <circle cx="28" cy="29" r="1.5" fill={line} opacity="0.45" />
         </svg>
       );
     case "reversal":
