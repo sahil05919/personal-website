@@ -36,6 +36,7 @@ import Colophon from "@/components/global/Colophon";
 import PageTurn from "@/components/global/PageTurn";
 import Wayfinder from "@/components/global/Wayfinder";
 import ThemeProvider from "@/components/providers/ThemeProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 /* ---------------------------------------------------------------------------
    METADATA — what the site says about itself when it is not being read.
@@ -148,6 +149,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               overlaps at the foot of every chapter. */}
           <DogEar />
         </ThemeProvider>
+
+        {/* Visitor counts (October 2026). Private by design: the numbers are
+            visible only in Sahil's Vercel dashboard, nothing is rendered on
+            the page, and Vercel Web Analytics sets no cookies. */}
+        <Analytics />
       </body>
     </html>
   );
