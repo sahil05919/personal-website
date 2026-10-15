@@ -147,6 +147,9 @@ export interface ProjectEntry {
  *   1a. "Ten one-day absences" sits straight after it (October 2026) — the
  *      second people-analytics piece, kept beside the first so the two read
  *      as a pair rather than being split by the older work.
+ *   1b. "The shape of leaving" is third (October 2026) — the third
+ *      people-analytics piece, and the one that answers the doubt "The other
+ *      door" ends on, so it follows the pair rather than joining it late.
  *   2. "A place to stand" follows — smallest stake, plainest language, and
  *      the second project nobody assigned.
  *   2a. Three tools built for himself follow it (October 2026): "What I can
@@ -275,6 +278,59 @@ export const projectEntries: ProjectEntry[] = [
     download: {
       href: "/files/Absence_at_Work_Dashboard.pbix",
       label: "Download the dashboard · Power BI .pbix · 65 KB",
+    },
+  },
+
+  {
+    id: "shape-of-leaving",
+    title: "The shape of leaving",
+    attribution:
+      "Built for myself, on the Employee/HR Dataset (All In One) from Kaggle, 2026.",
+    // Written October 2026 from Sahil's own account of why this one matters
+    // (understanding how a workforce holds together; the when / where /
+    // not-why / data-quality shape of the questions) and from the build
+    // sessions. Every figure is computed from employee_data.csv. It opens on
+    // the doubt "The other door" ends with, because this dataset settles it.
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "The first project ended on a doubt. The watchlist pointed at the first year, and most of the people who had actually left hadn't gone then.",
+      "I wanted to settle it on something bigger. The third dataset was three thousand employees of another company that doesn't exist, each with a start date and an exit date, and twenty-six columns of everything else. This time I wanted to ask the questions in the order they deserve: whether the data can be trusted, then when people leave, then where, then why.",
+      "This is the part of HR I like most, and it took me a while to say why. When I worked in it I knew people one at a time — who had joined, who was struggling, who had a question that morning. What I never saw from inside was how the whole thing holds together: whether leaving has a shape, or is just a long run of separate decisions.",
+      "The data couldn't be trusted at first. 1,533 people had an exit date; only 387 were marked as terminated, and some still listed as active had, by the other column, left a while ago. Neither field was obviously wrong. They disagreed, and every number after that depended on which one I believed. I went with the exit date and wrote down why. The supervisor column went entirely: it named almost as many supervisors as there were employees.",
+      "Where came next. I cut attrition by department, division, job function and state, and the first things that stood out were a handful of titles sitting at exactly a hundred per cent.",
+      "So nothing under thirty people gets a rate. With that floor in place, what remained was smaller and more honest: clerks at 65 per cent, administrative roles at 61, and most of the rest within a few points of the average.",
+      "When was the question that answered. Seven hundred and twenty-five of the 1,533 leavers went before their first anniversary. Then 412, then 241, then 155. Each year someone stayed, fewer of them walked. This time the first year held.",
+      "I checked whether that was new — whether recent hires were leaving faster than earlier ones — by grouping everyone by the year they joined. Every cohort from 2018 to 2023 still had between 45 and 51 per cent of its people. Flat. Whatever happens in the first year had been happening the whole time.",
+      "Why is the part I'm proudest of, because the answer is no. Performance score, rating, pay zone, gender, contract type: every one within a few points of fifty-one per cent. High performers didn't leave more. Better-paid zones didn't stay longer. It would have been easy to keep cutting until something moved. I wrote down that nothing did.",
+      "The data is synthetic, which is probably why so little moves, and there is no company here to lose anyone in its first year. What I kept was the order. What the columns mean, which rates the sample can bear, then when and where, and an honest line where the why should be. It is the order I would want if the people were real. In HR they always were.",
+    ],
+    // Lifted out of the "where" paragraph, where it was the reason for the
+    // thirty-person floor that follows — the judgement call, not its result.
+    evidenceMark: {
+      insertAfter: 4,
+      lines: [
+        "Every one of them was a group of one or two people. A one-person team that loses its one person has an attrition rate of a hundred per cent. That isn't a finding.",
+      ],
+    },
+    mediaAfterParagraph: 6,
+    // Computed from employee_data.csv: a leaver is anyone with an ExitDate,
+    // tenure at exit = ExitDate − StartDate. Shares sum to 100%.
+    table: {
+      columns: ["Tenure at exit", "Leavers", "Share"],
+      rows: [
+        ["Under 1 year", "725", "47%"],
+        ["1–2 years", "412", "27%"],
+        ["2–3 years", "241", "16%"],
+        ["3–5 years", "155", "10%"],
+      ],
+      emphasisRow: 0,
+      note: "Leavers only, n = 1,533, out of 3,000 employees. Fictional company; synthetic data. Groups under thirty people are left out of every rate in the dashboard.",
+      plain: true,
+      ariaLabel: "Leavers by tenure at exit, scrolls sideways on small screens",
+    },
+    download: {
+      href: "/files/Workforce_Analytics_Dashboard.pbix",
+      label: "Download the dashboard · Power BI .pbix · 425 KB",
     },
   },
 

@@ -26,16 +26,17 @@
 const CASE: Record<string, { number: string; motif?: "exits" | "dashboard" | "reversal" | "scatter" | "residual" | "ladder" | "days" | "loop" }> = {
   "other-door": { number: "01", motif: "exits" },
   "ten-one-day-absences": { number: "02" }, // no motif yet — added October 2026
-  "place-to-stand": { number: "03", motif: "dashboard" },
+  "shape-of-leaving": { number: "03" }, // no motif yet — added October 2026
+  "place-to-stand": { number: "04", motif: "dashboard" },
   // October 2026 — the three tools built for himself, kept beside "A place to
   // stand" because the first of them is its sequel.
-  "what-i-can-reach": { number: "04", motif: "ladder" },
-  "about-this-much-a-day": { number: "05", motif: "days" },
-  "feel-like-home": { number: "06", motif: "loop" },
-  "wrong-first-question": { number: "07", motif: "reversal" },
-  "looking-properly": { number: "08", motif: "scatter" },
-  "understanding-behaviour": { number: "09" }, // no motif — stays as quiet as the essay itself
-  "did-both-jobs": { number: "10", motif: "residual" },
+  "what-i-can-reach": { number: "05", motif: "ladder" },
+  "about-this-much-a-day": { number: "06", motif: "days" },
+  "feel-like-home": { number: "07", motif: "loop" },
+  "wrong-first-question": { number: "08", motif: "reversal" },
+  "looking-properly": { number: "09", motif: "scatter" },
+  "understanding-behaviour": { number: "10" }, // no motif — stays as quiet as the essay itself
+  "did-both-jobs": { number: "11", motif: "residual" },
 };
 
 function Motif({ kind }: { kind: NonNullable<(typeof CASE)[string]["motif"]> }) {

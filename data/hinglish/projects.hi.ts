@@ -120,6 +120,53 @@ export const projectEntriesHi: ProjectEntry[] = [
   },
 
   {
+    id: "shape-of-leaving",
+    title: "Jaane ki shakl",
+    attribution:
+      "Built for myself, on the Employee/HR Dataset (All In One) from Kaggle, 2026.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    // DRAFT, like the rest of this file. Same paragraph count, evidence-mark
+    // and figure positions as the English.
+    body: [
+      "Pehla project ek shak par khatam hua tha. Watchlist pehle saal ki taraf ishaara karti thi, aur jo log asal mein gaye the unmein se zyaadatar tab nahi gaye the.",
+      "Main ise kisi badi cheez par tay karna chahta tha. Teesra dataset ek aur aisi company ke teen hazaar employees ka tha jo maujood nahi hai, har kisi ki start date aur exit date, aur chhabbees columns mein baaki sab kuch. Is baar main sawaal us order mein poochhna chahta tha jiske woh haqdaar hain: kya data par bharosa kiya ja sakta hai, phir log kab jaate hain, phir kahaan, phir kyun.",
+      "HR ka yeh woh hissa hai jo mujhe sabse achha lagta hai, aur yeh kehne mein mujhe waqt laga ki kyun. Jab main usmein kaam karta tha, log mujhe ek-ek karke pata hote the — kaun join hua, kaun pareshaan hai, kiske paas us subah koi sawaal hai. Andar se jo mujhe kabhi nahi dikha woh yeh tha ki poori cheez judi kaise rehti hai: jaane ki koi shakl hoti hai, ya yeh bas alag-alag faislon ki ek lambi line hai.",
+      "Shuru mein data par bharosa nahi kiya ja sakta tha. 1,533 logon ki exit date thi; sirf 387 terminated mark the, aur kuch jo abhi bhi active likhe the, doosre column ke hisaab se kaafi pehle ja chuke the. Koi field saaf taur par galat nahi tha. Dono alag baat keh rahe the, aur uske baad ka har number is par tika tha ki main kise maanoon. Maine exit date chuni aur likh diya kyun. Supervisor column poora hata diya: usmein lagbhag utne hi supervisors the jitne employees.",
+      "Phir kahaan. Maine attrition ko department, division, job function aur state se kaata, aur sabse pehle jo cheezein ubhri woh kuch titles the jo theek sau per cent par baithe the.",
+      "Toh tees logon se kam kisi group ka rate nahi. Woh floor lagne ke baad jo bacha woh chhota aur zyada imaandaar tha: clerks 65 per cent par, administrative roles 61 par, aur baaki zyaadatar average ke kuch points ke andar.",
+      "Kab woh sawaal tha jisne jawaab diya. 1,533 leavers mein se saat sau pachchees apni pehli anniversary se pehle chale gaye. Phir 412, phir 241, phir 155. Har saal jo koi ruka, unmein se kam log gaye. Is baar pehla saal tika raha.",
+      "Maine check kiya ki kya yeh nayi baat hai — kya haal ke hires pehle waalon se jaldi ja rahe hain — sabko unke joining year se group karke. 2018 se 2023 tak har cohort mein abhi bhi 45 se 51 per cent log the. Flat. Pehle saal mein jo bhi hota hai, woh poore waqt se ho raha tha.",
+      "Kyun woh hissa hai jis par mujhe sabse zyada garv hai, kyunki uska jawaab hai nahi. Performance score, rating, pay zone, gender, contract type: har ek ikyavan per cent ke kuch points ke andar. High performers zyada nahi gaye. Behtar pay zones zyada nahi ruke. Tab tak kaatte rehna aasaan hota jab tak kuch hil na jaaye. Maine likh diya ki kuch nahi hila.",
+      "Data synthetic hai, shayad isiliye itna kam hilta hai, aur yahaan koi company hai hi nahi jo pehle saal mein kisi ko khoye. Maine jo rakha woh order tha. Columns ka matlab kya hai, sample kaun se rates sambhaal sakta hai, phir kab aur kahaan, aur jahaan kyun hona chahiye wahaan ek imaandaar line. Agar log asli hote toh main yahi order chahta. HR mein woh hamesha asli the.",
+    ],
+    evidenceMark: {
+      insertAfter: 4,
+      lines: [
+        "Har ek group ek ya do logon ka tha. Ek-aadmi ki team jo apna ek aadmi kho de, uska attrition rate sau per cent hota hai. Yeh koi finding nahi hai.",
+      ],
+    },
+    mediaAfterParagraph: 6,
+    // Apparatus — not translated.
+    table: {
+      columns: ["Tenure at exit", "Leavers", "Share"],
+      rows: [
+        ["Under 1 year", "725", "47%"],
+        ["1–2 years", "412", "27%"],
+        ["2–3 years", "241", "16%"],
+        ["3–5 years", "155", "10%"],
+      ],
+      emphasisRow: 0,
+      note: "Leavers only, n = 1,533, out of 3,000 employees. Fictional company; synthetic data. Groups under thirty people are left out of every rate in the dashboard.",
+      plain: true,
+      ariaLabel: "Leavers by tenure at exit, scrolls sideways on small screens",
+    },
+    download: {
+      href: "/files/Workforce_Analytics_Dashboard.pbix",
+      label: "Download the dashboard · Power BI .pbix · 425 KB",
+    },
+  },
+
+  {
     id: "place-to-stand",
     title: "Khade hone ki ek jagah",
     // Apparatus — the citation is not translated (README rule 3).
