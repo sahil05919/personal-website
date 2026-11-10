@@ -35,7 +35,7 @@
  *      a blocker. The two documents no longer describe two people, but they do
  *      not describe the same thing either: the CV selects the professional
  *      spine out of fifteen years, and /experience keeps the saree shop, the
- *      note-taking and the thirty-five first days that the CV has no room for.
+ *      note-taking and the forty first days that the CV has no room for.
  *      "The same record, compressed to one" would overclaim. Restore it only
  *      with wording that is true of both.
  *

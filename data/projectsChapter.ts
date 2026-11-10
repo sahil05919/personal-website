@@ -158,6 +158,9 @@ export interface ProjectEntry {
  *      (the Today app). Together they are the clearest evidence on the site
  *      of the thing he says he does: the simpler thing, tailored to one
  *      person, private, opened anywhere from a link.
+ *   2b. "What I took out" (November 2026) follows the Today app: the fourth
+ *      tool built for himself, and the one where the lesson is subtraction —
+ *      the private Android app, scored 3 then 8 by his own account.
  *   3. "The year that did both jobs" closes — most recent, entirely
  *      individual, ends unresolved, hands off cleanly to /now.
  *   4. "Understanding behaviour through data" sits immediately before Equinor.
@@ -465,6 +468,41 @@ export const projectEntries: ProjectEntry[] = [
   },
 
   {
+    id: "what-i-took-out",
+    title: "What I took out",
+    // November 2026. Facts are from Sahil's own account of the build: the
+    // privacy rules, the first phone test (41 items to review, later 58), his
+    // own scores (3 out of 10 in October, 8 now), the decision to drop the
+    // statement reader and mirror his two Google Sheets, and the features that
+    // remain. The essay says plainly that Claude Code wrote the code. No
+    // screenshot and no specimen on purpose: the app holds his real accounts.
+    // Gmail, auto-fetched prices and monthly prompts are left out until he
+    // confirms they run.
+    attribution: "Built for myself, October–November 2026. An Android app; the data stays on the phone.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "The version I use is not the one I set out to build.",
+      "I set out to build an app that could read a bank statement. Drop in a PDF, and it would work out what every line was, file it, and tell me where I stood — for my accounts in India and my accounts in London.",
+      "Money is the one thing I wouldn't trade privacy for, so it had two rules from the first day. Everything stays on the phone, and nothing is sent anywhere to be read. That ruled out the easy ways of doing it. Even the text recognition had to work with no connection at all.",
+      "I didn't write the code. I built it with Claude Code on my laptop, described what I wanted, put each version on my own phone, and said what was wrong with it.",
+      "The first real test went badly. The app was careful about every transaction it wasn't sure of, which meant it kept asking me. Forty-one things to review after the first imports, and later fifty-eight. I had asked for an answer and built a questionnaire.",
+      "By my own scoring it was a three out of ten.",
+      "Then I took things out. I stopped trying to read statements at all. The app now mirrors the two Google Sheets I already kept — India in rupees, London in pounds, never added together — and the statement reader, which had taken the better part of two weeks, was deleted.",
+      "What was left is small. A home screen that says how much I have, where it sits and when it frees up. Every figure can be tapped and edited, and the edit is written back to the sheet. It backs itself up without being asked, reads my bank texts so spending is caught as it happens, and warns me when a category reaches its limit.",
+      "It is finished, and I use it. By my own scoring it has gone from a three to an eight.",
+      "Nothing I took out was broken. It was answering a question I wasn't asking.",
+    ],
+    // Lifted from the prose: the rule that came before the deletion, and the
+    // actual decision in the piece.
+    evidenceMark: {
+      insertAfter: 5,
+      lines: [
+        "The fix began with one rule: if the app isn't sure about something, it counts the money and doesn't ask.",
+      ],
+    },
+  },
+
+  {
     id: "wrong-first-question",
     title: "The wrong first question",
     attribution:
@@ -696,6 +734,11 @@ export const projectRecord: RecordItem[] = [
     // St George's"), so more reliable than the entry above.
     context: "City St George's, University of London",
     year: "2025",
+  },
+  {
+    title: "Job Search Copilot",
+    context: "Built for myself: finds, scores and tracks applications in a Google Sheet",
+    year: "2026",
   },
   {
     title: "Enhancing R&D Project Success through Network Analytics",

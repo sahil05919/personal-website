@@ -125,8 +125,8 @@ export const ledger: LedgerRow[] = [
     scaleMobile: 26,
   },
   {
-    figure: "35",
-    gloss: "assignments, eight departments, eighteen months",
+    figure: "40",
+    gloss: "assignments, over a dozen departments, since September 2024",
     scale: 48,
     scaleMobile: 30,
   },
@@ -243,7 +243,7 @@ export const entries: ExperienceEntry[] = [
     gloss: "Saying no is the majority of recruitment.",
     body: [
       "My first full-time job, and I did it without leaving Mahendragarh. The company was in Gurugram and the work was hybrid, so I stayed at home. It was the first time my week was shaped by something other than university deadlines.",
-      "Recruitment for SaaS and PaaS clients. Sourcing, screening, coordinating interviews, keeping pipelines moving, weekly calls about what a client needed and whether we were getting close. Two promotions across the two years, so that by the second I was running accounts on my own and dealing with clients directly. There was an award at the end of it, star performer of the year, which mattered mainly because it was the first time anyone had said out loud that turning up consistently for two years had been noticed.",
+      "Recruitment for SaaS and PaaS clients. Sourcing, screening, coordinating interviews, keeping pipelines moving, weekly calls about what a client needed and whether we were getting close. Two promotions across the two years, so that by the second I was running accounts on my own and dealing with clients directly. By the last year I was the most senior person on the desk and led a team of three. There was an award at the end of it, star performer of the year, which mattered mainly because it was the first time anyone had said out loud that turning up consistently for two years had been noticed.",
       "The work itself is harder to summarise. Every CV on my screen was somebody's ambition, written down and sent out hopefully. Every brief from a client was a business problem, described in the language of requirements. The job was to find the narrow place where those two things overlapped, and most of the time there wasn't one. Saying no is the majority of recruitment. It took me a while to stop reading a rejection as a verdict on a person — usually it meant the shape of what they wanted and the shape of what was needed did not match, which is not the same thing as anybody being wrong.",
       "I did not decide to become an analyst. It was slower than that. I spent two years inside recruitment data — funnel stages, time-to-hire, cohort reports, the same figures arriving every week — and gradually found I was more interested in what the pattern showed than in the placement it produced. I did nothing about it at the time. I just noticed I was reading the reports more carefully than the CVs.",
     ],
@@ -259,7 +259,7 @@ export const entries: ExperienceEntry[] = [
     gloss: "I got this job because of a Saturday.",
     body: [
       "I got this job because of a Saturday. While I was at SolutionTech I took freelance recruitment work at weekends, and one of those placements was for a company in Ahmedabad. It went well and I was paid a bonus for it. Some time later the people behind that business started a company of their own and asked whether I wanted to come with them. A year of my life arrived through one good piece of work done on a weekend, for people I had no particular reason to impress.",
-      "I joined as a recruiter. It was small and growing, which meant a role was whatever needed doing, and within a few months I was also responsible for the reporting and the operational data. The second title arrived afterwards, to describe work I was already doing.",
+      "I joined as Senior Talent Acquisition and Junior Data Analyst — two jobs under one title, because that is what the company needed and I was available. It was small and growing, which meant a role was whatever needed doing. The reporting and the operational data were mine.",
       "This is where the technical part started. I learned SQL here, properly, for the first time, along with Power BI and Power Query. None of it through a course. All of it because something needed to exist by Tuesday and nobody else was going to build it.",
       "The thing I remember best is the tracker. Candidate tracking was being done by hand — separate spreadsheets, statuses that went stale, a weekly report assembled from files that disagreed with each other. Proper recruitment software costs money a company that size did not have. So I built something that behaved like an applicant tracking system out of Excel, because Excel was already paid for. It took about eight hours of manual work a week out of the process, and more usefully it meant the weekly report stopped being an act of reconstruction.",
       "By May 2024 I had decided to apply to Bayes. The founders knew, we talked about it openly, and when I left there was nothing to announce. It was a small company and it had never been possible to keep anything from anyone.",
@@ -271,7 +271,7 @@ export const entries: ExperienceEntry[] = [
     title: "Mostly emails",
     tier: "turn",
     year: "2024–2025",
-    organisation: "Bayes Business School",
+    organisation: "Bayes Business Analytics Society",
     place: "London",
     gloss: "I wrote the emails anyway, and then wrote the follow-ups.",
     body: [
@@ -338,21 +338,32 @@ export const entries: ExperienceEntry[] = [
     // Sits after St Luke's despite starting earlier. Middlesex came through
     // Unitemps, and that dependency has to be readable in the sequence.
     id: "unitemps",
-    title: "Thirty-five first days",
+    title: "Forty first days",
     tier: "turn",
-    year: "2024–2026",
+    year: "2024–present",
     organisation: "Unitemps",
     place: "London",
-    gloss: "Thirty-five first days in a row.",
+    gloss: "Forty first days in a row.",
     body: [
-      "Unitemps is the university's own temping agency and it works like an internal job board. Roles are posted, you apply with a CV and a covering letter, sometimes there is an interview. Every assignment is a small application. Over about eighteen months I did around thirty-five of them, across eight departments.",
+      "Unitemps is the university's own temping agency and it works like an internal job board. Roles are posted, you apply with a CV and a covering letter, sometimes there is an interview. Every assignment is a small application. Since September 2024 I have done about forty of them, across more than a dozen departments. I still take the occasional event shift alongside Middlesex.",
       "It began as money. I needed paid work while I was studying and this was the paid work available. That stopped being the reason fairly quickly.",
       "The longest and the best of them was note-taking. I sat in lectures on midwifery, law and media, writing structured notes for students who needed them for accessibility reasons. I knew nothing about any of those subjects, so I had to learn fast enough to produce something another person's degree depended on. In the midwifery lectures I was usually the only man in a theatre of eighty women, taking notes on a subject I had never studied, for someone I would never meet.",
       "There were twenty or so invigilation shifts, standing at the side of silent halls. Registration desks and ID card production during intake weeks. Campus tours for international students. The students' union elections across three campuses. Welfare calls to find out how students were getting on. A stretch of workplace monitoring. Graduation ceremonies, a careers fair, an international conference on compressors.",
       "The last part of it was the hard part. My master's finished in September 2025 and I did not start at Middlesex until April 2026, and in between I applied for a great many permanent jobs and was turned down for most of them. Unitemps was what kept me solvent through that. It also kept me in buildings with people in them, which mattered more than I would have guessed during a long run of rejections.",
-      "What I took from it in the end was this. Every assignment began with arriving somewhere I had never been, among people I would probably not work with again, and learning the task from nothing. Thirty-five first days in a row. At some point being new stopped being uncomfortable and became the part I liked.",
+      "What I took from it in the end was this. Every assignment began with arriving somewhere I had never been, among people I would probably not work with again, and learning the task from nothing. Forty first days in a row. At some point being new stopped being uncomfortable and became the part I liked.",
     ],
-    attribution: "Unitemps, City St George's, University of London, 2024–2026.",
+    attribution: "Unitemps, City St George's, University of London, 2024–present.",
+    // The page's photograph. A parade through the City of London: students and
+    // staff of the university in graduation gowns. Placed after the paragraph
+    // that lists the graduation ceremonies, the careers fair and the rest.
+    // Alt text describes the frame; it names no one.
+    image: {
+      src: "/images/experience/city-st-georges-parade.webp",
+      alt: "Students and staff in graduation gowns walking in a parade through the City of London, carrying red foam hands, small City St George's flags and printed City Gazette newspapers, with crowds along the pavement behind them.",
+      width: 2495,
+      height: 736,
+    },
+    imageAfterParagraph: 3,
   },
   {
     id: "middlesex-university",
@@ -364,7 +375,7 @@ export const entries: ExperienceEntry[] = [
       // contract running to March 2027. The sentence still turns on the same
       // contrast — a settled thing arriving by the route that had only ever
       // produced unsettled ones — so only the false word needed replacing.
-      "This came through Unitemps as well, which is the tidiest thing about it — a contract with an end date on it at the end of two years of week-to-week ones, by the same route.",
+      "This came through Unitemps as well, which is the tidiest thing about it — a contract with an end date on it at the end of a year and a half of week-to-week ones, by the same route.",
       "Accounts payable. Invoices through Oracle, coded correctly, discrepancies chased down, the payment queue kept moving. Fifty to seventy invoices on an ordinary day, more when it backs up.",
       "It is repetitive and it has to be right. An invoice that is wrong becomes somebody else's problem further down the line, usually a supplier waiting to be paid, so the accuracy is not abstract. I find that I like it.",
       // Until September 2026 this said "I am not doing anything about it yet".

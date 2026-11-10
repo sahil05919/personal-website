@@ -49,7 +49,7 @@ import { Analytics } from "@vercel/analytics/next";
    business-and-data-analyst framing this record no longer leads with.
 
    Second, and worse, it was not this site. Nine pages of essays about a saree
-   shop in Mahendragarh, thirty-five first days and a residual of 1.5 million
+   shop in Mahendragarh, forty first days and a residual of 1.5 million
    tonnes were being announced to every search engine and every shared link as
    a skills list. Home already had the right sentence in data/homeContent.ts;
    it simply was not being used anywhere the site is seen from outside.

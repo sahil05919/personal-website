@@ -26,7 +26,7 @@ export const ledgerHi: LedgerRow[] = [
   { figure: '30', gloss: 'kilometre — shaadi se pehle ka wholesale ka daayra', scale: 34, scaleMobile: 24 },
   { figure: '8', gloss: 'ghante hafte ke wapas mile, Excel mein, kyunki software ke paise lagte the', scale: 44, scaleMobile: 28 },
   { figure: '10,000', gloss: 'sensor records saaf kiye, pehla chart banne se pehle', scale: 38, scaleMobile: 26 },
-  { figure: '35', gloss: 'assignments, aath departments, atthaarah mahine', scale: 48, scaleMobile: 30 },
+  { figure: '40', gloss: 'assignments, ek darjan se zyada departments, September 2024 se', scale: 48, scaleMobile: 30 },
   { figure: '50–70', gloss: 'invoices ek din mein, har ek ke peechhe koi paise ka intezaar karta hua', scale: 30, scaleMobile: 22 },
 ];
 
@@ -105,7 +105,7 @@ export const entriesHi: ExperienceEntry[] = [
     gloss: 'Naa kehna hi recruitment ka zyadatar hissa hai.',
     body: [
       'Meri pehli full-time job, aur maine woh Mahendragarh chhode bina ki. Company Gurugram mein thi aur kaam hybrid tha, toh main ghar par raha. Pehli baar mera hafta university ki deadlines ke alawa kisi aur cheez se bana.',
-      'SaaS aur PaaS clients ke liye recruitment. Sourcing, screening, interviews ka taal-mel, pipelines chalti rakhna, hafte ki calls is baare mein ki client ko kya chahiye aur hum kitne kareeb hain. Do saal mein do promotions, toh doosre saal tak main apne accounts khud chala raha tha aur clients se seedhe baat kar raha tha. Aakhir mein ek award bhi mila, star performer of the year, jo mukhya roop se isliye maayne rakhta tha kyunki pehli baar kisi ne khul kar kaha ki do saal lagataar aana notice kiya gaya hai.',
+      'SaaS aur PaaS clients ke liye recruitment. Sourcing, screening, interviews ka taal-mel, pipelines chalti rakhna, hafte ki calls is baare mein ki client ko kya chahiye aur hum kitne kareeb hain. Do saal mein do promotions, toh doosre saal tak main apne accounts khud chala raha tha aur clients se seedhe baat kar raha tha. Aakhri saal tak main desk par sabse senior tha aur teen logon ki team sambhaalta tha. Aakhir mein ek award bhi mila, star performer of the year, jo mukhya roop se isliye maayne rakhta tha kyunki pehli baar kisi ne khul kar kaha ki do saal lagataar aana notice kiya gaya hai.',
       'Kaam khud batana mushkil hai. Meri screen par har CV kisi ki ambition thi, likhi hui aur ummeed ke saath bheji hui. Client ka har brief ek business problem tha, requirements ki bhaasha mein likha hua. Kaam yeh tha ki woh sankri jagah dhoondhi jaaye jahaan yeh dono milte hain, aur zyadatar waqt aisi jagah hoti hi nahi thi. Naa kehna hi recruitment ka zyadatar hissa hai. Mujhe waqt laga rejection ko aadmi par faisla padhna band karne mein — aam taur par iska matlab tha ki jo woh chahte the aur jo zaroorat thi, unki shakal nahi mili, aur yeh kisi ke galat hone jaisi baat nahi hai.',
       'Maine analyst banne ka faisla nahi kiya. Yeh isse dheema tha. Maine do saal recruitment data ke andar bitaaye — funnel stages, time-to-hire, cohort reports, wahi aankde har hafte aate hue — aur dheere-dheere paaya ki mujhe placement se zyada dilchaspi is baat mein hai ki pattern kya dikha raha hai. Us waqt maine iske baare mein kuch nahi kiya. Bas notice kiya ki main CVs se zyada dhyaan se reports padh raha hoon.',
     ],
@@ -121,7 +121,7 @@ export const entriesHi: ExperienceEntry[] = [
     gloss: 'Yeh job mujhe ek Saturday ki wajah se mili.',
     body: [
       'Yeh job mujhe ek Saturday ki wajah se mili. SolutionTech mein rehte hue main weekends par freelance recruitment ka kaam leta tha, aur unmein se ek placement Ahmedabad ki ek company ke liye tha. Woh accha gaya aur mujhe uska bonus mila. Kuch samay baad us dhandhe ke peechhe ke log apni company shuru ki aur poochha ki main unke saath aana chahta hoon kya. Meri zindagi ka ek saal ek weekend par kiye gaye ek acche kaam se aaya, un logon ke liye jinhein impress karne ki mere paas koi khaas wajah nahi thi.',
-      'Main recruiter ke taur par juda. Company chhoti thi aur badh rahi thi, jiska matlab tha ki role wahi hai jo karna zaroori ho — aur kuch mahinon mein main reporting aur operational data ka bhi zimmedaar tha. Doosra title baad mein aaya, us kaam ko naam dene ke liye jo main pehle se kar raha tha.',
+      'Main Senior Talent Acquisition aur Junior Data Analyst ke taur par juda — ek title mein do kaam, kyunki company ko yahi chahiye tha aur main available tha. Company chhoti thi aur badh rahi thi, jiska matlab tha ki role wahi hai jo karna zaroori ho. Reporting aur operational data meri zimmedaari thi.',
       'Technical hissa yahaan se shuru hua. SQL maine yahaan seekha, theek se, pehli baar — Power BI aur Power Query ke saath. Kisi course se nahi. Sab isliye ki mangalwaar tak kisi cheez ka hona zaroori tha aur banane waala koi doosra nahi tha.',
       'Sabse acchi yaad tracker ki hai. Candidate tracking haath se ho rahi thi — alag-alag spreadsheets, statuses jo purane pad jaate the, aur ek weekly report jo aise files se joddi jaati thi jo ek doosre se mel nahi khaati thi. Theek recruitment software ke paise us aakaar ki company ke paas nahi the. Toh maine Excel mein aisi cheez banaayi jo applicant tracking system jaise chalti thi, kyunki Excel ke paise pehle se diye hue the. Isne hafte mein lagbhag aath ghante ka haath ka kaam nikaal diya, aur isse zyada kaam ki baat yeh thi ki weekly report ka dobara jodna band ho gaya.',
       'May 2024 tak main tay kar chuka tha ki Bayes mein apply karoonga. Founders ko pata tha, humne khul kar baat ki, aur jab main nikla toh announce karne jaisa kuch nahi tha. Chhoti company thi aur wahaan kisi se kuch chhupaana kabhi mumkin hi nahi raha.',
@@ -133,7 +133,7 @@ export const entriesHi: ExperienceEntry[] = [
     title: 'Zyadatar emails',
     tier: 'turn',
     year: '2024–2025',
-    organisation: 'Bayes Business School',
+    organisation: 'Bayes Business Analytics Society',
     place: 'London',
     gloss: 'Maine emails phir bhi likhi, aur uske baad follow-ups bhi.',
     body: [
@@ -196,21 +196,28 @@ export const entriesHi: ExperienceEntry[] = [
   },
   {
     id: 'unitemps',
-    title: 'Paintees pehle din',
+    title: 'Chaalis pehle din',
     tier: 'turn',
-    year: '2024–2026',
+    year: '2024–present',
     organisation: 'Unitemps',
     place: 'London',
-    gloss: 'Paintees pehle din, ek ke baad ek.',
+    gloss: 'Chaalis pehle din, ek ke baad ek.',
     body: [
-      'Unitemps university ki apni temping agency hai aur woh andar ke job board ki tarah chalti hai. Roles post hote hain, aap CV aur covering letter ke saath apply karte hain, kabhi interview bhi hota hai. Har assignment ek chhoti application hai. Lagbhag atthaarah mahinon mein maine unmein se karib paintees kiye, aath departments mein.',
+      'Unitemps university ki apni temping agency hai aur woh andar ke job board ki tarah chalti hai. Roles post hote hain, aap CV aur covering letter ke saath apply karte hain, kabhi interview bhi hota hai. Har assignment ek chhoti application hai. September 2024 se maine unmein se lagbhag chaalis kiye, ek darjan se zyada departments mein. Main ab bhi Middlesex ke saath kabhi-kabhi ek event shift le leta hoon.',
       'Shuruaat paise se hui. Padhte hue mujhe tankhaah waala kaam chahiye tha aur yahi mil raha tha. Yeh wajah kaafi jaldi khatam ho gayi.',
       'Sabse lamba aur sabse accha kaam note-taking tha. Main midwifery, law aur media ke lectures mein baithta tha, un students ke liye structured notes likhta tha jinhein accessibility ki wajah se unki zaroorat thi. Mujhe in mein se kisi vishay ka kuch nahi pata tha, toh mujhe itni tezi se seekhna padta tha ki main kuch aisa bana sakoon jispar kisi doosre ki degree tiki hui thi. Midwifery ke lectures mein main aam taur par assi auraton ke theatre mein akela aadmi hota tha, ek aise vishay par notes leta hua jo maine kabhi padha nahi tha, kisi aise ke liye jise main kabhi milne waala nahi tha.',
       'Bees ke aas-paas invigilation shifts thin, khaamosh halls ke kinaare khade hue. Intake weeks mein registration desks aur ID card banana. International students ke liye campus tours. Teen campuses par students’ union ke chunaav. Welfare calls yeh pata karne ke liye ki students ka kaisa chal raha hai. Kuch samay workplace monitoring. Graduation ceremonies, ek careers fair, aur compressors par ek international conference.',
       'Aakhri hissa mushkil hissa tha. Mera master’s September 2025 mein khatam hua aur Middlesex April 2026 tak shuru nahi hua, aur beech mein maine bahut si permanent jobs ke liye apply kiya aur zyadatar mein mana ho gaya. Unitemps ne mujhe us daur mein chalte rakha. Isne mujhe aise buildings mein bhi rakha jahaan log the, aur lambe rejection ke daur mein yeh mere andaaze se zyada maayne rakha.',
-      'Aakhir mein maine ismein se yeh liya. Har assignment aisi jagah pahunchne se shuru hota tha jahaan main kabhi nahi gaya tha, aise logon ke beech jinke saath main dobara kaam nahi karne waala tha, aur kaam ko zero se seekhna padta tha. Paintees pehle din, ek ke baad ek. Kisi mod par naya hona asahaj lagna band ho gaya aur wahi hissa ban gaya jo mujhe pasand hai.',
+      'Aakhir mein maine ismein se yeh liya. Har assignment aisi jagah pahunchne se shuru hota tha jahaan main kabhi nahi gaya tha, aise logon ke beech jinke saath main dobara kaam nahi karne waala tha, aur kaam ko zero se seekhna padta tha. Chaalis pehle din, ek ke baad ek. Kisi mod par naya hona asahaj lagna band ho gaya aur wahi hissa ban gaya jo mujhe pasand hai.',
     ],
-    attribution: 'Unitemps, City St George’s, University of London, 2024–2026.',
+    attribution: 'Unitemps, City St George’s, University of London, 2024–present.',
+    image: {
+      src: '/images/experience/city-st-georges-parade.webp',
+      alt: 'Graduation gowns pehne students aur staff City of London mein ek parade mein chalte hue, haathon mein laal foam hands, City St George’s ke chhote jhande aur chhape hue City Gazette akhbaar, peechhe pavement par bheed.',
+      width: 2495,
+      height: 736,
+    },
+    imageAfterParagraph: 3,
   },
   {
     id: 'middlesex-university',
@@ -218,7 +225,7 @@ export const entriesHi: ExperienceEntry[] = [
     tier: 'plain',
     year: '2026–present',
     body: [
-      'Yeh bhi Unitemps se aaya, jo iski sabse saaf-suthri baat hai — do saal ke hafte-dar-hafte contracts ke baad ek aisa contract jispar end date likhi hai, usi raaste se.',
+      'Yeh bhi Unitemps se aaya, jo iski sabse saaf-suthri baat hai — derh saal ke hafte-dar-hafte contracts ke baad ek aisa contract jispar end date likhi hai, usi raaste se.',
       'Accounts payable. Oracle se invoices, sahi coding, farak nikaale gaye, aur payment ki line chalti rakhi gayi. Aam din mein pachaas se sattar invoices, jab jamaa ho jaaye toh zyada.',
       'Yeh dohraane waala kaam hai aur ismein sahi hona zaroori hai. Galat invoice aage kisi doosre ki problem ban jaati hai, aam taur par ek supplier ki jo paise ka intezaar kar raha hai — toh sahi hona koi abstract baat nahi hai. Mujhe lagta hai mujhe yeh pasand hai.',
       'Pehle kuch mahine maine sirf process ko dekha, kyunki yeh saaf lagta tha ki system ko theek se samajhna padta hai use behtar banane se pehle. Phir mujhe supplier accounts set up hone ke tareeke mein ek gap mila — wahi jagah jahaan verification baar-baar atak jaata tha. Use band karne ke liye maine ek weekly manager sign-off design kiya, aur poori team ne use apna liya.',

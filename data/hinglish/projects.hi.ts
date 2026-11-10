@@ -272,6 +272,33 @@ export const projectEntriesHi: ProjectEntry[] = [
   },
 
   {
+    id: "what-i-took-out",
+    title: "Jo maine nikaala",
+    // Apparatus — the citation stays English (README rule 3).
+    attribution: "Built for myself, October–November 2026. An Android app; the data stays on the phone.",
+    rhythm: { measure: "reading", seam: "normal", lede: true },
+    body: [
+      "Jo version main use karta hoon woh woh nahi hai jo maine banana shuru kiya tha.",
+      "Maine ek aisa app banana shuru kiya jo bank statement padh sake. PDF daalo, aur woh har line samajh kar file kar de, aur bataaye ki main kahaan khada hoon — India ke accounts ke liye bhi aur London ke accounts ke liye bhi.",
+      "Paise ek aisi cheez hai jisme main privacy ke badle convenience nahi loonga, toh pehle din se do niyam the. Sab kuch phone par rahega, aur padhne ke liye kuch bhi kahin bheja nahi jaayega. Isne aasaan raaste band kar diye. Text recognition tak ko bina connection ke chalna tha.",
+      "Code maine nahi likha. Maine ise laptop par Claude Code ke saath banaya, bataaya ki mujhe kya chahiye, har version apne phone par daala, aur bataaya ki usmein kya galat hai.",
+      "Pehla asli test kharab gaya. App har us transaction ko lekar savdhaan tha jiske baare mein woh pakka nahi tha, jiska matlab tha ki woh mujhse poochhta hi rehta tha. Pehle imports ke baad iktaalis cheezein review ke liye, aur baad mein athaavan. Maine jawaab maanga tha aur ek questionnaire bana diya.",
+      "Meri apni scoring mein woh dus mein se teen tha.",
+      "Phir maine cheezein nikaali. Maine statements padhne ki koshish hi band kar di. App ab un do Google Sheets ka mirror hai jo main pehle se rakhta tha — India rupees mein, London pounds mein, kabhi jodke nahi — aur statement reader, jismein do hafte ka bada hissa laga tha, delete kar diya.",
+      "Jo bacha woh chhota hai. Ek home screen jo batata hai ki mere paas kitna hai, kahaan hai, aur kab khulega. Har figure par tap karke edit ho sakta hai, aur edit sheet mein wapas likh diya jaata hai. Yeh bina kahe apna backup khud leta hai, mere bank texts padhta hai taaki kharch hote hi pakad mein aa jaaye, aur jab koi category apni limit par pahunchti hai toh chetaavni deta hai.",
+      "Yeh khatam ho chuka hai, aur main ise use karta hoon. Meri apni scoring mein yeh teen se aath tak pahunch chuka hai.",
+      "Jo maine nikaala woh toota hua nahi tha. Woh aise sawaal ka jawaab de raha tha jo main pooch hi nahi raha tha.",
+    ],
+    // Same line, same position: lifted from the entry's own prose.
+    evidenceMark: {
+      insertAfter: 5,
+      lines: [
+        "Theek karne ki shuruaat ek niyam se hui: agar app kisi cheez ke baare mein pakka nahi hai, toh woh paise ko ginta hai aur poochhta nahi.",
+      ],
+    },
+  },
+
+  {
     id: "wrong-first-question",
     title: "Pehla sawaal hi galat tha",
     attribution:
@@ -403,6 +430,11 @@ export const projectRecordHi: RecordItem[] = [
     title: "Business Intelligence Reporting Model",
     context: "City St George's, University of London",
     year: "2025",
+  },
+  {
+    title: "Job Search Copilot",
+    context: "Built for myself: finds, scores and tracks applications in a Google Sheet",
+    year: "2026",
   },
   {
     title: "Enhancing R&D Project Success through Network Analytics",

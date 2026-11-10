@@ -9,7 +9,7 @@
  * that used to be empty.
  *
  * Three parts, not all present on every entry:
- *   · a case number (01–07) — apparatus, not decoration; the equivalent of
+ *   · a case number (01–12) — apparatus, not decoration; the equivalent of
  *     Journey's era numeral, but counting case files instead of years.
  *   · a small abstract motif, tied to that entry's actual content the same
  *     way Journey's ChapterArtifact is. Withheld on the interstitial on
@@ -33,10 +33,11 @@ const CASE: Record<string, { number: string; motif?: "exits" | "dashboard" | "re
   "what-i-can-reach": { number: "05", motif: "ladder" },
   "about-this-much-a-day": { number: "06", motif: "days" },
   "feel-like-home": { number: "07", motif: "loop" },
-  "wrong-first-question": { number: "08", motif: "reversal" },
-  "looking-properly": { number: "09", motif: "scatter" },
-  "understanding-behaviour": { number: "10" }, // no motif — stays as quiet as the essay itself
-  "did-both-jobs": { number: "11", motif: "residual" },
+  "what-i-took-out": { number: "08" }, // no motif yet — added November 2026
+  "wrong-first-question": { number: "09", motif: "reversal" },
+  "looking-properly": { number: "10", motif: "scatter" },
+  "understanding-behaviour": { number: "11" }, // no motif — stays as quiet as the essay itself
+  "did-both-jobs": { number: "12", motif: "residual" },
 };
 
 function Motif({ kind }: { kind: NonNullable<(typeof CASE)[string]["motif"]> }) {
